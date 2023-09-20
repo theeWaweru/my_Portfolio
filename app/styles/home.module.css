@@ -57,14 +57,14 @@
 
 .animation {
     width: 5%;
+    border: 3px solid transparent;
+    border-width: 3px 0;
     opacity: 0;
     height: 100%;
     position: absolute;
     top: 0;
-    border: 3px solid transparent;
     border-image: linear-gradient(to right, transparent, var(--yellowed), transparent);
     border-image-slice: 1;
-    border-width: 3px 0;
     animation: revealBorder 1.2s ease-in-out forwards;
     animation-delay: 2s;
 }

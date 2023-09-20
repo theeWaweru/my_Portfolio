@@ -1,4 +1,4 @@
-// export const openGraphImage = { images: ["http://..."] };
+export const openGraphImage = { images: ["http://..."] };
 // openGraph: {
 //     ...openGraphImage,
 //     title: "theeWaweru | Creative Developer",

@@ -24,7 +24,7 @@
 
 @media only screen and (max-width:480px) {
     .custom_card {
-        min-width: 80%;
+        min-width: 240px;
         margin-bottom: 2rem;
     }
 }

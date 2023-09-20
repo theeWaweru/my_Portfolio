@@ -1,0 +1,30 @@
+/** Components Styling Sheet */
+/* Card Styling */
+.custom_card {
+    overflow: hidden;
+    position: relative;
+    border-radius: 0.75rem;
+    border-width: 1px;
+    transition-duration: 700ms;
+    width: 30%;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .custom_card {
+        gap: 2rem;
+    }
+}
+
+@media only screen and (max-width:960px) {
+    .contact_card_containter {
+        width: calc(100vw - 64px);
+    }
+}
+
+@media only screen and (max-width:480px) {
+    .custom_card {
+        min-width: 80%;
+        margin-bottom: 2rem;
+    }
+}

@@ -1,0 +1,124 @@
+/** Contact Page styling */
+.main_container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-image: linear-gradient(to top left, var(--tw-gradient-stops));
+    padding: 5vh 0 20vh;
+    /* justify-content: center; */
+}
+
+.nav_ul {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav_link {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    transition-duration: 240ms;
+}
+
+.nav_link:hover {
+    border-bottom: solid 3px var(--redded);
+    padding: 0 24px 4px;
+}
+
+.content_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5vh 0;
+}
+
+.contact_text {
+    text-align: center;
+}
+
+.contact_card_containter {
+    padding-left: clamp(32px, 5vh, 64px);
+    padding-right: clamp(32px, 5vh, 64px);
+    height: auto;
+    margin-top: clamp(32px, 5vh, 64px);
+    max-width: 1400px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: calc(100vw - 120px);
+    gap: 5%;
+}
+
+.contact_card {
+    display: flex;
+    position: relative;
+    padding: clamp(36px, 6rem, 96px) 0;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    text-align: center;
+    transition-duration: 700ms;
+    transition: all 0.3s ease-in;
+}
+
+.contact_card:hover {
+    background-color: var(--yellowed);
+    color: var(--darkened);
+}
+
+.contact_card_span {
+    position: absolute;
+    width: 1px;
+    height: 66.666667%;
+    background-image: linear-gradient(to bottom, var(--redded), transparent);
+}
+
+.contact_card_icon {
+    display: flex;
+    z-index: 10;
+    justify-content: center;
+    align-items: center;
+    border-radius: 9999px;
+    border-width: 1px;
+    border: var(--redded);
+    background-color: var(--redded);
+    width: 3rem;
+    height: 3rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    transition-duration: 1000ms;
+}
+
+.contact_card_label {
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    text-align: center;
+    transition-duration: 1000ms;
+}
+
+.contact_card_handle {
+    font-size: 1.25rem;
+    font-weight: 500;
+    transition-duration: 150ms;
+}
+
+@media only screen and (min-width: 1400px) {
+    .contact_card_handle {
+        font-size: 1.875rem;
+    }
+}
+
+@media only screen and (max-width:960px) {
+    .contact_card_containter {
+        width: calc(100vw - 64px);
+    }
+}
+
+@media only screen and (max-width:480px) {
+    .contact_card_containter {
+        width: calc(100vw - 36px);
+    }
+}

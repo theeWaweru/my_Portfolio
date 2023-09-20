@@ -1,0 +1,144 @@
+/** Home Page styling */
+.root {
+    --foreground-rgb: 255, 255, 255;
+    --darkened: #131642;
+    --redded: #D6223B;
+    --yellowed: #EEAB0C;
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 5vh 0 20vh;
+    gap: clamp(32px, 4vw, 48px);
+}
+
+.nav_ul {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+.nav_link {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    transition-duration: 240ms;
+}
+
+.nav_link:hover {
+    border-bottom: solid 3px var(--redded);
+    padding: 0 24px 4px;
+}
+
+.hero_container {
+    position: relative;
+    margin: 5% 0;
+    width: 80%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 24px;
+    align-items: center;
+    margin-top: auto;
+}
+
+.home_title {
+    color: #FFF;
+    text-align: center;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 90%;
+}
+
+.animation {
+    width: 5%;
+    opacity: 0;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    border: 3px solid transparent;
+    border-image: linear-gradient(to right, transparent, var(--yellowed), transparent);
+    border-image-slice: 1;
+    border-width: 3px 0;
+    animation: revealBorder 1.2s ease-in-out forwards;
+    animation-delay: 2s;
+}
+
+@keyframes revealBorder {
+    0% {
+        border-width: 3px 0;
+        width: 5%;
+        opacity: 0;
+    }
+
+    100% {
+        border-width: 3px;
+        width: 100%;
+        opacity: 1;
+    }
+}
+
+.text_container {
+    animation: revealText 2.5s ease-in-out forwards;
+    animation-delay: 3s;
+    opacity: 0;
+    text-align: center;
+    margin-bottom: auto;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(32px, 3.4285714286vw, 48px);
+}
+
+@keyframes revealText {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.home_logo {
+    opacity: 0;
+    position: absolute;
+    animation: showLogo 1.5s ease forwards;
+    animation-delay: 1.5s;
+}
+
+@keyframes showLogo {
+    0% {
+        opacity: 0;
+        display: none;
+    }
+
+    100% {
+        opacity: 1;
+        display: flex;
+    }
+}
+
+.circle {
+    border: 2px var(--redded) solid;
+    width: 50vh;
+    height: 50vh;
+    border-radius: 50%;
+    animation: circleAnima 1.5s ease forwards;
+}
+
+@keyframes circleAnima {
+    0% {
+        width: 100vw !important;
+        height: 100vw !important;
+    }
+
+    100% {
+        width: 200px;
+        height: 200px;
+    }
+}

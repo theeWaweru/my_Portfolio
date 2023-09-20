@@ -1,0 +1,32 @@
+/** Components Styling Sheet */
+/* Button Styling */
+.button {
+    display: inline-flex;
+    padding: 18px 30px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 89px;
+    background: var(--yellowed, #EEAB0C);
+    color: var(--Darkened, #121642);
+    text-align: center;
+    font-family: Bricolage Grotesque 28pt SemiCondensed;
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 90%;
+    transition: all ease-out 0.24s;
+}
+
+.button:hover {
+    display: inline-flex;
+    padding: 18px 30px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    border-radius: 89px;
+    border: 1px solid #FFF;
+    background: var(--Redded, #D6223B);
+    box-shadow: 0px 3px 0px 0px #FFF;
+}

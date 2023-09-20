@@ -1,0 +1,28 @@
+/** Components Styling Sheet */
+.nav_link {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    transition-duration: 240ms;
+}
+
+.nav_link:hover {
+    border-bottom: solid 3px var(--redded);
+    padding: 0 24px 4px;
+}
+
+/* Card Styling */
+.custom_card {
+    overflow: hidden;
+    position: relative;
+    border-radius: 0.75rem;
+    border-width: 1px;
+    transition-duration: 700ms;
+    width: 30%;
+    flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+    .custom_card {
+        gap: 2rem;
+    }
+}

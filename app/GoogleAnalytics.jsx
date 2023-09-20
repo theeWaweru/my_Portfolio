@@ -4,7 +4,6 @@ import Script from "next/script"
 import * as gtag from "./components/gtag.js"
 
 const GoogleAnalytics = () => {
-    console.log(gtag.GA_TRACKING_ID)
     return (
         <>
             <Script strategy="afterInteractive" src={`https://www.googletagmanager.com/gtag/js?id=${gtag.GA_TRACKING_ID}`} />

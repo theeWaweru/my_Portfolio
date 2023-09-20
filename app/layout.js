@@ -5,7 +5,7 @@ import {
   Inter,
   Sedgwick_Ave_Display,
   Tektur,
-} from "@next/font/google";
+} from "next/font/google";
 import { Analytics } from "./components/analytics";
 import { Navigation } from "./components/nav";
 import notFound from "./not-found";

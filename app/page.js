@@ -4,7 +4,7 @@ import styles from "./styles/home.module.css";
 import dots from "./styles/particles.module.css";
 import Particles from "./components/particles";
 import Logo from "./components/logo";
-import { Sedgwick_Ave_Display, Tektur, Lemonada } from "@next/font/google";
+import { Sedgwick_Ave_Display, Tektur, Lemonada } from "next/font/google";
 import clsx from "clsx";
 import { Tek } from "./layout";
 import Button from "./components/button";

@@ -117,7 +117,7 @@ export default function Example() {
                   />
                   <span className={styles.contact_card_icon}>
                     {s.icon}
-                  </span>{" "}
+                  </span>
                   <div className="z-10 flex flex-col items-center">
                     <span className={styles.contact_card_handle}>
                       {s.handle}

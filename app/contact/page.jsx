@@ -39,9 +39,10 @@ const socials = [
     handle: "My Dev Projects"
   }
 ]
+// imitate delay
+await new Promise(resolve => setTimeout(resolve, 3000))
 
-
-export default function Example() {
+export default function Contact() {
   return (
     <main className={styles.main_container}>
       <nav className={styles.nav_container}>

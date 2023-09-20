@@ -10,6 +10,7 @@ import { Analytics } from "./components/analytics";
 import { Navigation } from "./components/nav";
 import notFound from "./not-found";
 import { openGraphImage } from "./shared-metadata";
+import GoogleAnalytics from "./GoogleAnalytics";
 
 export const Sedwig = Sedgwick_Ave_Display({
   subsets: ["latin"],
@@ -60,6 +61,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
+        <GoogleAnalytics GA_TRACKING_ID={process.env.GA_TRACKING_ID} />
         <Analytics />
       </head>
       <body

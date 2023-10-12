@@ -1,19 +1,12 @@
-.root {
-  --foreground-rgb: 255, 255, 255;
-  --darkened: #131642;
-  --redded: #D6223B;
-  --yellowed: #EEAB0C;
-}
-
 .card {
   position: relative;
-  max-width: 500px;
-  max-height: 500px;
+  max-width: 420px;
+  max-height: 420px;
   width: 30vw;
   height: 30vw;
   min-width: 240px;
   min-height: 240px;
-  background: radial-gradient(circle at 50% 107%, #EEAB0C 0%, #D6223B 30%, #131642 90%);
+  background: radial-gradient(circle at 50% 107%, var(--yellowed) 0%, var(--redded) 30%, var(--darkened) 90%);
   border-radius: 30px;
   overflow: hidden;
   box-shadow: rgba(214, 34, 59, 0.3) 0px 4px 15px 0px;

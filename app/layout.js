@@ -2,15 +2,12 @@ import "./globals.css";
 import {
   Bricolage_Grotesque,
   Diphylleia,
-  Inter,
   Sedgwick_Ave_Display,
   Tektur,
 } from "next/font/google";
 import { Analytics } from "./components/analytics";
-import { Navigation } from "./components/nav";
-import notFound from "./not-found";
-import { openGraphImage } from "./shared-metadata";
 import GoogleAnalytics from "./GoogleAnalytics";
+import { meta } from "./components/meta";
 
 export const Sedwig = Sedgwick_Ave_Display({
   subsets: ["latin"],
@@ -33,37 +30,37 @@ export const Diphy = Diphylleia({
   weight: ["400"],
 });
 
-export const metadata = {
-  title: "theeWawerus Portfolio",
-  description:
-    "Unlock boundless creativity and technical wizardry with our dynamic digital powerhouse! Specializing in creative development, digital strategy, and captivating video design, we're your go-to solution for all things web and visual. Our expertise spans the Adobe Suite gamut, transforming pixels into masterpieces. With a flair for coding magic using React and Next.js, we craft interactive digital realms that astonish. Leverage our prowess in crafting compelling websites across Shopify, WordPress, and Webflow, tailored to your unique vision. Dive into niche-specific content curation that speaks your audience's language, creating an irresistible online narrative. Traverse captivating user interfaces sculpted meticulously on Figma, guiding users through intuitive journeys. Embark on a brand evolution journey with our strategic touch, breathing life into ideas and translating them into impactful reality. Our finely honed skills culminate in well-structured brand books that empower businesses to champion their identity. Elevate your digital game with us – where creativity, strategy, and innovation converge seamlessly. Partner with us to navigate the ever-evolving digital landscape!",
-  keywords: [
-    "Next.js",
-    "React",
-    "JavaScript",
-    "Creative Developer",
-    "Digital Business Strategist",
-    "Video Editor/Designer",
-    "Adobe Suite Apps",
-    "React and Next.js Coding",
-    "Shopify, WordPress, Webflow Websites",
-    "Content Curation",
-    "User Interfaces",
-    "Brand Strategy",
-    "VR/XR Enthusiast",
-    "Trending Technologies",
-    "Captivating User Experiences",
-    "Innovative Solutions",
-  ],
-};
-
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <head>
-        <GoogleAnalytics GA_TRACKING_ID={process.env.GA_TRACKING_ID} />
-        <Analytics />
-      </head>
+      {meta.map((meta) => {
+        return (
+          <head key={meta}>
+            <title>{meta.title}</title>
+            <meta name="description" content={meta.description} />
+            <meta name="keywords" content={meta.keywords} />
+            <meta property="og:title" content={meta.og_title} />
+            <meta property="og:description" content={meta.og_description} />
+            <meta property="og:url" content={meta.url} />
+            <meta property="og:site_name" content={meta.site_name} />
+            <meta property="og:locale" content="en-US" />
+            <meta property="og:image" content={meta.og_image} />
+            <meta property="og:image:width" content="1920" />
+            <meta property="og:image:height" content="1080" />
+            <meta property="og:type" content="website" />
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content={meta.title} />
+            <meta name="twitter:description" content={meta.og_description} />
+            <meta name="twitter:image" content={meta.og_image} />
+            <meta name="twitter:image:width" content="1920" />
+            <meta name="twitter:image:height" content="1080" />
+            <link rel="shortcut icon" href="/favicon.svg" />
+            <meta name="next-size-adjust" />
+            <Analytics />
+            <GoogleAnalytics />
+          </head>
+        );
+      })}
       <body
         className={`${
           process.env.NODE_ENV === "development" ? "debug-screens" : undefined

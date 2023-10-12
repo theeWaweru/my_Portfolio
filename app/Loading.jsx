@@ -2,7 +2,7 @@ import React from 'react'
 import clsx from 'clsx'
 import styles from "./styles/loading.module.css"
 
-export default function Preloader() {
+export default function Loading() {
   return (
     <main className="text-center">
       <div className={styles.cube}>

@@ -12,10 +12,10 @@
   position: absolute;
   width: 100%;
   height: 100%;
-  background: #131642;
-  border: 2px solid #EEAB0C;
+  background: var(--darkened);
+  border: 2px solid var(--yellowed);
   border-radius: 5px;
-  box-shadow: 0 0 15px #D6223B;
+  box-shadow: 0 0 15px var(--redded);
 }
 
 .top {

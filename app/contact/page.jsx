@@ -1,6 +1,5 @@
 import { Mail, Figma, Github } from "lucide-react"
 import Link from "next/link"
-import { Suspense } from "react"
 import Socials from "../components/socials"
 import { Card } from "../components/card"
 import Particles from "../components/particles"
@@ -8,13 +7,8 @@ import dots from "../styles/particles.module.css"
 import styles from "../styles/contact.module.css"
 import clsx from "clsx"
 import { Brick, Diphy, Tek } from "../layout"
-import Preloader from "../Loading"
+import Newnav from "../components/newNav"
 
-const navigation = [
-  { name: "Home", href: "/" },
-  // { name: "Projects", href: "/projects" },
-  // { name: "Contact", href: "/contact" },
-];
 
 const socials = [
   {
@@ -27,14 +21,14 @@ const socials = [
   {
     id: 2,
     icon: <Figma size={20} />,
-    href: "/",
+    href: "https://www.figma.com/file/qXiXLlm7tm3a0GkMvKSPYo/Dave's-Portfolio?type=design&node-id=0%3A1&mode=design&t=UMTWTeYIlll3uN6g-1",
     label: "Figma",
     handle: "My UI Projects"
   },
   {
     id: 3,
     icon: <Github size={20} />,
-    href: "/",
+    href: "https://github.com/theeWaweru",
     label: "Github",
     handle: "My Dev Projects"
   }
@@ -44,24 +38,12 @@ await new Promise(resolve => setTimeout(resolve, 3000))
 
 export default function Contact() {
   return (
-    <main className={styles.main_container}>
-      <nav className={styles.nav_container}>
-        <ul className={styles.nav_ul}>
-          {navigation.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={clsx(Tek.className, styles.nav_link)}
-            >
-              {item.name}
-            </Link>
-          ))}
-        </ul>
-      </nav>
-      <Particles
-        className={dots.particles_container} quantity={300}
-      />
-      <Suspense fallback={<Preloader />}>
+    <div className={styles.main}>
+      <div className={styles.main_container}>
+        <Newnav />
+        <Particles
+          className={dots.particles_container} quantity={300}
+        />
         <div className={styles.content_container}>
           <h6 className={clsx(Brick.className, styles.contact_text)}>
             I code and animate on front-end software (using javascript mostly),
@@ -102,6 +84,7 @@ export default function Contact() {
             </Link>{" "}
             at night.
           </h6>
+          <h6>Check out my <a href="/Dave's_portfolio.pdf" className="">Portfolio</a></h6>
           <div className={styles.contact_card_containter}>
             {socials.map(s => (
               <Card
@@ -135,7 +118,6 @@ export default function Contact() {
             <Socials />
           </div>
         </div>
-      </Suspense>
-    </main>
+      </div></div>
   )
 }

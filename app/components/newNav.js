@@ -1,5 +1,8 @@
-import Link from "next/link";
+"use client";
+
+import React from "react";
 import styles from "../styles/home.module.css";
+import style from "../styles/nav.module.css";
 import Logo from "./logo";
 import clsx from "clsx";
 import { Tek } from "../layout";
@@ -16,15 +19,15 @@ export default function Newnav() {
   return (
     <>
       <nav className={styles.nav_container}>
-        <ul className={styles.nav_ul}>
+        <ul className={style.nav_ul}>
           {navigation.map((item) => (
-            <Link
-              key={item.href}
+            <a
+              key={item}
               href={item.href}
-              className={clsx(Tek.className, styles.nav_link)}
+              className={clsx(Tek.className, style.nav_link)}
             >
               {item.name}
-            </Link>
+            </a>
           ))}
         </ul>
       </nav>

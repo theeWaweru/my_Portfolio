@@ -8,24 +8,6 @@
     gap: clamp(32px, 4vw, 48px);
 }
 
-.nav_ul {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-}
-
-.nav_link {
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    transition-duration: 240ms;
-}
-
-.nav_link:hover {
-    border-bottom: solid 3px var(--redded);
-    padding: 0 24px 4px;
-}
-
 .hero_container {
     position: relative;
     margin: 0;

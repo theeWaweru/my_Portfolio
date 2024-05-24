@@ -4,7 +4,8 @@
     border-radius: 0.75rem;
     border-width: 1px;
     transition-duration: 700ms;
-    width: 30%;
+    /* width: 30%; */
+    width: 100%;
     flex-shrink: 0;
 }
 

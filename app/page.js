@@ -1,14 +1,12 @@
-import Link from "next/link";
 import React from "react";
 import styles from "./styles/home.module.css";
 import dots from "./styles/particles.module.css";
 import Particles from "./components/particles";
-import Logo from "./components/logo";
 import clsx from "clsx";
 import Newnav from "./components/newNav";
 import { Tek } from "./layout";
 import Button from "./components/button";
-import DownloadApp from "./components/downloadApp";
+import { Analytics } from "@vercel/analytics/react";
 
 export const revalidate = 0;
 

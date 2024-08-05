@@ -1,6 +1,6 @@
 "use client"
 
-export function Analytics() {
+export function Analytica() {
   const token = process.env.NEXT_PUBLIC_BEAM_TOKEN
   if (!token) {
     return null

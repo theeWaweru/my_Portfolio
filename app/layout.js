@@ -5,7 +5,8 @@ import {
   Sedgwick_Ave_Display,
   Tektur,
 } from "next/font/google";
-import { Analytics } from "./components/analytics";
+import { Analytica } from "./components/analytics";
+import { Analytics } from "@vercel/analytics/react";
 import GoogleAnalytics from "./GoogleAnalytics";
 import { meta } from "./components/meta";
 
@@ -67,6 +68,7 @@ export default function RootLayout({ children }) {
         }`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

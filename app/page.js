@@ -8,6 +8,7 @@ import clsx from "clsx";
 import Newnav from "./components/newNav";
 import { Tek } from "./layout";
 import Button from "./components/button";
+import DownloadApp from "./components/downloadApp";
 
 export const revalidate = 0;
 

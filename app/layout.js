@@ -7,6 +7,7 @@ import {
 } from "next/font/google";
 import { Analytica } from "./components/analytics";
 import { Analytics } from "@vercel/analytics/react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import GoogleAnalytics from "./GoogleAnalytics";
 import { meta } from "./components/meta";
 
@@ -68,6 +69,7 @@ export default function RootLayout({ children }) {
         }`}
       >
         {children}
+        <SpeedInsights />
         <Analytics />
       </body>
     </html>

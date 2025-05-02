@@ -1,0 +1,149 @@
+/* app/components/admin/MarkdownEditor.module.css */
+.editor {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+    font-family: var(--font-bricolage);
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    padding: 0.5rem;
+    background-color: #f1f1f1;
+    border-bottom: 1px solid #ddd;
+}
+
+.toolbarButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.toolbarButton:hover {
+    background-color: #e5e5e5;
+    border-color: #aaa;
+}
+
+.toolbarButton.active {
+    background-color: #0070f3;
+    color: white;
+    border-color: #0070f3;
+}
+
+.previewButton {
+    margin-left: auto;
+}
+
+.contentArea {
+    position: relative;
+    min-height: 200px;
+}
+
+.textarea {
+    width: 100%;
+    min-height: 200px;
+    padding: 0.75rem;
+    border: none;
+    resize: vertical;
+    font-family: var(--font-bricolage);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    background-color: #f9f9f9;
+}
+
+.textarea:focus {
+    outline: none;
+    background-color: #fff;
+}
+
+.hidden {
+    display: none;
+}
+
+.preview {
+    padding: 0.75rem;
+    min-height: 200px;
+    background-color: #fff;
+    overflow-y: auto;
+    color: #333;
+}
+
+.preview h1 {
+    font-size: 1.75rem;
+    margin: 1.5rem 0 1rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+}
+
+.preview h2 {
+    font-size: 1.5rem;
+    margin: 1.25rem 0 0.75rem;
+}
+
+.preview h3 {
+    font-size: 1.25rem;
+    margin: 1rem 0 0.5rem;
+}
+
+.preview p {
+    margin-bottom: 1rem;
+}
+
+.preview ul,
+.preview ol {
+    margin: 1rem 0;
+    padding-left: 2rem;
+}
+
+.preview li {
+    margin-bottom: 0.5rem;
+}
+
+.preview img {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+    border-radius: 4px;
+}
+
+.preview a {
+    color: #0070f3;
+    text-decoration: none;
+}
+
+.preview a:hover {
+    text-decoration: underline;
+}
+
+.footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+    background-color: #f1f1f1;
+    border-top: 1px solid #ddd;
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.wordCount {
+    font-size: 0.75rem;
+}
+
+.markdownHelp {
+    color: #0070f3;
+    text-decoration: none;
+}
+
+.markdownHelp:hover {
+    text-decoration: underline;
+}

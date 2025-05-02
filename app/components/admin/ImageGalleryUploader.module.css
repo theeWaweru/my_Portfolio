@@ -1,0 +1,164 @@
+/* app/components/admin/ImageGalleryUploader.module.css */
+.container {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-family: var(--font-tektur);
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+.uploadContainer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.uploadButton {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #0070f3;
+    color: white;
+    border-radius: 4px;
+    font-family: var(--font-tektur);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.uploadButton:hover {
+    background-color: #0050d3;
+}
+
+.fileInput {
+    display: none;
+}
+
+.counter {
+    font-size: 0.875rem;
+    color: #666;
+}
+
+.galleryGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.imageItem {
+    position: relative;
+    background-color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    overflow: hidden;
+    cursor: grab;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.imageItem:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.imageItem.dragging {
+    opacity: 0.6;
+    transform: scale(0.95);
+}
+
+.imageWrapper {
+    position: relative;
+    padding-bottom: 100%;
+    /* 1:1 aspect ratio */
+}
+
+.image {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imageOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.imageItem:hover .imageOverlay {
+    background-color: rgba(0, 0, 0, 0.3);
+    opacity: 1;
+}
+
+.removeButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #ef4444;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    padding: 0;
+}
+
+.removeButton:hover {
+    background-color: white;
+}
+
+.imageNumber {
+    display: inline-block;
+    background-color: #0070f3;
+    color: white;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    text-align: center;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: 600;
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 2;
+}
+
+.emptyGallery {
+    padding: 2rem;
+    text-align: center;
+    background-color: #f1f1f1;
+    border-radius: 4px;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.helperText {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #666;
+}

@@ -56,6 +56,8 @@ export default function NewProject() {
         });
     };
 
+    // Update the handleSubmit function in app/admin/projects/new/page.jsx
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -67,24 +69,47 @@ export default function NewProject() {
                 ? formData.tags.split(',').map(tag => tag.trim())
                 : [];
 
-            // Prepare the project data
+            // Prepare the project data without the file
             const projectData = {
                 ...formData,
                 tags: tagsArray,
             };
 
-            // Remove the file from the data as we'll handle it separately
+            // Remove the file from the project data
             delete projectData.cover_image;
 
-            // Create the project in the database
+            // Create the project in the database first
             const { data, error } = await createProject(projectData);
 
             if (error) {
                 throw new Error(error);
             }
 
-            // If we have a cover image, we'll upload it in the future implementation
-            // For now, just acknowledge the project creation
+            // If we have a cover image, upload it
+            if (formData.cover_image) {
+                const { uploadImage } = await import('../../../lib/supabase/uploadImage');
+                const { data: imageData, error: imageError } = await uploadImage(
+                    formData.cover_image,
+                    'projects',
+                    data.id
+                );
+
+                if (imageError) {
+                    console.error('Error uploading image:', imageError);
+                    // Continue anyway, just with no image
+                } else if (imageData) {
+                    // Update the project with the image URL
+                    const { error: updateError } = await updateProject(data.id, {
+                        cover_image_url: imageData.url,
+                        cover_image_path: imageData.path
+                    });
+
+                    if (updateError) {
+                        console.error('Error updating project with image:', updateError);
+                    }
+                }
+            }
+
             alert('Project created successfully!');
             router.push('/admin/projects');
         } catch (err) {

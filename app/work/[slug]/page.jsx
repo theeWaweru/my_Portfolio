@@ -287,67 +287,193 @@ export default function ProjectDetailPage({ params }) {
                             <h3 className="text-xl font-bold mb-4">Contents</h3>
                             <nav className="space-y-2">
                                 {['Overview', 'Challenge', 'Approach', 'Solution', 'Results'].map((section) => (
-
-                                    key = { section }
-                    href = {`#${section.toLowerCase()}`}
-                                className="block px-3 py-2 text-left w-full rounded-lg transition-all text-gray-400 hover:text-white hover:bg-gray-800"
-                  >
-                                {section}
-                            </a>
-                ))}
-                        </nav>
-                    </div>
-                </div>
-
-                {/* Main Content */}
-                <div className="w-full lg:w-3/4">
-                    {/* Overview */}
-                    <section id="overview" className="mb-16">
-                        <div className="prose prose-lg prose-invert max-w-none">
-                            <p className="text-xl text-gray-300 mb-8">
-                                {description}
-                            </p>
-                        </div>
-
-                        {/* Image Gallery */}
-                        {gallery && gallery.length > 0 && (
-                            <div className="grid grid-cols-2 gap-4 my-12">
-                                {gallery.map((image, index) => (
-                                    <div
-                                        key={index}
-                                        className={`overflow-hidden rounded-lg ${index === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}
+                                    <a
+                                        key={section}
+                                        href={`#${section.toLowerCase()}`}
+                                        className="block px-3 py-2 text-left w-full rounded-lg transition-all text-gray-400 hover:text-white hover:bg-gray-800"
                                     >
-                                        <div className="relative h-full w-full">
-                                            <Image
-                                                src={image}
-                                                alt={`${title} - Gallery image ${index + 1}`}
-                                                fill
-                                                className="object-cover"
-                                            />
+                                        {section}
+                                    </a>
+                                ))}
+                            </nav>
+                        </div>
+                    </div>
+
+                    {/* Main Content */}
+                    <div className="w-full lg:w-3/4">
+                        {/* Overview */}
+                        <section id="overview" className="mb-16">
+                            <div className="prose prose-lg prose-invert max-w-none">
+                                <p className="text-xl text-gray-300 mb-8">
+                                    {description}
+                                </p>
+                            </div>
+
+                            {/* Image Gallery */}
+                            {gallery && gallery.length > 0 && (
+                                <div className="grid grid-cols-2 gap-4 my-12">
+                                    {gallery.map((image, index) => (
+                                        <div
+                                            key={index}
+                                            className={`overflow-hidden rounded-lg ${index === 0 ? 'col-span-2 aspect-video' : 'aspect-square'}`}
+                                        >
+                                            <div className="relative h-full w-full">
+                                                <Image
+                                                    src={image}
+                                                    alt={`${title} - Gallery image ${index + 1}`}
+                                                    fill
+                                                    className="object-cover"
+                                                />
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </section>
+
+                        {/* Challenge */}
+                        {challenge && (
+                            <section id="challenge" className="mb-16">
+                                <h2 className="text-3xl font-bold mb-6">{challenge.title}</h2>
+                                <div className="prose prose-lg prose-invert max-w-none">
+                                    <p className="mb-8">
+                                        {challenge.description}
+                                    </p>
+
+                                    {challenge.points && challenge.points.length > 0 && (
+                                        <div className="bg-gray-900 rounded-xl p-6 my-8">
+                                            <h3 className="text-xl font-bold mb-4">Key Challenges</h3>
+                                            <ul className="space-y-2">
+                                                {challenge.points.map((point, index) => (
+                                                    <li key={index} className="flex items-start">
+                                                        <span className="inline-flex items-center justify-center bg-blue-600 rounded-full w-6 h-6 text-sm font-medium mr-3 mt-0.5">
+                                                            {index + 1}
+                                                        </span>
+                                                        <span>{point}</span>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        )}
+
+                        {/* Approach */}
+                        {approach && (
+                            <section id="approach" className="mb-16">
+                                <h2 className="text-3xl font-bold mb-6">{approach.title}</h2>
+                                <div className="prose prose-lg prose-invert max-w-none">
+                                    <p className="mb-8">
+                                        {approach.description}
+                                    </p>
+
+                                    {approach.process && approach.process.length > 0 && (
+                                        <div className="space-y-12 my-12">
+                                            {approach.process.map((phase, index) => (
+                                                <div key={index} className="flex flex-col md:flex-row gap-8">
+                                                    <div className="w-full md:w-1/3">
+                                                        <div className="bg-blue-600 h-1 w-12 mb-4"></div>
+                                                        <h3 className="text-xl font-bold mb-2">Phase {index + 1}</h3>
+                                                        <p className="text-xl font-medium text-blue-400">{phase.phase}</p>
+                                                    </div>
+                                                    <div className="w-full md:w-2/3">
+                                                        <p className="mb-4">{phase.description}</p>
+                                                        <p className="text-gray-400"><strong>Deliverables:</strong> {phase.deliverables}</p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            </section>
+                        )}
+
+                        {/* Solution */}
+                        {solution && (
+                            <section id="solution" className="mb-16">
+                                <h2 className="text-3xl font-bold mb-6">{solution.title}</h2>
+                                <div className="prose prose-lg prose-invert max-w-none">
+                                    <p className="mb-12">
+                                        {solution.description}
+                                    </p>
+                                </div>
+
+                                {solution.features && solution.features.length > 0 && (
+                                    <div className="grid md:grid-cols-2 gap-8 my-12">
+                                        {solution.features.map((feature, index) => (
+                                            <div key={index} className="bg-gray-900 rounded-xl overflow-hidden">
+                                                <div className="aspect-video relative">
+                                                    {feature.image && (
+                                                        <Image
+                                                            src={feature.image}
+                                                            alt={feature.title}
+                                                            fill
+                                                            className="object-cover"
+                                                        />
+                                                    )}
+                                                </div>
+                                                <div className="p-6">
+                                                    <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
+                                                    <p className="text-gray-300">{feature.description}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </section>
+                        )}
+
+                        {/* Results */}
+                        {results && (
+                            <section id="results" className="mb-16">
+                                <h2 className="text-3xl font-bold mb-6">{results.title}</h2>
+                                <div className="prose prose-lg prose-invert max-w-none">
+                                    <p className="mb-8">
+                                        {results.description}
+                                    </p>
+                                </div>
+
+                                {results.stats && results.stats.length > 0 && (
+                                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 my-12">
+                                        {results.stats.map((stat, index) => (
+                                            <div key={index} className="bg-gray-900 rounded-xl p-6 text-center">
+                                                <p className="text-3xl font-bold text-blue-400 mb-2">{stat.value}</p>
+                                                <p className="text-sm text-gray-300">{stat.label}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+
+                                {results.testimonial && (
+                                    <div className="bg-gray-900 rounded-xl p-8 my-12">
+                                        <div className="flex gap-6 items-start">
+                                            <div className="text-blue-400">
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <blockquote className="text-xl font-medium mb-4">
+                                                    "{results.testimonial.quote}"
+                                                </blockquote>
+                                                <p className="font-bold">{results.testimonial.author}</p>
+                                                <p className="text-gray-400">{results.testimonial.title}</p>
+                                            </div>
                                         </div>
                                     </div>
-                                ))}
-                            </div>
-                        )}
-                    </section>
+                                )}
 
-                    {/* Challenge */}
-                    {challenge && (
-                        <section id="challenge" className="mb-16">
-                            <h2 className="text-3xl font-bold mb-6">{challenge.title}</h2>
-                            <div className="prose prose-lg prose-invert max-w-none">
-                                <p className="mb-8">
-                                    {challenge.description}
-                                </p>
-
-                                {challenge.points && challenge.points.length > 0 && (
-                                    <div className="bg-gray-900 rounded-xl p-6 my-8">
-                                        <h3 className="text-xl font-bold mb-4">Key Challenges</h3>
-                                        <ul className="space-y-2">
-                                            {challenge.points.map((point, index) => (
+                                {learnings && learnings.points && learnings.points.length > 0 && (
+                                    <div className="bg-gray-900 rounded-xl p-6 my-12">
+                                        <h3 className="text-xl font-bold mb-4">{learnings.title}</h3>
+                                        <ul className="space-y-3">
+                                            {learnings.points.map((point, index) => (
                                                 <li key={index} className="flex items-start">
-                                                    <span className="inline-flex items-center justify-center bg-blue-600 rounded-full w-6 h-6 text-sm font-medium mr-3 mt-0.5">
-                                                        {index + 1}
+                                                    <span className="text-blue-400 mr-3">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                                        </svg>
                                                     </span>
                                                     <span>{point}</span>
                                                 </li>
@@ -355,194 +481,68 @@ export default function ProjectDetailPage({ params }) {
                                         </ul>
                                     </div>
                                 )}
+                            </section>
+                        )}
+                    </div>
+                </div>
+            </div>
+
+            {/* Next Project */}
+            {
+                nextProject && (
+                    <div className="bg-gray-900">
+                        <div className="container max-w-6xl mx-auto px-6 py-20">
+                            <div className="text-center mb-12">
+                                <p className="text-blue-400 font-medium mb-2">Next Project</p>
+                                <h2 className="text-3xl font-bold">{nextProject.title}</h2>
+                                <p className="text-gray-400 mt-2">{nextProject.category}</p>
                             </div>
-                        </section>
-                    )}
 
-                    {/* Approach */}
-                    {approach && (
-                        <section id="approach" className="mb-16">
-                            <h2 className="text-3xl font-bold mb-6">{approach.title}</h2>
-                            <div className="prose prose-lg prose-invert max-w-none">
-                                <p className="mb-8">
-                                    {approach.description}
-                                </p>
-
-                                {approach.process && approach.process.length > 0 && (
-                                    <div className="space-y-12 my-12">
-                                        {approach.process.map((phase, index) => (
-                                            <div key={index} className="flex flex-col md:flex-row gap-8">
-                                                <div className="w-full md:w-1/3">
-                                                    <div className="bg-blue-600 h-1 w-12 mb-4"></div>
-                                                    <h3 className="text-xl font-bold mb-2">Phase {index + 1}</h3>
-                                                    <p className="text-xl font-medium text-blue-400">{phase.phase}</p>
-                                                </div>
-                                                <div className="w-full md:w-2/3">
-                                                    <p className="mb-4">{phase.description}</p>
-                                                    <p className="text-gray-400"><strong>Deliverables:</strong> {phase.deliverables}</p>
-                                                </div>
-                                            </div>
-                                        ))}
+                            <Link
+                                href={`/work/${nextProject.id}`}
+                                className="relative aspect-video bg-gray-800 rounded-xl overflow-hidden block group"
+                            >
+                                {nextProject.image && (
+                                    <div className="relative h-full w-full">
+                                        <Image
+                                            src={nextProject.image}
+                                            alt={nextProject.title}
+                                            fill
+                                            className="object-cover"
+                                        />
                                     </div>
                                 )}
-                            </div>
-                        </section>
-                    )}
 
-                    {/* Solution */}
-                    {solution && (
-                        <section id="solution" className="mb-16">
-                            <h2 className="text-3xl font-bold mb-6">{solution.title}</h2>
-                            <div className="prose prose-lg prose-invert max-w-none">
-                                <p className="mb-12">
-                                    {solution.description}
-                                </p>
-                            </div>
+                                <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-purple-600/50 opacity-0 group-hover:opacity-75 transition-all duration-500"></div>
 
-                            {solution.features && solution.features.length > 0 && (
-                                <div className="grid md:grid-cols-2 gap-8 my-12">
-                                    {solution.features.map((feature, index) => (
-                                        <div key={index} className="bg-gray-900 rounded-xl overflow-hidden">
-                                            <div className="aspect-video relative">
-                                                {feature.image && (
-                                                    <Image
-                                                        src={feature.image}
-                                                        alt={feature.title}
-                                                        fill
-                                                        className="object-cover"
-                                                    />
-                                                )}
-                                            </div>
-                                            <div className="p-6">
-                                                <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-                                                <p className="text-gray-300">{feature.description}</p>
-                                            </div>
-                                        </div>
-                                    ))}
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <button className="px-8 py-3 bg-white text-blue-900 rounded-full font-medium opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 translate-y-4 transition-all duration-500">
+                                        View Project
+                                    </button>
                                 </div>
-                            )}
-                        </section>
-                    )}
-
-                    {/* Results */}
-                    {results && (
-                        <section id="results" className="mb-16">
-                            <h2 className="text-3xl font-bold mb-6">{results.title}</h2>
-                            <div className="prose prose-lg prose-invert max-w-none">
-                                <p className="mb-8">
-                                    {results.description}
-                                </p>
-                            </div>
-
-                            {results.stats && results.stats.length > 0 && (
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 my-12">
-                                    {results.stats.map((stat, index) => (
-                                        <div key={index} className="bg-gray-900 rounded-xl p-6 text-center">
-                                            <p className="text-3xl font-bold text-blue-400 mb-2">{stat.value}</p>
-                                            <p className="text-sm text-gray-300">{stat.label}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            )}
-
-                            {results.testimonial && (
-                                <div className="bg-gray-900 rounded-xl p-8 my-12">
-                                    <div className="flex gap-6 items-start">
-                                        <div className="text-blue-400">
-                                            <svg xmlns="http://www.w3.org/2000/svg" className="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
-                                            </svg>
-                                        </div>
-                                        <div>
-                                            <blockquote className="text-xl font-medium mb-4">
-                                                "{results.testimonial.quote}"
-                                            </blockquote>
-                                            <p className="font-bold">{results.testimonial.author}</p>
-                                            <p className="text-gray-400">{results.testimonial.title}</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-
-                            {learnings && learnings.points && learnings.points.length > 0 && (
-                                <div className="bg-gray-900 rounded-xl p-6 my-12">
-                                    <h3 className="text-xl font-bold mb-4">{learnings.title}</h3>
-                                    <ul className="space-y-3">
-                                        {learnings.points.map((point, index) => (
-                                            <li key={index} className="flex items-start">
-                                                <span className="text-blue-400 mr-3">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                                    </svg>
-                                                </span>
-                                                <span>{point}</span>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            )}
-                        </section>
-                    )}
-                </div>
-            </div>
-        </div>
-      
-      {/* Next Project */ }
-    {
-        nextProject && (
-            <div className="bg-gray-900">
-                <div className="container max-w-6xl mx-auto px-6 py-20">
-                    <div className="text-center mb-12">
-                        <p className="text-blue-400 font-medium mb-2">Next Project</p>
-                        <h2 className="text-3xl font-bold">{nextProject.title}</h2>
-                        <p className="text-gray-400 mt-2">{nextProject.category}</p>
-                    </div>
-
-                    <Link
-                        href={`/work/${nextProject.id}`}
-                        className="relative aspect-video bg-gray-800 rounded-xl overflow-hidden block group"
-                    >
-                        {nextProject.image && (
-                            <div className="relative h-full w-full">
-                                <Image
-                                    src={nextProject.image}
-                                    alt={nextProject.title}
-                                    fill
-                                    className="object-cover"
-                                />
-                            </div>
-                        )}
-
-                        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/50 to-purple-600/50 opacity-0 group-hover:opacity-75 transition-all duration-500"></div>
-
-                        <div className="absolute inset-0 flex items-center justify-center">
-                            <button className="px-8 py-3 bg-white text-blue-900 rounded-full font-medium opacity-0 group-hover:opacity-100 transform group-hover:translate-y-0 translate-y-4 transition-all duration-500">
-                                View Project
-                            </button>
+                            </Link>
                         </div>
-                    </Link>
+                    </div>
+                )
+            }
+
+            {/* Contact CTA */}
+            <div className="bg-gradient-to-r from-blue-900 to-purple-900 py-20">
+                <div className="container max-w-4xl mx-auto px-6 text-center">
+                    <h2 className="text-3xl font-bold mb-6">Interested in Working Together?</h2>
+                    <p className="text-xl text-gray-200 mb-8">
+                        Let's discuss how I can help bring your next project to life with thoughtful design and clean code.
+                    </p>
+                    <Button
+                        href="/contact"
+                        variant="primary"
+                        size="lg"
+                        className="bg-white text-blue-900 hover:bg-gray-100"
+                    >
+                        Get In Touch
+                    </Button>
                 </div>
             </div>
-        )
-    }
-
-    {/* Contact CTA */ }
-    <div className="bg-gradient-to-r from-blue-900 to-purple-900 py-20">
-        <div className="container max-w-4xl mx-auto px-6 text-center">
-            <h2 className="text-3xl font-bold mb-6">Interested in Working Together?</h2>
-            <p className="text-xl text-gray-200 mb-8">
-                Let's discuss how I can help bring your next project to life with thoughtful design and clean code.
-            </p>
-            <Button
-                href="/contact"
-                variant="primary"
-                size="lg"
-                className="bg-white text-blue-900 hover:bg-gray-100"
-            >
-                Get In Touch
-            </Button>
-        </div>
-    </div>
-    </main >
-  );
+        </main >
+    );
 }

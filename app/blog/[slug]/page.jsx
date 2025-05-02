@@ -157,7 +157,7 @@ function getBlogPostData(slug) {
                     items: [
                         'Always disclose AI usage to clients and stakeholders',
                         'Verify that AI-generated content is free from bias and stereotypes',
-                        'Ensure accessibility isn't compromised by AI - generated elements',
+                        'Ensure accessibility isnt compromised by AI - generated elements',
             'Maintain final human oversight on all design decisions',
                         'Use AI ethically by respecting copyright and intellectual property',
                         'Prioritize user needs over technological novelty'

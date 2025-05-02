@@ -35,7 +35,7 @@ const ThreeCanvas = ({
         });
         renderer.setSize(mountRef.current.clientWidth, mountRef.current.clientHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.outputColorSpace = THREE.SRGBColorSpace;
         mountRef.current.appendChild(renderer.domElement);
 
         const camera = new THREE.PerspectiveCamera(

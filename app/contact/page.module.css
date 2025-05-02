@@ -1,0 +1,262 @@
+/* app/contact/page.module.css */
+.page {
+    padding: 6rem 1rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.contactHeader {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.contactTitle {
+    font-family: var(--font-tektur);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.contactTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #0070f3;
+}
+
+.contactDescription {
+    max-width: 700px;
+    margin: 2rem auto 0;
+    color: #666;
+}
+
+.contactContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+/* Contact Info Section */
+.contactInfo {
+    order: 2;
+}
+
+.infoCard {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 2rem;
+    height: 100%;
+}
+
+.infoTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.infoText {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.infoItem {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+}
+
+.infoIcon {
+    margin-right: 1rem;
+    width: 24px;
+    height: 24px;
+    color: #0070f3;
+    flex-shrink: 0;
+}
+
+.infoItemTitle {
+    font-family: var(--font-tektur);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+    color: #333;
+}
+
+.infoItemText {
+    color: #666;
+}
+
+.infoItemText a {
+    color: #0070f3;
+    text-decoration: none;
+}
+
+.social {
+    margin-top: 2rem;
+}
+
+.socialTitle {
+    font-family: var(--font-tektur);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.socialLinks {
+    display: flex;
+    gap: 1rem;
+}
+
+.socialLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background-color: #e9e9e9;
+    border-radius: 50%;
+    color: #555;
+    transition: all 0.3s ease;
+}
+
+.socialLink:hover {
+    background-color: #0070f3;
+    color: white;
+}
+
+/* Form Section */
+.contactForm {
+    order: 1;
+}
+
+.formTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.formLabel {
+    font-family: var(--font-tektur);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.formInput,
+.formTextarea {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    font-family: var(--font-bricolage);
+}
+
+.formInput:focus,
+.formTextarea:focus {
+    border-color: #0070f3;
+    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+    outline: none;
+}
+
+.submitButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.875rem 1.5rem;
+    font-family: var(--font-tektur);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1rem;
+}
+
+.submitButton:hover {
+    background-color: #0050d3;
+}
+
+.submitButton:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.formError {
+    background-color: #fff5f5;
+    border: 1px solid #ffb8b8;
+    color: #e53e3e;
+    padding: 0.875rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+}
+
+.formSuccess {
+    text-align: center;
+    padding: 2rem;
+    background-color: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 8px;
+    color: #166534;
+}
+
+.formSuccess svg {
+    margin: 0 auto 1rem;
+    color: #10b981;
+}
+
+.formSuccess h4 {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.resetButton {
+    background-color: #10b981;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem 1.5rem;
+    font-family: var(--font-tektur);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 1.5rem;
+}
+
+.resetButton:hover {
+    background-color: #059669;
+}
+
+@media (min-width: 768px) {
+    .contactContainer {
+        grid-template-columns: 1fr 2fr;
+    }
+
+    .contactInfo {
+        order: 1;
+    }
+
+    .contactForm {
+        order: 2;
+    }
+
+    .page {
+        padding: 8rem 2rem 6rem;
+    }
+}

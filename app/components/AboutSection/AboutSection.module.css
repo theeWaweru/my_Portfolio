@@ -1,0 +1,93 @@
+/* app/components/AboutSection/AboutSection.module.css */
+.section {
+    padding: 6rem 0;
+    background-color: white;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.sectionHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.sectionTitle {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-tektur);
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.sectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #0070f3;
+}
+
+.sectionSubtitle {
+    color: #666;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+.text p {
+    margin-bottom: 1.5rem;
+    color: #444;
+}
+
+.text p:last-child {
+    margin-bottom: 0;
+}
+
+.skillsContainer {
+    margin-top: 2rem;
+}
+
+.skillsTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.skillsList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.skillItem {
+    background-color: #f1f1f1;
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-tektur);
+    font-size: 0.875rem;
+    color: #333;
+}
+
+.skillItem.highlight {
+    background-color: #0070f3;
+    color: white;
+}
+
+@media (min-width: 768px) {
+    .content {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+}

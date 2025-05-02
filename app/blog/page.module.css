@@ -1,0 +1,281 @@
+/* app/blog/page.module.css */
+.page {
+    padding: 6rem 1rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.blogHeader {
+    text-align: center;
+    margin-bottom: 4rem;
+}
+
+.blogTitle {
+    font-family: var(--font-tektur);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.blogTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #0070f3;
+}
+
+.blogDescription {
+    max-width: 700px;
+    margin: 2rem auto 0;
+    color: #666;
+}
+
+.contentContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+}
+
+/* Sidebar */
+.sidebar {
+    order: 2;
+}
+
+.sidebarTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.categoriesContainer {
+    margin-bottom: 3rem;
+}
+
+.categoriesList {
+    list-style: none;
+    padding: 0;
+}
+
+.categoryItem {
+    margin-bottom: 0.5rem;
+}
+
+.categoryButton {
+    background: none;
+    border: none;
+    padding: 0.5rem 0;
+    text-align: left;
+    color: #666;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    width: 100%;
+}
+
+.categoryButton:hover {
+    color: #0070f3;
+}
+
+.activeCategory {
+    color: #0070f3;
+    font-weight: 500;
+}
+
+.newsletterContainer {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.newsletterDescription {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.newsletterForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.newsletterInput {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.newsletterButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-family: var(--font-tektur);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.newsletterButton:hover {
+    background-color: #0050d3;
+}
+
+/* Posts Container */
+.postsContainer {
+    order: 1;
+}
+
+.searchContainer {
+    margin-bottom: 2rem;
+}
+
+.searchInput {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    width: 100%;
+}
+
+.postsList {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.postCard {
+    border-radius: 8px;
+    background-color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.postCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.postLink {
+    display: block;
+    padding: 1.5rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.postCategory {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: #0070f3;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-family: var(--font-tektur);
+}
+
+.postTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.postLink:hover .postTitle {
+    color: #0070f3;
+}
+
+.postExcerpt {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.postMeta {
+    display: flex;
+    justify-content: space-between;
+    color: #888;
+    font-size: 0.875rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+/* Pagination */
+.pagination {
+    margin-top: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.currentPage {
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.paginationButtons {
+    display: flex;
+    gap: 1rem;
+}
+
+.paginationButton {
+    background-color: #f5f5f5;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.paginationButton:hover:not(.disabled) {
+    background-color: #e5e5e5;
+}
+
+.paginationButton.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+    .contentContainer {
+        grid-template-columns: 3fr 1fr;
+    }
+
+    .sidebar {
+        order: 2;
+    }
+
+    .postsContainer {
+        order: 1;
+    }
+
+    .newsletterForm {
+        flex-direction: row;
+    }
+
+    .newsletterInput {
+        flex-grow: 1;
+    }
+
+    .pagination {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .page {
+        padding: 8rem 2rem 6rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .blogTitle {
+        font-size: 3.5rem;
+    }
+}

@@ -300,7 +300,7 @@ const TechEcosystem = ({
             {/* Instructions */}
             <div className="absolute bottom-8 left-8 bg-black bg-opacity-60 backdrop-blur-sm p-4 rounded-xl">
                 <p className="text-sm text-gray-400 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="auto" className="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                     </svg>
                     Drag to rotate | Scroll to zoom

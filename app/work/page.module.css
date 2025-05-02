@@ -1,0 +1,108 @@
+/* app/work/page.module.css */
+.page {
+    padding: 6rem 1rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pageHeader {
+    margin-bottom: 4rem;
+    text-align: center;
+}
+
+.pageTitle {
+    font-family: var(--font-tektur);
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    position: relative;
+    display: inline-block;
+}
+
+.pageTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 3px;
+    background-color: #0070f3;
+}
+
+.pageDescription {
+    max-width: 700px;
+    margin: 2rem auto;
+    color: #666;
+}
+
+.categories {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.categoryButton {
+    background-color: transparent;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.5rem 1rem;
+    font-family: var(--font-tektur);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.categoryButton:hover {
+    border-color: #0070f3;
+    color: #0070f3;
+}
+
+.categoryButton.active {
+    background-color: #0070f3;
+    border-color: #0070f3;
+    color: white;
+}
+
+.projectGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.contactCta {
+    margin-top: 6rem;
+    padding: 3rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.ctaTitle {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.ctaText {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #666;
+}
+
+@media (min-width: 640px) {
+    .projectGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    .projectGrid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .page {
+        padding: 8rem 2rem 6rem;
+    }
+}

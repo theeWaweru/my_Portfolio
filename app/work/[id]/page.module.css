@@ -1,0 +1,266 @@
+/* app/work/[id]/page.module.css */
+.page {
+    padding: 6rem 1rem 4rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.notFound {
+    text-align: center;
+    padding: 8rem 1rem;
+}
+
+.projectHero {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-bottom: 4rem;
+}
+
+.heroContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.backLink {
+    margin-bottom: 2rem;
+    color: #0070f3;
+    font-family: var(--font-tektur);
+    text-decoration: none;
+    display: inline-block;
+    transition: color 0.3s ease;
+}
+
+.backLink:hover {
+    color: #0050d3;
+}
+
+.projectTitle {
+    font-family: var(--font-tektur);
+    font-size: 3rem;
+    margin-bottom: 1.5rem;
+}
+
+.projectDescription {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.projectDetails {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    background-color: #f5f5f5;
+    padding: 2rem;
+    border-radius: 8px;
+}
+
+.detailTitle {
+    font-family: var(--font-tektur);
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #0070f3;
+}
+
+.coverImageContainer {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 56.25%;
+    /* 16:9 aspect ratio */
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.coverImage {
+    object-fit: cover;
+}
+
+.section {
+    margin-bottom: 4rem;
+}
+
+.sectionTitle {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+    display: inline-block;
+}
+
+.sectionTitle::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background-color: #0070f3;
+}
+
+.sectionText {
+    font-size: 1.125rem;
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+}
+
+.projectGallery {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-top: 3rem;
+}
+
+.galleryItem {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.galleryImage {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+.resultsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.resultItem {
+    background-color: #f5f5f5;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.3s ease;
+}
+
+.resultItem:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.resultText {
+    font-size: 1.125rem;
+    color: #333;
+    text-align: center;
+}
+
+.testimonial {
+    background-color: #f5f5f5;
+    padding: 2.5rem;
+    border-radius: 8px;
+    margin-top: 3rem;
+}
+
+.testimonialQuote {
+    font-size: 1.25rem;
+    color: #444;
+    font-style: italic;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.testimonialQuote::before {
+    content: '"';
+    font-size: 4rem;
+    color: #0070f3;
+    opacity: 0.2;
+    position: absolute;
+    top: -2rem;
+    left: -1rem;
+}
+
+.testimonialAuthor {
+    text-align: right;
+}
+
+.authorName {
+    font-family: var(--font-tektur);
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+}
+
+.authorRole {
+    color: #666;
+}
+
+.nextProject {
+    margin: 4rem 0;
+    text-align: center;
+    padding: 3rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+}
+
+.nextProjectLabel {
+    font-family: var(--font-tektur);
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.nextProjectLink {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    color: #0070f3;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nextProjectLink:hover {
+    color: #0050d3;
+}
+
+.cta {
+    text-align: center;
+    padding: 4rem 2rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin-top: 4rem;
+}
+
+.ctaTitle {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.ctaText {
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    color: #666;
+}
+
+@media (min-width: 768px) {
+    .projectHero {
+        grid-template-columns: 1fr 1fr;
+        align-items: center;
+    }
+
+    .projectGallery {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .projectGallery .galleryItem:first-child {
+        grid-column: 1 / -1;
+    }
+
+    .page {
+        padding: 8rem 2rem 6rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .projectTitle {
+        font-size: 3.5rem;
+    }
+}

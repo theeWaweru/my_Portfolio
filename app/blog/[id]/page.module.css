@@ -1,0 +1,253 @@
+/* app/blog/[id]/page.module.css */
+.page {
+    padding: 6rem 1rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.notFound {
+    text-align: center;
+    padding: 8rem 1rem;
+}
+
+.backButton,
+.backLink {
+    display: inline-block;
+    margin-bottom: 2rem;
+    color: #0070f3;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-family: var(--font-tektur);
+}
+
+.backButton:hover,
+.backLink:hover {
+    color: #0050d3;
+}
+
+.article {
+    margin-bottom: 4rem;
+}
+
+.articleHeader {
+    margin-bottom: 3rem;
+}
+
+.articleCategory {
+    display: inline-block;
+    font-size: 0.875rem;
+    color: #0070f3;
+    margin-bottom: 1rem;
+    text-transform: uppercase;
+    font-family: var(--font-tektur);
+}
+
+.articleTitle {
+    font-family: var(--font-tektur);
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+.articleMeta {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.authorInfo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.authorName {
+    font-weight: 500;
+}
+
+.articleDetails {
+    display: flex;
+    align-items: center;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.dot {
+    margin: 0 0.5rem;
+}
+
+.articleContent {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: #333;
+}
+
+.paragraph {
+    margin-bottom: 1.5rem;
+}
+
+.heading {
+    font-family: var(--font-tektur);
+    font-size: 1.875rem;
+    margin: 2.5rem 0 1.5rem;
+    color: #222;
+}
+
+.subheading {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin: 2rem 0 1rem;
+    color: #333;
+}
+
+.list {
+    margin-bottom: 1.5rem;
+    padding-left: 1.5rem;
+}
+
+.listItem {
+    margin-bottom: 0.5rem;
+}
+
+.relatedPosts {
+    margin-bottom: 4rem;
+}
+
+.relatedTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.75rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.relatedList {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.relatedCard {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.relatedCard:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.relatedLink {
+    display: block;
+    padding: 1.5rem;
+    color: inherit;
+    text-decoration: none;
+}
+
+.relatedCategory {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: #0070f3;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    font-family: var(--font-tektur);
+}
+
+.relatedPostTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.25rem;
+    margin-bottom: 0.75rem;
+    transition: color 0.3s ease;
+}
+
+.relatedLink:hover .relatedPostTitle {
+    color: #0070f3;
+}
+
+.relatedExcerpt {
+    color: #666;
+    font-size: 0.875rem;
+    line-height: 1.6;
+}
+
+.subscribeSection {
+    background-color: #f5f5f5;
+    padding: 2.5rem;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.subscribeTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.subscribeText {
+    color: #666;
+    margin-bottom: 1.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.subscribeForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.subscribeInput {
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: white;
+}
+
+.subscribeButton {
+    background-color: #0070f3;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 0.75rem;
+    font-family: var(--font-tektur);
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.subscribeButton:hover {
+    background-color: #0050d3;
+}
+
+@media (min-width: 768px) {
+    .articleMeta {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .relatedList {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .subscribeForm {
+        flex-direction: row;
+    }
+
+    .subscribeInput {
+        flex-grow: 1;
+    }
+
+    .articleTitle {
+        font-size: 3rem;
+    }
+
+    .page {
+        padding: 8rem 2rem 6rem;
+    }
+}

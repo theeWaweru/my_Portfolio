@@ -13,7 +13,7 @@ const nextConfig = {
   },
   // Compression and performance optimizations
   compress: true,
-  swcMinify: true,
+  // swcMinify has been removed as it's now the default
   // Configure redirects if needed
   redirects: async () => {
     return [
@@ -66,20 +66,6 @@ const nextConfig = {
   },
   // Enable React strict mode for better development experience
   reactStrictMode: true,
-  // Analyze bundle size in production build (uncomment if needed)
-  // webpack: (config, { isServer }) => {
-  //   if (process.env.ANALYZE && !isServer) {
-  //     const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
-  //     config.plugins.push(
-  //       new BundleAnalyzerPlugin({
-  //         analyzerMode: 'server',
-  //         analyzerPort: 8888,
-  //         openAnalyzer: true,
-  //       })
-  //     );
-  //   }
-  //   return config;
-  // },
   // Experimental features
   experimental: {
     optimizeCss: true, // CSS optimization

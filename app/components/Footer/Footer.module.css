@@ -1,0 +1,138 @@
+/* app/components/Footer/Footer.module.css */
+
+.footer {
+    background-color: #f1f1f1;
+    padding: 3rem 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footerContainer {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+}
+
+.footerTop {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.footerLogo {
+    font-family: var(--font-tektur);
+    font-weight: 700;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.footerLogoHighlight {
+    color: #0070f3;
+}
+
+.footerAbout {
+    max-width: 25rem;
+}
+
+.footerAboutText {
+    margin-bottom: 1rem;
+    color: #666;
+}
+
+.footerNav {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.footerNavTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.footerNavList {
+    list-style: none;
+    padding: 0;
+}
+
+.footerNavItem {
+    margin-bottom: 0.5rem;
+}
+
+.footerNavLink {
+    color: #666;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footerNavLink:hover {
+    color: #0070f3;
+}
+
+.footerSocial {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.footerSocialLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #f8f8f8;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.footerSocialLink:hover {
+    background-color: #0070f3;
+    color: white;
+}
+
+.footerBottom {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    color: #666;
+}
+
+.footerCopyright {
+    font-size: 0.9rem;
+}
+
+@media (min-width: 768px) {
+    .footerContainer {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .footerTop {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .footerNav {
+        flex-direction: row;
+        gap: 4rem;
+    }
+
+    .footerBottom {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+@media (min-width: 1024px) {
+    .footerContainer {
+        grid-template-columns: 2fr 1fr;
+    }
+}

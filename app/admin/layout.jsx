@@ -2,16 +2,49 @@
 "use client";
 
 import { usePathname } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import withAuth from './components/withAuth';
 import styles from './admin.module.css';
 
 function AdminLayout({ children }) {
     const pathname = usePathname();
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        // Check authentication status
+        const checkAuth = () => {
+            const auth = localStorage.getItem('isAuthenticated');
+            setIsAuthenticated(auth === 'true');
+            setIsLoading(false);
+        };
+
+        checkAuth();
+    }, []);
+
+    // Handle logout
+    const handleLogout = () => {
+        localStorage.removeItem('isAuthenticated');
+        window.location.href = '/admin/login';
+    };
+
+    // Show login page if not authenticated
+    if (!isLoading && !isAuthenticated && pathname !== '/admin/login') {
+        // Redirect to login page
+        if (typeof window !== 'undefined') {
+            window.location.href = '/admin/login';
+            return null;
+        }
+    }
 
     // Don't apply the layout to the login page
     if (pathname === '/admin/login') {
         return children;
+    }
+
+    // Show loading indicator while checking auth
+    if (isLoading) {
+        return <div className={styles.loading}>Loading...</div>;
     }
 
     return (
@@ -60,10 +93,7 @@ function AdminLayout({ children }) {
                     <Link href="/" className={styles.backToSite}>
                         Back to Site
                     </Link>
-                    <button className={styles.logoutButton} onClick={() => {
-                        localStorage.removeItem('isAuthenticated');
-                        window.location.href = '/admin/login';
-                    }}>
+                    <button className={styles.logoutButton} onClick={handleLogout}>
                         Logout
                     </button>
                 </div>
@@ -75,5 +105,4 @@ function AdminLayout({ children }) {
     );
 }
 
-// Wrap the layout with authentication
-export default withAuth(AdminLayout);
+export default AdminLayout;

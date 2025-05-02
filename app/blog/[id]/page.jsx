@@ -1,20 +1,10 @@
 // app/blog/[id]/page.jsx
 import Link from 'next/link';
+import Image from 'next/image';
 import styles from './page.module.css';
 
-// Generate dynamic metadata
-export async function generateMetadata({ params }) {
-    // In a real app, this would fetch data from a database
-    const post = getBlogPostData(params.id);
-
-    return {
-        title: `${post.title} | Blog - David Waweru`,
-        description: post.excerpt,
-    };
-}
-
 // Mock function to get blog post data - would use Supabase in production
-function getBlogPostData(id) {
+async function getBlogPostData(id) {
     // This is mock data - in a real implementation, you would fetch from a database
     const posts = {
         'integrating-ai-into-design-workflow': {
@@ -28,7 +18,7 @@ function getBlogPostData(id) {
             content: [
                 {
                     type: 'paragraph',
-                    text: 'The design landscape is changing rapidly with the rise of artificial intelligence. For designers whove spent years honing their craft, AI tools can seem threatening or disruptive.However, Ive found that integrating AI thoughtfully into my workflow has enhanced my creativity rather than replacing it. In this article, Ill share my approach to using AI as a creative partner rather than a replacement.'
+                    text: 'The design landscape is changing rapidly with the rise of artificial intelligence. For designers whove spent years honing their craft, AI tools can seem threatening or disruptive. However, Ive found that integrating AI thoughtfully into my workflow has enhanced my creativity rather than replacing it. In this article, Ill share my approach to using AI as a creative partner rather than a replacement.'
                 },
                 {
                     type: 'heading',
@@ -92,7 +82,6 @@ function getBlogPostData(id) {
                 'nextjs-vs-traditional-react'
             ]
         },
-        // Add more blog posts as needed
         'creating-accessible-web-experiences': {
             id: 'creating-accessible-web-experiences',
             title: 'Creating Accessible Web Experiences',
@@ -104,7 +93,7 @@ function getBlogPostData(id) {
             content: [
                 {
                     type: 'paragraph',
-                    text: 'Web accessibility is often overlooked in the design and development process, yet its crucial for creating inclusive digital experiences.In this article, Ill share practical approaches to making your websites more accessible to everyone, including people with visual, auditory, motor, or cognitive disabilities.'
+                    text: 'Web accessibility is often overlooked in the design and development process, yet its crucial for creating inclusive digital experiences. In this article, Ill share practical approaches to making your websites more accessible to everyone, including people with visual, auditory, motor, or cognitive disabilities.'
                 }
                 // Add more content blocks as needed
             ],
@@ -119,8 +108,26 @@ function getBlogPostData(id) {
     return posts[id] || null;
 }
 
-export default function BlogPostPage({ params }) {
-    const post = getBlogPostData(params.id);
+// Generate dynamic metadata
+export async function generateMetadata({ params }) {
+    // In a real app, this would fetch data from a database
+    const post = await getBlogPostData(params.id);
+
+    if (!post) {
+        return {
+            title: 'Post Not Found | Blog - David Waweru',
+            description: 'The article you are looking for does not exist or has been moved.'
+        };
+    }
+
+    return {
+        title: `${post.title} | Blog - David Waweru`,
+        description: post.excerpt,
+    };
+}
+
+export default async function BlogPostPage({ params }) {
+    const post = await getBlogPostData(params.id);
 
     if (!post) {
         return (
@@ -187,7 +194,27 @@ export default function BlogPostPage({ params }) {
                     <h3 className={styles.relatedTitle}>Related Articles</h3>
                     <div className={styles.relatedList}>
                         {post.relatedPosts.map((relatedId) => {
-                            const relatedPost = getBlogPostData(relatedId);
+                            // Get related post synchronously since this is just UI rendering
+                            // In a real app, you'd want to fetch this data at the page level
+                            const relatedPosts = {
+                                'creating-accessible-web-experiences': {
+                                    title: 'Creating Accessible Web Experiences',
+                                    category: 'Web Accessibility',
+                                    excerpt: 'A guide to designing and developing websites that are usable by people of all abilities.'
+                                },
+                                'design-systems-for-startups': {
+                                    title: 'Design Systems for Startups',
+                                    category: 'Design Systems',
+                                    excerpt: 'How early-stage companies can benefit from implementing design systems.'
+                                },
+                                'nextjs-vs-traditional-react': {
+                                    title: 'Next.js vs Traditional React',
+                                    category: 'Web Development',
+                                    excerpt: 'Comparing development approaches and when to choose each framework.'
+                                }
+                            };
+
+                            const relatedPost = relatedPosts[relatedId];
                             if (!relatedPost) return null;
 
                             return (

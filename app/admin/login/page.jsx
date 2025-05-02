@@ -1,6 +1,6 @@
 // app/admin/login/page.jsx
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
 
@@ -12,6 +12,18 @@ export default function AdminLogin() {
     const [error, setError] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
+
+    // Check if already logged in
+    useEffect(() => {
+        const checkAuth = () => {
+            const auth = localStorage.getItem('isAuthenticated');
+            if (auth === 'true') {
+                router.push('/admin');
+            }
+        };
+
+        checkAuth();
+    }, [router]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -30,20 +42,29 @@ export default function AdminLogin() {
             // This is just a simple mock authentication
             // In a real application, you would connect to your backend
 
+            // Basic form validation
+            if (!formData.email || !formData.password) {
+                throw new Error('Email and password are required');
+            }
+
             // Simulate API delay
             await new Promise(resolve => setTimeout(resolve, 1000));
 
-            // Mock credentials check
+            // Mock credentials check - hardcoded for testing
+            // In production, this would be an API call
             if (formData.email === 'admin@theewaweru.dev' && formData.password === 'admin123') {
-                // Success, redirect to admin dashboard
+                // Success, store auth state in localStorage
                 localStorage.setItem('isAuthenticated', 'true');
+
+                // Redirect to admin dashboard
+                console.log('Login successful, redirecting...');
                 router.push('/admin');
             } else {
-                setError('Invalid email or password');
+                throw new Error('Invalid email or password');
             }
         } catch (error) {
-            setError('An error occurred. Please try again.');
             console.error('Login error:', error);
+            setError(error.message || 'An error occurred. Please try again.');
         } finally {
             setIsLoading(false);
         }

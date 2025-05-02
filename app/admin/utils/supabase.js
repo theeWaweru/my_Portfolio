@@ -1,5 +1,4 @@
-// app/lib/supabase/client.js
-
+// app/admin/utils/supabase.js
 import { createClient } from "@supabase/supabase-js";
 
 // Create a single supabase client for the entire app

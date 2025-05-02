@@ -1,0 +1,120 @@
+/* app/admin/page.module.css */
+.dashboard {
+    max-width: 1200px;
+}
+
+.pageTitle {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    margin-bottom: 2rem;
+}
+
+.statsGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.statCard {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.statCard h3 {
+    color: #666;
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.statNumber {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    color: #0070f3;
+}
+
+.recentSection {
+    margin-bottom: 3rem;
+}
+
+.recentSection h2 {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.recentMessages {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.messageCard {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.messageCard h3 {
+    font-size: 1.125rem;
+    margin-bottom: 0.25rem;
+}
+
+.messageDate {
+    color: #666;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+}
+
+.messageExcerpt {
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+.viewButton {
+    background-color: transparent;
+    border: 1px solid #0070f3;
+    color: #0070f3;
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.viewButton:hover {
+    background-color: #0070f3;
+    color: white;
+}
+
+.activityList {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    padding: 0;
+    list-style: none;
+}
+
+.activityItem {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+}
+
+.activityItem:not(:last-child) {
+    border-bottom: 1px solid #eee;
+}
+
+.activityDate {
+    width: 100px;
+    flex-shrink: 0;
+    color: #666;
+    font-size: 0.875rem;
+}
+
+.activityDetail {
+    flex: 1;
+}

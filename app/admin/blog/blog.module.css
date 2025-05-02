@@ -1,0 +1,119 @@
+/* app/admin/blog/blog.module.css */
+.blogAdmin {
+    max-width: 1200px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.pageTitle {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    margin: 0;
+}
+
+.addButton {
+    background-color: #0070f3;
+    color: white;
+    font-family: var(--font-tektur);
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.addButton:hover {
+    background-color: #0050d3;
+}
+
+.tableContainer {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+}
+
+.blogTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.blogTable th {
+    background-color: #f9f9f9;
+    padding: 1rem;
+    text-align: left;
+    font-family: var(--font-tektur);
+    font-weight: 500;
+    color: #333;
+}
+
+.postRow {
+    border-bottom: 1px solid #eee;
+}
+
+.blogTable td {
+    padding: 1rem;
+    color: #444;
+}
+
+.postTitle {
+    color: #0070f3;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.postTitle:hover {
+    text-decoration: underline;
+}
+
+.statusBadge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+}
+
+.published {
+    background-color: #e6f7ee;
+    color: #10b981;
+}
+
+.draft {
+    background-color: #f5f5f5;
+    color: #666;
+}
+
+.actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.actionButton {
+    padding: 0.35rem 0.65rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-decoration: none;
+    cursor: pointer;
+    background-color: #f5f5f5;
+    color: #333;
+    border: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.actionButton:hover {
+    background-color: #e5e5e5;
+}
+
+.deleteButton {
+    background-color: #fee2e2;
+    color: #ef4444;
+}
+
+.deleteButton:hover {
+    background-color: #fecaca;
+}

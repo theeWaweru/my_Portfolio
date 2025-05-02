@@ -1,0 +1,214 @@
+/* app/admin/messages/messages.module.css */
+.messagesAdmin {
+    max-width: 1200px;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.pageTitle {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    margin: 0;
+}
+
+.messagesContainer {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    height: calc(100vh - 200px);
+    min-height: 500px;
+}
+
+.messagesList {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.messageItem {
+    padding: 1.25rem;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.messageItem:hover {
+    background-color: #f9f9f9;
+}
+
+.messageItem.active {
+    background-color: #f0f7ff;
+    border-left: 3px solid #0070f3;
+}
+
+.messageItem.unread {
+    background-color: #f0f9ff;
+}
+
+.messageItem.unread .messageName,
+.messageItem.unread .messageSubject {
+    font-weight: 600;
+}
+
+.messageHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.messageName {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.messageDate {
+    font-size: 0.75rem;
+    color: #666;
+}
+
+.messageSubject {
+    margin: 0 0 0.5rem;
+    font-size: 0.9375rem;
+    color: #333;
+}
+
+.messagePreview {
+    margin: 0;
+    font-size: 0.875rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+.messageDetail {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    overflow-y: auto;
+    max-height: 100%;
+}
+
+.noMessageSelected {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #666;
+    font-style: italic;
+}
+
+.noMessages {
+    padding: 2rem;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+.messageContent {
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.messageDetailHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.messageDetailTitle {
+    font-family: var(--font-tektur);
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.closeButton {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    color: #666;
+    cursor: pointer;
+    padding: 0.25rem;
+}
+
+.closeButton:hover {
+    color: #333;
+}
+
+.messageDetailInfo {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+}
+
+.messageDetailSender,
+.messageDetailDate {
+    margin-bottom: 0.5rem;
+}
+
+.messageDetailLabel {
+    font-weight: 500;
+    display: inline-block;
+    width: 4rem;
+}
+
+.messageDetailBody {
+    flex: 1;
+    line-height: 1.6;
+}
+
+.messageDetailBody p {
+    margin-bottom: 1rem;
+}
+
+.messageActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #eee;
+}
+
+.replyButton {
+    background-color: #0070f3;
+    color: white;
+    font-family: var(--font-tektur);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.replyButton:hover {
+    background-color: #0050d3;
+}
+
+.deleteButton {
+    background-color: #fee2e2;
+    color: #ef4444;
+    font-family: var(--font-tektur);
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.deleteButton:hover {
+    background-color: #fecaca;
+}
+
+@media (min-width: 768px) {
+    .messagesContainer {
+        grid-template-columns: 1fr 2fr;
+    }
+}

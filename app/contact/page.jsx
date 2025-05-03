@@ -1,9 +1,14 @@
-// app/contact/page.jsx (continued)
-"use client";
+// app/contact/page.jsx
+// This file implements the contact form frontend and user interface
+
+"use client"; // This directive enables client-side functionality in Next.js
+
 import { useState } from 'react';
 import styles from './page.module.css';
+import ReCaptcha from '../components/ui/ReCaptcha';
 
 export default function ContactPage() {
+    // Form state to store input field values
     const [formState, setFormState] = useState({
         name: '',
         email: '',
@@ -11,39 +16,79 @@ export default function ContactPage() {
         message: '',
     });
 
+    // Track form submission status
     const [formStatus, setFormStatus] = useState({
-        submitting: false,
-        submitted: false,
-        error: null,
+        submitting: false, // Whether the form is currently submitting
+        submitted: false,   // Whether the form has been successfully submitted
+        error: null,        // Any error message to display
     });
 
+    // Track the reCAPTCHA verification token
+    const [captchaToken, setCaptchaToken] = useState(null);
+
+    // Handler called when reCAPTCHA is verified
+    const handleVerify = (token) => {
+        setCaptchaToken(token);
+    };
+
+    // Handler for input field changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormState((prev) => ({ ...prev, [name]: value }));
     };
 
+    // Handler for form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setFormStatus({ submitting: true, submitted: false, error: null });
+
+        // Validate reCAPTCHA first
+        if (!captchaToken) {
+            setFormStatus({
+                submitting: false,
+                submitted: false,
+                error: 'Please complete the reCAPTCHA verification.',
+            });
+            return;
+        }
+
+        // Set form to submitting state
+        setFormStatus({
+            submitting: true,
+            submitted: false,
+            error: null
+        });
 
         try {
-            // This would be replaced with an actual API call to your backend
-            // const response = await fetch('/api/contact', {
-            //   method: 'POST',
-            //   headers: {
-            //     'Content-Type': 'application/json',
-            //   },
-            //   body: JSON.stringify(formState),
-            // });
+            // Send the form data to our API endpoint
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    ...formState,
+                    recaptchaToken: captchaToken,
+                }),
+            });
 
-            // if (!response.ok) throw new Error('Failed to submit form');
+            // Handle error responses from the API
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.error || 'Failed to submit form');
+            }
 
-            // Simulate a successful form submission
-            await new Promise((resolve) => setTimeout(resolve, 1000));
-
+            // On success, update form status and reset form fields
             setFormStatus({ submitting: false, submitted: true, error: null });
             setFormState({ name: '', email: '', subject: '', message: '' });
+
+            // Reset reCAPTCHA
+            if (window.grecaptcha) {
+                window.grecaptcha.reset();
+            }
+            setCaptchaToken(null);
+
         } catch (error) {
+            // Handle any errors during submission
             setFormStatus({
                 submitting: false,
                 submitted: false,
@@ -62,6 +107,7 @@ export default function ContactPage() {
             </div>
 
             <div className={styles.contactContainer}>
+                {/* Contact Information Section */}
                 <div className={styles.contactInfo}>
                     <div className={styles.infoCard}>
                         <h3 className={styles.infoTitle}>Contact Information</h3>
@@ -135,9 +181,11 @@ export default function ContactPage() {
                     </div>
                 </div>
 
+                {/* Contact Form Section */}
                 <div className={styles.contactForm}>
                     <h3 className={styles.formTitle}>Send a Message</h3>
 
+                    {/* Show success message if form was submitted */}
                     {formStatus.submitted ? (
                         <div className={styles.formSuccess}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -154,13 +202,16 @@ export default function ContactPage() {
                             </button>
                         </div>
                     ) : (
+                        /* Show form if not yet submitted */
                         <form onSubmit={handleSubmit} className={styles.form}>
+                            {/* Show error message if there was an error */}
                             {formStatus.error && (
                                 <div className={styles.formError}>
                                     <p>{formStatus.error}</p>
                                 </div>
                             )}
 
+                            {/* Name field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="name" className={styles.formLabel}>Name</label>
                                 <input
@@ -175,6 +226,7 @@ export default function ContactPage() {
                                 />
                             </div>
 
+                            {/* Email field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="email" className={styles.formLabel}>Email</label>
                                 <input
@@ -189,6 +241,7 @@ export default function ContactPage() {
                                 />
                             </div>
 
+                            {/* Subject field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="subject" className={styles.formLabel}>Subject</label>
                                 <input
@@ -203,6 +256,7 @@ export default function ContactPage() {
                                 />
                             </div>
 
+                            {/* Message field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="message" className={styles.formLabel}>Message</label>
                                 <textarea
@@ -217,6 +271,18 @@ export default function ContactPage() {
                                 ></textarea>
                             </div>
 
+                            {/* reCAPTCHA verification */}
+                            <div className={styles.formGroup}>
+                                <ReCaptcha
+                                    siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeMXSwrAAAAAHONxkes2Qc9TryVKMOzcPzaJkoU"}
+                                    onVerify={handleVerify}
+                                />
+                                {!captchaToken && formStatus.error && formStatus.error.includes('reCAPTCHA') && (
+                                    <p className={styles.formError}>{formStatus.error}</p>
+                                )}
+                            </div>
+
+                            {/* Submit button */}
                             <button
                                 type="submit"
                                 className={styles.submitButton}

@@ -16,22 +16,22 @@ const ImageGalleryUploader = ({
     // Initialize with any provided images
     useEffect(() => {
         if (initialImages && initialImages.length > 0) {
-            setImages(initialImages);
-
-            // Create preview URLs for existing images
-            setPreviewImages(initialImages.map(img => {
+            const processedImages = initialImages.map(img => {
                 if (typeof img === 'string') {
-                    // It's already a URL
-                    return img;
+                    // It's a URL from the database
+                    return { url: img, isExisting: true };
                 } else if (img instanceof File) {
-                    // It's a File object
-                    return URL.createObjectURL(img);
+                    // It's a new file to upload
+                    return { file: img, preview: URL.createObjectURL(img), isExisting: false };
                 } else if (img && img.url) {
                     // It's an object with a URL property
-                    return img.url;
+                    return { url: img.url, isExisting: true };
                 }
                 return null;
-            }).filter(Boolean));
+            }).filter(Boolean);
+
+            setImages(processedImages);
+            setPreviewImages(processedImages.map(img => img.url || img.preview));
         }
     }, [initialImages]);
 

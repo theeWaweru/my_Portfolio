@@ -4,12 +4,15 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getProjectById, updateProject } from '../../../lib/supabase/projects';
+import ImageGalleryUploader from '../../../components/admin/ImageGalleryUploader';
+import { uploadImage, deleteImage } from '../../../lib/supabase/uploadImage';
 import styles from '../new/new-project.module.css';
 
 export default function EditProject({ params }) {
     const router = useRouter();
-    const { id } = params;
 
+    // Use React.use() to unwrap params in Next.js 15
+    const { id } = params;
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
@@ -47,11 +50,18 @@ export default function EditProject({ params }) {
                     ? data.tags.join(', ')
                     : data.tags || '';
 
+                // Initialize gallery with existing URLs
+                const existingGallery = data.gallery || [];
+
                 setFormData({
                     ...data,
                     tags: tagsString,
-                    cover_image: null // We'll handle image display separately
+                    cover_image: null, // Reset file input
+                    gallery: [], // Clear new uploads
                 });
+
+                // Set existing gallery separately for preview
+                setInitialGallery(existingGallery);
             } catch (err) {
                 console.error('Failed to load project:', err);
                 setError(`Failed to load project: ${err.message}`);
@@ -94,7 +104,6 @@ export default function EditProject({ params }) {
         });
     };
 
-    // Update the handleSubmit function in app/admin/projects/[id]/page.jsx
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -102,7 +111,6 @@ export default function EditProject({ params }) {
         setError(null);
 
         try {
-            // Process tags into an array
             const tagsArray = formData.tags
                 ? formData.tags.split(',').map(tag => tag.trim())
                 : [];
@@ -113,19 +121,12 @@ export default function EditProject({ params }) {
                 tags: tagsArray,
             };
 
-            // Remove the file from the data
+            // Remove files from the data
             delete projectData.cover_image;
+            delete projectData.gallery;
 
-            // If we have a new cover image, upload it
+            // Upload new cover image if provided
             if (formData.cover_image) {
-                const { uploadImage, deleteImage } = await import('../../../lib/supabase/uploadImage');
-
-                // If there's an existing image, delete it first
-                if (formData.cover_image_path) {
-                    await deleteImage(formData.cover_image_path);
-                }
-
-                // Upload the new image
                 const { data: imageData, error: imageError } = await uploadImage(
                     formData.cover_image,
                     'projects',
@@ -133,17 +134,36 @@ export default function EditProject({ params }) {
                 );
 
                 if (imageError) {
-                    console.error('Error uploading image:', imageError);
-                    // Continue anyway
+                    console.error('Error uploading cover image:', imageError);
                 } else if (imageData) {
-                    // Add the new image URL to the project data
                     projectData.cover_image_url = imageData.url;
-                    projectData.cover_image_path = imageData.path;
                 }
             }
 
+            // Handle gallery updates
+            if (formData.gallery.length > 0) {
+                const galleryUrls = [...initialGallery]; // Start with existing images
+
+                for (let i = 0; i < formData.gallery.length; i++) {
+                    const file = formData.gallery[i];
+                    const { data: imageData, error: imageError } = await uploadImage(
+                        file,
+                        'projects',
+                        `${id}-gallery-${galleryUrls.length + i}`
+                    );
+
+                    if (imageError) {
+                        console.error(`Error uploading gallery image ${i}:`, imageError);
+                    } else if (imageData) {
+                        galleryUrls.push(imageData.url);
+                    }
+                }
+
+                projectData.gallery = galleryUrls;
+            }
+
             // Update the project in the database
-            const { data, error } = await updateProject(id, projectData);
+            const { error } = await updateProject(id, projectData);
 
             if (error) {
                 throw new Error(error);
@@ -158,21 +178,6 @@ export default function EditProject({ params }) {
             setIsSubmitting(false);
         }
     };
-
-    if (isLoading) {
-        return <div className={styles.loading}>Loading project...</div>;
-    }
-
-    if (error) {
-        return (
-            <div className={styles.errorContainer}>
-                <p className={styles.errorMessage}>{error}</p>
-                <Link href="/admin/projects" className={styles.backButton}>
-                    Back to Projects
-                </Link>
-            </div>
-        );
-    }
 
     return (
         <div className={styles.newProject}>

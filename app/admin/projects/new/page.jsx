@@ -1,9 +1,12 @@
 // app/admin/projects/new/page.jsx
+
 "use client";
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { createProject } from '../../../lib/supabase/projects';
+import { createProject, updateProject } from '../../../lib/supabase/projects'; // Add updateProject import
+import ImageGalleryUploader from '../../../components/admin/ImageGalleryUploader';
+import { uploadImage } from '../../../lib/supabase/uploadImage';
 import styles from './new-project.module.css';
 
 export default function NewProject() {
@@ -22,6 +25,7 @@ export default function NewProject() {
         role: '',
         tags: '',
         cover_image: null,
+        gallery: [], // Add gallery array
         status: 'draft'
     });
 
@@ -56,7 +60,12 @@ export default function NewProject() {
         });
     };
 
-    // Update the handleSubmit function in app/admin/projects/new/page.jsx
+    const handleGalleryChange = (images) => {
+        setFormData({
+            ...formData,
+            gallery: images
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -69,14 +78,15 @@ export default function NewProject() {
                 ? formData.tags.split(',').map(tag => tag.trim())
                 : [];
 
-            // Prepare the project data without the file
+            // Create initial project data
             const projectData = {
                 ...formData,
                 tags: tagsArray,
             };
 
-            // Remove the file from the project data
+            // Remove files from the project data
             delete projectData.cover_image;
+            delete projectData.gallery;
 
             // Create the project in the database first
             const { data, error } = await createProject(projectData);
@@ -85,9 +95,11 @@ export default function NewProject() {
                 throw new Error(error);
             }
 
-            // If we have a cover image, upload it
+            let coverImageUrl = null;
+            let galleryUrls = [];
+
+            // Upload cover image
             if (formData.cover_image) {
-                const { uploadImage } = await import('../../../lib/supabase/uploadImage');
                 const { data: imageData, error: imageError } = await uploadImage(
                     formData.cover_image,
                     'projects',
@@ -95,18 +107,45 @@ export default function NewProject() {
                 );
 
                 if (imageError) {
-                    console.error('Error uploading image:', imageError);
-                    // Continue anyway, just with no image
+                    console.error('Error uploading cover image:', imageError);
                 } else if (imageData) {
-                    // Update the project with the image URL
-                    const { error: updateError } = await updateProject(data.id, {
-                        cover_image_url: imageData.url,
-                        cover_image_path: imageData.path
-                    });
+                    coverImageUrl = imageData.url;
+                }
+            }
 
-                    if (updateError) {
-                        console.error('Error updating project with image:', updateError);
+            // Upload gallery images
+            if (formData.gallery.length > 0) {
+                for (let i = 0; i < formData.gallery.length; i++) {
+                    const file = formData.gallery[i];
+                    const { data: imageData, error: imageError } = await uploadImage(
+                        file,
+                        'projects',
+                        `${data.id}-gallery-${i}`
+                    );
+
+                    if (imageError) {
+                        console.error(`Error uploading gallery image ${i}:`, imageError);
+                    } else if (imageData) {
+                        galleryUrls.push(imageData.url);
                     }
+                }
+            }
+
+            // Update project with image URLs
+            if (coverImageUrl || galleryUrls.length > 0) {
+                const updateData = {};
+                if (coverImageUrl) {
+                    updateData.cover_image_url = coverImageUrl;
+                }
+                if (galleryUrls.length > 0) {
+                    updateData.gallery = galleryUrls;
+                }
+
+                const { error: updateError } = await updateProject(data.id, updateData);
+
+                if (updateError) {
+                    console.error('Error updating project with images:', updateError);
+                    throw new Error(updateError);
                 }
             }
 
@@ -286,6 +325,14 @@ export default function NewProject() {
                             accept="image/*"
                         />
                         <p className={styles.helperText}>Recommended size: 1200x800 pixels</p>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                        <ImageGalleryUploader
+                            initialImages={formData.gallery}
+                            onChange={handleGalleryChange}
+                            maxImages={10}
+                        />
                     </div>
 
                     <div className={styles.formActions}>

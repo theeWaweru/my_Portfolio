@@ -1,50 +1,37 @@
 // app/admin/messages/page.jsx
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './messages.module.css';
+import { getMessages } from '../../lib/supabase/messages';
 
 export default function MessagesAdmin() {
-    const [messages, setMessages] = useState([
-        {
-            id: 1,
-            name: 'John Doe',
-            email: 'john.doe@example.com',
-            subject: 'Project Inquiry',
-            message: 'Hi David, Im interested in working together on a new fintech project.Were looking for someone with your skills to help us design and develop a new mobile banking app. Would you be available for a call next week to discuss details?',
-            date: 'May 1, 2025',
-            read: false
-        },
-        {
-            id: 2,
-            name: 'Sarah Smith',
-            email: 'sarah.smith@example.com',
-            subject: 'Freelance Opportunity',
-            message: 'I love your portfolio! Would you be available for a freelance project starting next month? We need help redesigning our company website and improving the user experience. Looking forward to hearing from you!',
-            date: 'April 28, 2025',
-            read: true
-        },
-        {
-            id: 3,
-            name: 'Michael Johnson',
-            email: 'michael.j@example.com',
-            subject: 'Speaking Opportunity',
-            message: 'Hello David, We are organizing a tech conference in Nairobi this August and would love to have you as a speaker to talk about UX design best practices. Please let me know if youre interested and available.',
-      date: 'April 25, 2025',
-            read: true
-        }
-    ]);
-
+    const [messages, setMessages] = useState([]);
     const [selectedMessage, setSelectedMessage] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        async function loadMessages() {
+            setIsLoading(true);
+            try {
+                const { data, error } = await getMessages();
+
+                if (error) throw error;
+
+                setMessages(data || []);
+            } catch (err) {
+                console.error('Error loading messages:', err);
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadMessages();
+    }, []);
 
     const handleMessageClick = (message) => {
-        // Mark message as read
-        if (!message.read) {
-            const updatedMessages = messages.map(m =>
-                m.id === message.id ? { ...m, read: true } : m
-            );
-            setMessages(updatedMessages);
-        }
-
+        // Mark message as read (implement this later if needed)
         setSelectedMessage(message);
     };
 
@@ -52,14 +39,38 @@ export default function MessagesAdmin() {
         setSelectedMessage(null);
     };
 
-    const handleDeleteMessage = (id) => {
-        const updatedMessages = messages.filter(message => message.id !== id);
-        setMessages(updatedMessages);
+    const handleDeleteMessage = async (id) => {
+        try {
+            const { error } = await deleteMessage(id);
 
-        if (selectedMessage && selectedMessage.id === id) {
-            setSelectedMessage(null);
+            if (error) throw error;
+
+            setMessages(messages.filter(message => message.id !== id));
+
+            if (selectedMessage && selectedMessage.id === id) {
+                setSelectedMessage(null);
+            }
+        } catch (err) {
+            console.error('Error deleting message:', err);
+            alert('Failed to delete message');
         }
     };
+
+    if (isLoading) {
+        return (
+            <div className={styles.loading}>
+                <p>Loading messages...</p>
+            </div>
+        );
+    }
+
+    if (error) {
+        return (
+            <div className={styles.error}>
+                <p>Error loading messages: {error}</p>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.messagesAdmin}>
@@ -82,7 +93,9 @@ export default function MessagesAdmin() {
                             >
                                 <div className={styles.messageHeader}>
                                     <h3 className={styles.messageName}>{message.name}</h3>
-                                    <span className={styles.messageDate}>{message.date}</span>
+                                    <span className={styles.messageDate}>
+                                        {new Date(message.created_at).toLocaleDateString()}
+                                    </span>
                                 </div>
                                 <p className={styles.messageSubject}>{message.subject}</p>
                                 <p className={styles.messagePreview}>
@@ -113,7 +126,7 @@ export default function MessagesAdmin() {
                                 </div>
                                 <div className={styles.messageDetailDate}>
                                     <span className={styles.messageDetailLabel}>Date:</span>
-                                    <span>{selectedMessage.date}</span>
+                                    <span>{new Date(selectedMessage.created_at).toLocaleString()}</span>
                                 </div>
                             </div>
                             <div className={styles.messageDetailBody}>
@@ -143,6 +156,6 @@ export default function MessagesAdmin() {
                     )}
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

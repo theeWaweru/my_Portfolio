@@ -1,51 +1,60 @@
 // app/lib/supabase/uploadImage.js
-import { supabaseAdmin } from "./client";
-
 export async function uploadImage(file, folder, id) {
-  if (!supabaseAdmin) {
-    console.error("Supabase admin client not configured");
-    return {
-      data: null,
-      error: "Supabase admin not configured. Check your environment variables.",
-    };
+  console.log("Upload attempt started:", { folder, id });
+
+  if (!file) {
+    console.error("No file provided for upload");
+    return { data: null, error: "No file provided" };
   }
 
-  if (!file) return { data: null, error: "No file provided" };
-
   try {
-    const fileExt = file.name.split(".").pop();
-    const fileName = `${id}-${Date.now()}.${fileExt}`;
-    const filePath = `${folder}/${fileName}`;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", folder);
+    formData.append("id", id);
 
-    console.log("Attempting to upload to:", filePath);
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      body: formData,
+    });
 
-    const { data, error } = await supabaseAdmin.storage
-      .from("media")
-      .upload(filePath, file, {
-        cacheControl: "3600",
-        upsert: false,
-      });
+    const data = await response.json();
 
-    if (error) {
-      console.error("Upload error:", error);
-      return { data: null, error: error.message };
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to upload");
     }
 
     console.log("Upload successful:", data);
 
-    const {
-      data: { publicUrl },
-    } = supabaseAdmin.storage.from("media").getPublicUrl(filePath);
-
     return {
-      data: {
-        path: filePath,
-        url: publicUrl,
-      },
+      data,
       error: null,
     };
   } catch (error) {
     console.error("Error uploading image:", error);
     return { data: null, error: error.message };
+  }
+}
+
+export async function deleteImage(path) {
+  try {
+    const response = await fetch("/api/upload", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ path }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error || "Failed to delete");
+    }
+
+    return { error: null };
+  } catch (error) {
+    console.error("Error deleting image:", error);
+    return { error: error.message };
   }
 }

@@ -1,14 +1,17 @@
-// app/admin/blog/new/page.jsx
+// app/admin/blog/[id]/page.jsx
 "use client";
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createBlogPost } from '../../../lib/supabase/blog';
+import Link from 'next/link';
+import { getBlogPostById, updateBlogPost } from '../../../lib/supabase/blog';
 import { uploadImage } from '../../../lib/supabase/uploadImage';
-import styles from './new-post.module.css';
+import styles from '../new/new-post.module.css';
 
-export default function NewBlogPost() {
+export default function EditBlogPost({ params }) {
     const router = useRouter();
+    const { id } = params;
+
+    const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
 
@@ -20,14 +23,50 @@ export default function NewBlogPost() {
         content: '',
         tags: '',
         cover_image: null,
+        cover_image_url: '',
         status: 'draft'
     });
+
+    useEffect(() => {
+        async function loadBlogPost() {
+            setIsLoading(true);
+            setError(null);
+
+            try {
+                const { data, error } = await getBlogPostById(id);
+
+                if (error) throw new Error(error);
+
+                if (!data) {
+                    throw new Error('Blog post not found');
+                }
+
+                // Format tags back to a string for the form
+                const tagsString = Array.isArray(data.tags)
+                    ? data.tags.join(', ')
+                    : data.tags || '';
+
+                setFormData({
+                    ...data,
+                    tags: tagsString,
+                    cover_image: null // Reset file input
+                });
+            } catch (err) {
+                console.error('Failed to load blog post:', err);
+                setError(`Failed to load blog post: ${err.message}`);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+
+        loadBlogPost();
+    }, [id]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
 
-        // Auto-generate slug from title
-        if (name === 'title') {
+        // Only auto-generate slug from title if ID/slug hasn't been set yet
+        if (name === 'title' && !formData.id) {
             const slug = value
                 .toLowerCase()
                 .replace(/[^\w\s]/gi, '')
@@ -74,47 +113,59 @@ export default function NewBlogPost() {
             // Remove the file from the data
             delete postData.cover_image;
 
-            let coverImageUrl = null;
-
-            // Upload cover image if present
+            // If we have a new cover image, upload it
             if (formData.cover_image) {
                 const { data: imageData, error: imageError } = await uploadImage(
                     formData.cover_image,
                     'blog',
-                    formData.id
+                    id
                 );
 
                 if (imageError) {
-                    console.error('Error uploading cover image:', imageError);
+                    console.error('Error uploading image:', imageError);
                 } else if (imageData) {
-                    coverImageUrl = imageData.url;
-                    postData.cover_image_url = coverImageUrl;
+                    postData.cover_image_url = imageData.url;
                 }
             }
 
-            // Create the blog post in the database
-            const { data, error } = await createBlogPost(postData);
+            // Update the blog post in the database
+            const { data, error } = await updateBlogPost(id, postData);
 
             if (error) {
                 throw new Error(error);
             }
 
-            alert('Blog post created successfully!');
+            alert('Blog post updated successfully!');
             router.push('/admin/blog');
         } catch (err) {
-            console.error('Error creating blog post:', err);
-            setError(`Failed to create blog post: ${err.message}`);
+            console.error('Error updating blog post:', err);
+            setError(`Failed to update blog post: ${err.message}`);
         } finally {
             setIsSubmitting(false);
         }
     };
 
+    if (isLoading) {
+        return <div className={styles.loading}>Loading blog post...</div>;
+    }
+
+    if (error) {
+        return (
+            <div className={styles.errorContainer}>
+                <p className={styles.errorMessage}>{error}</p>
+                <Link href="/admin/blog" className={styles.backButton}>
+                    Back to Blog Posts
+                </Link>
+            </div>
+        );
+    }
+
     return (
         <div className={styles.newPost}>
             <div className={styles.header}>
-                <h1 className={styles.pageTitle}>New Blog Post</h1>
+                <h1 className={styles.pageTitle}>Edit Blog Post: {formData.title}</h1>
                 <Link href="/admin/blog" className={styles.backButton}>
-                    Back to Posts
+                    Back to Blog Posts
                 </Link>
             </div>
 
@@ -150,8 +201,9 @@ export default function NewBlogPost() {
                                 onChange={handleChange}
                                 className={styles.input}
                                 required
+                                disabled // Don't allow changing the ID/slug once set
                             />
-                            <p className={styles.helperText}>Auto-generated from title. Can be edited.</p>
+                            <p className={styles.helperText}>URL identifier cannot be changed after creation.</p>
                         </div>
 
                         <div className={styles.formGroup}>
@@ -217,6 +269,17 @@ export default function NewBlogPost() {
 
                     <div className={styles.formGroup}>
                         <label htmlFor="cover_image" className={styles.label}>Cover Image</label>
+                        {/* Display current image if available */}
+                        {formData.cover_image_url && (
+                            <div className={styles.currentImageContainer}>
+                                <img
+                                    src={formData.cover_image_url}
+                                    alt={`${formData.title} cover`}
+                                    className={styles.currentImage}
+                                />
+                                <p className={styles.helperText}>Current cover image. Upload a new one to replace it.</p>
+                            </div>
+                        )}
                         <input
                             type="file"
                             id="cover_image"
@@ -258,7 +321,7 @@ export default function NewBlogPost() {
                             className={styles.submitButton}
                             disabled={isSubmitting}
                         >
-                            {isSubmitting ? 'Saving...' : 'Save Post'}
+                            {isSubmitting ? 'Updating...' : 'Update Post'}
                         </button>
                         <Link href="/admin/blog" className={styles.cancelButton}>
                             Cancel

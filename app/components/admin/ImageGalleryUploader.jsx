@@ -20,12 +20,12 @@ const ImageGalleryUploader = ({
                 if (typeof img === 'string') {
                     // It's a URL from the database
                     return { url: img, isExisting: true };
-                } else if (img instanceof File) {
-                    // It's a new file to upload
-                    return { file: img, preview: URL.createObjectURL(img), isExisting: false };
                 } else if (img && img.url) {
                     // It's an object with a URL property
                     return { url: img.url, isExisting: true };
+                } else if (img instanceof File) {
+                    // It's a new file to upload
+                    return { file: img, preview: URL.createObjectURL(img), isExisting: false };
                 }
                 return null;
             }).filter(Boolean);
@@ -33,18 +33,18 @@ const ImageGalleryUploader = ({
             setImages(processedImages);
             setPreviewImages(processedImages.map(img => img.url || img.preview));
         }
-    }, [initialImages]);
+    }, [JSON.stringify(initialImages)]); // Updated dependency
 
     // Clean up preview URLs when component unmounts
     useEffect(() => {
         return () => {
-            previewImages.forEach(preview => {
-                if (preview && !preview.startsWith('http')) {
-                    URL.revokeObjectURL(preview);
+            images.forEach(img => {
+                if (img && img.preview && !img.isExisting) {
+                    URL.revokeObjectURL(img.preview);
                 }
             });
         };
-    }, [previewImages]);
+    }, [images]);
 
     const handleImageUpload = (e) => {
         const files = Array.from(e.target.files);
@@ -55,15 +55,22 @@ const ImageGalleryUploader = ({
         }
 
         // Create preview URLs for new files
-        const newPreviews = files.map(file => URL.createObjectURL(file));
+        const newImages = files.map(file => ({
+            file: file,
+            preview: URL.createObjectURL(file),
+            isExisting: false
+        }));
 
         // Update state
-        const newImages = [...images, ...files];
-        setImages(newImages);
-        setPreviewImages([...previewImages, ...newPreviews]);
+        const updatedImages = [...images, ...newImages];
+        setImages(updatedImages);
+        setPreviewImages(updatedImages.map(img => img.url || img.preview));
 
-        // Notify parent component
-        onChange(newImages);
+        // Notify parent component with only new files
+        const filesToUpload = updatedImages
+            .filter(img => !img.isExisting)
+            .map(img => img.file);
+        onChange(filesToUpload);
 
         // Reset file input
         e.target.value = '';
@@ -73,10 +80,11 @@ const ImageGalleryUploader = ({
         // Create new arrays without the removed image
         const newImages = [...images];
         const newPreviews = [...previewImages];
+        const removedImage = newImages[index];
 
         // Clean up preview URL if it's a blob URL
-        if (newPreviews[index] && !newPreviews[index].startsWith('http')) {
-            URL.revokeObjectURL(newPreviews[index]);
+        if (removedImage && removedImage.preview && !removedImage.isExisting) {
+            URL.revokeObjectURL(removedImage.preview);
         }
 
         newImages.splice(index, 1);
@@ -87,13 +95,15 @@ const ImageGalleryUploader = ({
         setPreviewImages(newPreviews);
 
         // Notify parent component
-        onChange(newImages);
+        const filesToUpload = newImages
+            .filter(img => !img.isExisting)
+            .map(img => img.file);
+        onChange(filesToUpload);
     };
 
     const handleDragStart = (e, index) => {
         setDraggedIndex(index);
         e.dataTransfer.effectAllowed = 'move';
-        // Required for Firefox
         e.dataTransfer.setData('text/plain', index);
     };
 
@@ -123,7 +133,10 @@ const ImageGalleryUploader = ({
         setDraggedIndex(index);
 
         // Notify parent component
-        onChange(newImages);
+        const filesToUpload = newImages
+            .filter(img => !img.isExisting)
+            .map(img => img.file);
+        onChange(filesToUpload);
     };
 
     const handleDragEnd = () => {
@@ -176,6 +189,9 @@ const ImageGalleryUploader = ({
                                         ✕
                                     </button>
                                 </div>
+                                {images[index]?.isExisting && (
+                                    <div className={styles.existingBadge}>Existing</div>
+                                )}
                             </div>
                             <div className={styles.imageNumber}>{index + 1}</div>
                         </div>

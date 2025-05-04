@@ -82,7 +82,7 @@ export default function ProjectPreviewPage({ params }) {
         : galleryImages;
 
     return (
-        <div className={styles.page}>
+        <div className={`${styles.page} ${previewStyles.previewPage}`}>
             {/* Preview Banner */}
             <div className={previewStyles.previewBanner}>
                 <div className={previewStyles.previewMessage}>
@@ -96,6 +96,7 @@ export default function ProjectPreviewPage({ params }) {
                 </button>
             </div>
 
+            {/* Rest of the component remains the same */}
             {/* Project Hero */}
             <div className={styles.projectHero}>
                 <div className={styles.heroContent}>

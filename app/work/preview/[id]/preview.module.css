@@ -83,6 +83,6 @@
 }
 
 /* Adjust main content to account for preview banner */
-:global(.page) {
+.previewPage {
     padding-top: 8rem !important;
 }

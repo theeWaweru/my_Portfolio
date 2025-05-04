@@ -148,6 +148,19 @@
     z-index: 2;
 }
 
+.existingBadge {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background-color: #10b981;
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 2;
+}
+
 .emptyGallery {
     padding: 2rem;
     text-align: center;

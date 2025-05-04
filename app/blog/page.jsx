@@ -1,11 +1,11 @@
-// Update app/blog/page.jsx to fetch real blog posts
 "use client";
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { getBlogPosts } from '../lib/supabase/blog';
 import styles from './page.module.css';
 
-export default function BlogPage() {
+// Create a separate component for the blog content
+function BlogContent() {
     const [blogPosts, setBlogPosts] = useState([]);
     const [categories, setCategories] = useState(['All Posts']);
     const [selectedCategory, setSelectedCategory] = useState('All Posts');
@@ -113,5 +113,13 @@ export default function BlogPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function BlogPage() {
+    return (
+        <Suspense fallback={<div className={styles.page}><div className={styles.loading}>Loading...</div></div>}>
+            <BlogContent />
+        </Suspense>
     );
 }

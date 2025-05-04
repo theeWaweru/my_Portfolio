@@ -165,7 +165,7 @@
 
 .scrollIndicator {
     position: absolute;
-    bottom: 2rem;
+    bottom: -100px;
     left: 50%;
     transform: translateX(-50%);
     text-align: center;

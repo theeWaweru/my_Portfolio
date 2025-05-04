@@ -1,11 +1,10 @@
 // app/contact/page.jsx
 "use client";
 
-import { useState, Suspense } from 'react';
+import { useState, Suspense, useCallback } from 'react';
 import styles from './page.module.css';
 import ReCaptcha from '../components/ui/ReCaptcha';
 
-// Create a separate component for the form content
 function ContactFormContent() {
     const [formState, setFormState] = useState({
         name: '',
@@ -21,23 +20,35 @@ function ContactFormContent() {
         submitted: false,
         error: null,
     });
-
+    
     const [captchaToken, setCaptchaToken] = useState(null);
+    const [captchaKey, setCaptchaKey] = useState(0); // Key to force reCAPTCHA reset
 
-    const handleVerify = (token) => {
+    const handleVerify = useCallback((token) => {
         setCaptchaToken(token);
-    };
+    }, []);
 
-    const handleChange = (e) => {
+    const handleChange = useCallback((e) => {
         const { name, value } = e.target;
         setFormState((prev) => ({ ...prev, [name]: value }));
-    };
+    }, []);
 
-    const handleSubmit = async (e) => {
+    const resetForm = useCallback(() => {
+        setFormState({
+            name: '',
+            email: '',
+            inquiryType: 'Project',
+            subject: '',
+            message: '',
+            referral: ''
+        });
+        setFormStatus({ submitting: false, submitted: false, error: null });
+        setCaptchaToken(null);
+        setCaptchaKey(prev => prev + 1); // Force reCAPTCHA to reset
+    }, []);
+
+    const handleSubmit = useCallback(async (e) => {
         e.preventDefault();
-        console.log('Form submission started');
-        console.log('Form state:', formState);
-        console.log('Captcha token:', captchaToken);
 
         if (!captchaToken) {
             setFormStatus({
@@ -81,9 +92,8 @@ function ContactFormContent() {
                 referral: ''
             });
 
-            if (window.grecaptcha) {
-                window.grecaptcha.reset();
-            }
+            // Reset reCAPTCHA by incrementing the key
+            setCaptchaKey(prev => prev + 1);
             setCaptchaToken(null);
 
         } catch (error) {
@@ -92,8 +102,11 @@ function ContactFormContent() {
                 submitted: false,
                 error: error.message || 'Something went wrong. Please try again later.',
             });
+            // Reset reCAPTCHA on error as well
+            setCaptchaKey(prev => prev + 1);
+            setCaptchaToken(null);
         }
-    };
+    }, [formState, captchaToken]);
 
     return (
         <>
@@ -105,7 +118,6 @@ function ContactFormContent() {
             </div>
 
             <div className={styles.contactContainer}>
-                {/* Contact Information Section */}
                 <div className={styles.contactInfo}>
                     <div className={styles.infoCard}>
                         <h3 className={styles.infoTitle}>Contact Information</h3>
@@ -174,11 +186,9 @@ function ContactFormContent() {
                     </div>
                 </div>
 
-                {/* Contact Form Section */}
                 <div className={styles.contactForm}>
                     <h3 className={styles.formTitle}>Send a Message</h3>
 
-                    {/* Show success message if form was submitted */}
                     {formStatus.submitted ? (
                         <div className={styles.formSuccess}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -189,15 +199,13 @@ function ContactFormContent() {
                             <p>Thank you for reaching out. I'll get back to you as soon as possible.</p>
                             <button
                                 className={styles.resetButton}
-                                onClick={() => setFormStatus({ submitting: false, submitted: false, error: null })}
+                                onClick={resetForm}
                             >
                                 Send Another Message
                             </button>
                         </div>
                     ) : (
-                        /* Show form if not yet submitted */
                         <form onSubmit={handleSubmit} className={styles.form}>
-                            {/* Show error message if there was an error */}
                             {formStatus.error && (
                                 <div className={styles.formError}>
                                     <div className={styles.errorIcon}>
@@ -211,7 +219,6 @@ function ContactFormContent() {
                                 </div>
                             )}
 
-                            {/* Name field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="name" className={styles.formLabel}>
                                     Name <span className={styles.required}>*</span>
@@ -228,7 +235,6 @@ function ContactFormContent() {
                                 />
                             </div>
 
-                            {/* Email field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="email" className={styles.formLabel}>
                                     Email <span className={styles.required}>*</span>
@@ -245,7 +251,6 @@ function ContactFormContent() {
                                 />
                             </div>
 
-                            {/* Inquiry Type */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="inquiryType" className={styles.formLabel}>
                                     Type of Inquiry
@@ -264,7 +269,6 @@ function ContactFormContent() {
                                 </select>
                             </div>
 
-                            {/* Subject field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="subject" className={styles.formLabel}>
                                     Subject <span className={styles.required}>*</span>
@@ -281,7 +285,6 @@ function ContactFormContent() {
                                 />
                             </div>
 
-                            {/* Message field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="message" className={styles.formLabel}>
                                     Message <span className={styles.required}>*</span>
@@ -298,7 +301,6 @@ function ContactFormContent() {
                                 ></textarea>
                             </div>
 
-                            {/* Referral field */}
                             <div className={styles.formGroup}>
                                 <label htmlFor="referral" className={styles.formLabel}>
                                     How did you find me? (Optional)
@@ -314,15 +316,14 @@ function ContactFormContent() {
                                 />
                             </div>
 
-                            {/* reCAPTCHA verification */}
                             <div className={styles.formGroup}>
                                 <ReCaptcha
+                                    key={captchaKey}
                                     siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
                                     onVerify={handleVerify}
                                 />
                             </div>
 
-                            {/* Submit button */}
                             <button
                                 type="submit"
                                 className={styles.submitButton}
@@ -338,7 +339,6 @@ function ContactFormContent() {
     );
 }
 
-// Loading component for Suspense boundary
 function ContactPageLoading() {
     return (
         <div className={styles.page}>
@@ -347,7 +347,6 @@ function ContactPageLoading() {
     );
 }
 
-// Main exported component wrapped in Suspense
 export default function ContactPage() {
     return (
         <div className={styles.page}>

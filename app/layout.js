@@ -2,6 +2,7 @@ import { Tektur, Bricolage_Grotesque } from "next/font/google";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import GoogleAnalytics from "./components/analytics/GoogleAnalytics";
+import { Suspense } from "react";
 import "./globals.css";
 
 // Initialize the fonts
@@ -23,6 +24,9 @@ export const metadata = {
   title: "David Waweru | Creative Developer",
   description:
     "Portfolio of David Waweru, a Creative Developer based in Nairobi, Kenya.",
+  icons: {
+    icon: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {
@@ -32,12 +36,14 @@ export default function RootLayout({ children }) {
         <Header />
         <main>{children}</main>
         <Footer />
-        {/* Google Analytics - uses environment variable */}
-        <GoogleAnalytics
-          measurementId={
-            process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-MRN72YGDDM"
-          }
-        />
+        {/* Google Analytics - wrapped in Suspense */}
+        <Suspense fallback={null}>
+          <GoogleAnalytics
+            measurementId={
+              process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "G-MRN72YGDDM"
+            }
+          />
+        </Suspense>
       </body>
     </html>
   );

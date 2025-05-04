@@ -6,7 +6,8 @@ import Script from 'next/script';
 import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
-export default function GoogleAnalytics({ measurementId }) {
+// Create a component that uses useSearchParams
+function GoogleAnalyticsTracker({ measurementId }) {
     const pathname = usePathname();
     const searchParams = useSearchParams();
 
@@ -19,6 +20,11 @@ export default function GoogleAnalytics({ measurementId }) {
         }
     }, [pathname, searchParams, measurementId]);
 
+    return null;
+}
+
+// Wrap the tracker in Suspense
+export default function GoogleAnalytics({ measurementId }) {
     return (
         <>
             <Script
@@ -39,6 +45,7 @@ export default function GoogleAnalytics({ measurementId }) {
           `,
                 }}
             />
+            <GoogleAnalyticsTracker measurementId={measurementId} />
         </>
     );
 }

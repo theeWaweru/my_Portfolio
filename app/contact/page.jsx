@@ -1,47 +1,43 @@
 // app/contact/page.jsx
-// This file implements the contact form frontend and user interface
-
-"use client"; // This directive enables client-side functionality in Next.js
+"use client";
 
 import { useState } from 'react';
 import styles from './page.module.css';
 import ReCaptcha from '../components/ui/ReCaptcha';
 
 export default function ContactPage() {
-    // Form state to store input field values
     const [formState, setFormState] = useState({
         name: '',
         email: '',
+        inquiryType: 'Project',
         subject: '',
         message: '',
+        referral: ''
     });
 
-    // Track form submission status
     const [formStatus, setFormStatus] = useState({
-        submitting: false, // Whether the form is currently submitting
-        submitted: false,   // Whether the form has been successfully submitted
-        error: null,        // Any error message to display
+        submitting: false,
+        submitted: false,
+        error: null,
     });
 
-    // Track the reCAPTCHA verification token
     const [captchaToken, setCaptchaToken] = useState(null);
 
-    // Handler called when reCAPTCHA is verified
     const handleVerify = (token) => {
         setCaptchaToken(token);
     };
 
-    // Handler for input field changes
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormState((prev) => ({ ...prev, [name]: value }));
     };
 
-    // Handler for form submission
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log('Form submission started');
+        console.log('Form state:', formState);
+        console.log('Captcha token:', captchaToken);
 
-        // Validate reCAPTCHA first
         if (!captchaToken) {
             setFormStatus({
                 submitting: false,
@@ -51,7 +47,6 @@ export default function ContactPage() {
             return;
         }
 
-        // Set form to submitting state
         setFormStatus({
             submitting: true,
             submitted: false,
@@ -59,7 +54,6 @@ export default function ContactPage() {
         });
 
         try {
-            // Send the form data to our API endpoint
             const response = await fetch('/api/contact', {
                 method: 'POST',
                 headers: {
@@ -71,24 +65,27 @@ export default function ContactPage() {
                 }),
             });
 
-            // Handle error responses from the API
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.error || 'Failed to submit form');
             }
 
-            // On success, update form status and reset form fields
             setFormStatus({ submitting: false, submitted: true, error: null });
-            setFormState({ name: '', email: '', subject: '', message: '' });
+            setFormState({
+                name: '',
+                email: '',
+                inquiryType: 'Project',
+                subject: '',
+                message: '',
+                referral: ''
+            });
 
-            // Reset reCAPTCHA
             if (window.grecaptcha) {
                 window.grecaptcha.reset();
             }
             setCaptchaToken(null);
 
         } catch (error) {
-            // Handle any errors during submission
             setFormStatus({
                 submitting: false,
                 submitted: false,
@@ -124,8 +121,8 @@ export default function ContactPage() {
                             </div>
                             <div>
                                 <h4 className={styles.infoItemTitle}>Email</h4>
-                                <a href="mailto:hello@theewaweru.dev" className={styles.infoItemText}>
-                                    hello@theewaweru.dev
+                                <a href="mailto:davidngari47@gmail.com" className={styles.infoItemText}>
+                                    davidngari47@gmail.com
                                 </a>
                             </div>
                         </div>
@@ -164,12 +161,12 @@ export default function ContactPage() {
                                         <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
                                     </svg>
                                 </a>
-                                <a href="https://twitter.com/theeWaweru" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                                {/* <a href="https://twitter.com/@LordDavins" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
                                     </svg>
-                                </a>
-                                <a href="https://linkedin.com/in/theeWaweru" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
+                                </a> */}
+                                <a href="https://www.linkedin.com/in/waweru-ngari/" target="_blank" rel="noopener noreferrer" className={styles.socialLink}>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                         <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
                                         <rect x="2" y="9" width="4" height="12"></rect>
@@ -207,13 +204,22 @@ export default function ContactPage() {
                             {/* Show error message if there was an error */}
                             {formStatus.error && (
                                 <div className={styles.formError}>
+                                    <div className={styles.errorIcon}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <circle cx="12" cy="12" r="10"></circle>
+                                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                                        </svg>
+                                    </div>
                                     <p>{formStatus.error}</p>
                                 </div>
                             )}
 
                             {/* Name field */}
                             <div className={styles.formGroup}>
-                                <label htmlFor="name" className={styles.formLabel}>Name</label>
+                                <label htmlFor="name" className={styles.formLabel}>
+                                    Name <span className={styles.required}>*</span>
+                                </label>
                                 <input
                                     type="text"
                                     id="name"
@@ -228,7 +234,9 @@ export default function ContactPage() {
 
                             {/* Email field */}
                             <div className={styles.formGroup}>
-                                <label htmlFor="email" className={styles.formLabel}>Email</label>
+                                <label htmlFor="email" className={styles.formLabel}>
+                                    Email <span className={styles.required}>*</span>
+                                </label>
                                 <input
                                     type="email"
                                     id="email"
@@ -241,9 +249,30 @@ export default function ContactPage() {
                                 />
                             </div>
 
+                            {/* Inquiry Type */}
+                            <div className={styles.formGroup}>
+                                <label htmlFor="inquiryType" className={styles.formLabel}>
+                                    Type of Inquiry
+                                </label>
+                                <select
+                                    id="inquiryType"
+                                    name="inquiryType"
+                                    value={formState.inquiryType}
+                                    onChange={handleChange}
+                                    className={styles.formSelect}
+                                >
+                                    <option value="Project">Project Inquiry</option>
+                                    <option value="Collaboration">Collaboration</option>
+                                    <option value="Job">Job Opportunity</option>
+                                    <option value="General">General Message</option>
+                                </select>
+                            </div>
+
                             {/* Subject field */}
                             <div className={styles.formGroup}>
-                                <label htmlFor="subject" className={styles.formLabel}>Subject</label>
+                                <label htmlFor="subject" className={styles.formLabel}>
+                                    Subject <span className={styles.required}>*</span>
+                                </label>
                                 <input
                                     type="text"
                                     id="subject"
@@ -258,7 +287,9 @@ export default function ContactPage() {
 
                             {/* Message field */}
                             <div className={styles.formGroup}>
-                                <label htmlFor="message" className={styles.formLabel}>Message</label>
+                                <label htmlFor="message" className={styles.formLabel}>
+                                    Message <span className={styles.required}>*</span>
+                                </label>
                                 <textarea
                                     id="message"
                                     name="message"
@@ -266,20 +297,33 @@ export default function ContactPage() {
                                     onChange={handleChange}
                                     required
                                     className={styles.formTextarea}
-                                    placeholder="Your message"
+                                    placeholder="Tell me about your project, questions, or just say hello..."
                                     rows="5"
                                 ></textarea>
+                            </div>
+
+                            {/* Referral field */}
+                            <div className={styles.formGroup}>
+                                <label htmlFor="referral" className={styles.formLabel}>
+                                    How did you find me? (Optional)
+                                </label>
+                                <input
+                                    type="text"
+                                    id="referral"
+                                    name="referral"
+                                    value={formState.referral}
+                                    onChange={handleChange}
+                                    className={styles.formInput}
+                                    placeholder="Google, LinkedIn, Referral, etc."
+                                />
                             </div>
 
                             {/* reCAPTCHA verification */}
                             <div className={styles.formGroup}>
                                 <ReCaptcha
-                                    siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY || "6LeMXSwrAAAAAHONxkes2Qc9TryVKMOzcPzaJkoU"}
+                                    siteKey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
                                     onVerify={handleVerify}
                                 />
-                                {!captchaToken && formStatus.error && formStatus.error.includes('reCAPTCHA') && (
-                                    <p className={styles.formError}>{formStatus.error}</p>
-                                )}
                             </div>
 
                             {/* Submit button */}

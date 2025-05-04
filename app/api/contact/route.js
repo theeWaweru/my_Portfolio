@@ -1,23 +1,10 @@
 // app/api/contact/route.js
-// This file handles the backend processing of the contact form submission
 
-import { createClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-
-// Initialize Supabase client with service role for admin access
-// This allows us to write to the database without user authentication
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY;
-const brevoApiKey = process.env.BREVO_API_KEY;
-
-// Create a Supabase client with the service role key
-const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Helper function to verify reCAPTCHA token with Google's API
 async function verifyRecaptcha(token) {
   try {
-    // Make a POST request to Google's reCAPTCHA verification endpoint
     const response = await fetch(
       "https://www.google.com/recaptcha/api/siteverify",
       {
@@ -25,14 +12,11 @@ async function verifyRecaptcha(token) {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        // Send the secret key and the token from the client
-        body: `secret=${recaptchaSecretKey}&response=${token}`,
+        body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
       }
     );
 
-    // Parse the response from Google
     const data = await response.json();
-    // Return whether the verification was successful
     return data.success;
   } catch (error) {
     console.error("reCAPTCHA verification error:", error);
@@ -64,36 +48,51 @@ export async function POST(request) {
       );
     }
 
-    // Store message in the database
-    const { data, error } = await supabase.from("messages").insert([
-      {
-        name,
-        email,
-        subject,
-        message,
-        created_at: new Date().toISOString(),
-        read: false,
-      },
-    ]);
-
-    // Handle database errors
-    if (error) {
-      console.error("Error saving message to database:", error);
-      return NextResponse.json(
-        { error: "Failed to save your message" },
-        { status: 500 }
+    // Initialize Supabase client only if environment variables are available
+    let supabase = null;
+    if (
+      process.env.NEXT_PUBLIC_SUPABASE_URL &&
+      process.env.SUPABASE_SERVICE_ROLE_KEY
+    ) {
+      const { createClient } = await import("@supabase/supabase-js");
+      supabase = createClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL,
+        process.env.SUPABASE_SERVICE_ROLE_KEY
       );
     }
 
+    // Store message in the database if Supabase is configured
+    if (supabase) {
+      const { data, error } = await supabase.from("messages").insert([
+        {
+          name,
+          email,
+          subject,
+          message,
+          created_at: new Date().toISOString(),
+          read: false,
+        },
+      ]);
+
+      // Handle database errors
+      if (error) {
+        console.error("Error saving message to database:", error);
+        return NextResponse.json(
+          { error: "Failed to save your message" },
+          { status: 500 }
+        );
+      }
+    }
+
     // If Brevo API key is available, send email notifications
-    if (brevoApiKey) {
+    if (process.env.BREVO_API_KEY) {
       try {
         // Send notification email to the portfolio owner
         await fetch("https://api.brevo.com/v3/smtp/email", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "api-key": brevoApiKey,
+            "api-key": process.env.BREVO_API_KEY,
           },
           body: JSON.stringify({
             sender: {
@@ -128,7 +127,7 @@ export async function POST(request) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            "api-key": brevoApiKey,
+            "api-key": process.env.BREVO_API_KEY,
           },
           body: JSON.stringify({
             sender: {

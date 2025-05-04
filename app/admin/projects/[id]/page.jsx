@@ -102,10 +102,10 @@ export default function EditProject({ params }) {
         });
     };
 
-    const handleGalleryChange = (images) => {
+    const handleGalleryChange = (newImages) => {
         setFormData({
             ...formData,
-            gallery: images
+            gallery: newImages
         });
     };
 
@@ -154,7 +154,7 @@ export default function EditProject({ params }) {
                     const { data: imageData, error: imageError } = await uploadImage(
                         file,
                         'projects',
-                        `${id}-gallery-${galleryUrls.length + i}`
+                        `${id}-gallery-${Date.now()}-${i}`
                     );
 
                     if (imageError) {

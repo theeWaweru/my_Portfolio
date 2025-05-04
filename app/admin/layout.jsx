@@ -1,12 +1,43 @@
 // app/admin/layout.jsx
 "use client";
 
+import { Suspense } from 'react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import styles from './admin.module.css';
 
-function AdminLayout({ children }) {
+// Loading component
+function LoadingAdmin() {
+    return (
+        <div style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '100vh',
+            width: '100%',
+            backgroundColor: '#f5f5f5'
+        }}>
+            <div style={{
+                textAlign: 'center'
+            }}>
+                <div style={{
+                    border: '4px solid #f3f3f3',
+                    borderTop: '4px solid #0070f3',
+                    borderRadius: '50%',
+                    width: '50px',
+                    height: '50px',
+                    animation: 'spin 1s linear infinite',
+                    margin: '0 auto 1rem'
+                }}></div>
+                <p style={{ fontFamily: 'var(--font-tektur)' }}>Loading Admin...</p>
+            </div>
+        </div>
+    );
+}
+
+// Admin content component
+function AdminContent({ children }) {
     const pathname = usePathname();
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
@@ -44,7 +75,7 @@ function AdminLayout({ children }) {
 
     // Show loading indicator while checking auth
     if (isLoading) {
-        return <div className={styles.loading}>Loading...</div>;
+        return <LoadingAdmin />;
     }
 
     return (
@@ -102,6 +133,15 @@ function AdminLayout({ children }) {
                 {children}
             </main>
         </div>
+    );
+}
+
+// Main exported component with Suspense
+function AdminLayout({ children }) {
+    return (
+        <Suspense fallback={<LoadingAdmin />}>
+            <AdminContent>{children}</AdminContent>
+        </Suspense>
     );
 }
 

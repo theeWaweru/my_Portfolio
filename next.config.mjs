@@ -66,10 +66,9 @@ const nextConfig = {
   },
   // Enable React strict mode for better development experience
   reactStrictMode: true,
-  // Experimental features
+  // Remove the experimental section or keep it empty
   experimental: {
-    optimizeCss: true, // CSS optimization
-    esmExternals: true, // Enable tree-shaking for external libraries
+    // Removed incrementalCacheHandlerPath as it's invalid
   },
 };
 

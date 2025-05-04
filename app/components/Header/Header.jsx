@@ -12,16 +12,19 @@ const Header = () => {
     const pathname = usePathname();
 
     useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 30) {
-                setIsScrolled(true);
-            } else {
-                setIsScrolled(false);
-            }
-        };
+        // Only run scroll handling on client side
+        if (typeof window !== 'undefined') {
+            const handleScroll = () => {
+                if (window.scrollY > 30) {
+                    setIsScrolled(true);
+                } else {
+                    setIsScrolled(false);
+                }
+            };
 
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+            window.addEventListener('scroll', handleScroll);
+            return () => window.removeEventListener('scroll', handleScroll);
+        }
     }, []);
 
     const handleMenuToggle = () => {

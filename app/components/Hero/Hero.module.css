@@ -1,11 +1,12 @@
-/* app/components/Hero/Hero.module.css (updated) */
+/* app/components/Hero/Hero.module.css */
 .hero {
     position: relative;
+    min-height: calc(100vh - 4rem);
     padding: 6rem 0 4rem;
-    background-color: #f9f9f9;
+    background: linear-gradient(135deg, #f9fafb 0%, #ffffff 50%, #f3f4f6 100%);
     overflow: hidden;
-    margin-top: 0;
-    /* Remove any margin that might cause overlap */
+    display: flex;
+    align-items: center;
 }
 
 .heroContainer {
@@ -14,6 +15,220 @@
     padding: 0 1rem;
     position: relative;
     z-index: 1;
+    width: 100%;
 }
 
-/* Rest of the styles remain the same, just ensure no overlapping margins/paddings */
+.heroContent {
+    max-width: 800px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+.pretitle {
+    font-family: var(--font-tektur);
+    font-size: 0.9375rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #0070f3;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.title {
+    font-family: var(--font-tektur);
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    color: #1a1a1a;
+}
+
+.titleHighlight {
+    color: #0070f3;
+    position: relative;
+    display: inline-block;
+}
+
+.titleHighlight::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #0070f3;
+    border-radius: 2px;
+}
+
+.subtitle {
+    font-size: 1.25rem;
+    color: #666;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.skillsHighlight {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.skill {
+    text-align: center;
+}
+
+.skillValue {
+    font-family: var(--font-tektur);
+    font-size: 2rem;
+    font-weight: 700;
+    color: #0070f3;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.skillLabel {
+    font-size: 0.875rem;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.heroButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.downloadButton {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-tektur);
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1;
+    text-align: center;
+    padding: 0.75rem 2rem;
+    border-radius: 4px;
+    border: 2px solid #0070f3;
+    color: #0070f3;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    min-width: 200px;
+    background-color: white;
+}
+
+.downloadButton:hover {
+    background-color: #0070f3;
+    color: white;
+}
+
+.heroDecoration {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.decorativeCircle {
+    position: absolute;
+    top: -150px;
+    right: -150px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(0, 112, 243, 0.1) 0%, transparent 70%);
+    filter: blur(30px);
+}
+
+.decorativeShape {
+    position: absolute;
+    bottom: 100px;
+    left: -100px;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(0, 112, 243, 0.1) 0%, transparent 70%);
+    filter: blur(20px);
+}
+
+.scrollIndicator {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    opacity: 0.7;
+}
+
+.scrollText {
+    font-size: 0.875rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+    display: block;
+    letter-spacing: 0.5px;
+}
+
+.scrollIcon {
+    animation: bounce 2s infinite;
+    color: #0070f3;
+}
+
+@keyframes bounce {
+
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+        transform: translateY(0);
+    }
+
+    40% {
+        transform: translateY(-10px);
+    }
+
+    60% {
+        transform: translateY(-5px);
+    }
+}
+
+@media (min-width: 768px) {
+    .heroButtons {
+        flex-direction: row;
+        gap: 1.5rem;
+    }
+
+    .title {
+        font-size: 4.5rem;
+    }
+
+    .hero {
+        padding: 8rem 0 6rem;
+    }
+
+    .skillsHighlight {
+        gap: 4rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    .title {
+        font-size: 5rem;
+    }
+
+    .heroContainer {
+        padding: 0 2rem;
+    }
+}

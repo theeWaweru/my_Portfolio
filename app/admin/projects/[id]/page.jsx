@@ -10,12 +10,21 @@ import styles from '../new/new-project.module.css';
 
 export default function EditProject({ params }) {
     const router = useRouter();
+    const [id, setId] = useState(null);
 
-    // Use React.use() to unwrap params in Next.js 15
-    const { id } = params;
+    // Move id extraction to useEffect
+    useEffect(() => {
+        const getId = async () => {
+            const unwrappedParams = await params;
+            setId(unwrappedParams.id);
+        };
+        getId();
+    }, [params]);
+
     const [isLoading, setIsLoading] = useState(true);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [error, setError] = useState(null);
+    const [initialGallery, setInitialGallery] = useState([]); // Add missing state
 
     const [formData, setFormData] = useState({
         title: '',
@@ -28,10 +37,14 @@ export default function EditProject({ params }) {
         role: '',
         tags: '',
         cover_image: null,
+        cover_image_url: '',
+        gallery: [], // For new images to be uploaded
         status: 'draft'
     });
 
     useEffect(() => {
+        if (!id) return; // Wait for id to be available
+
         async function loadProject() {
             setIsLoading(true);
             setError(null);
@@ -60,7 +73,7 @@ export default function EditProject({ params }) {
                     gallery: [], // Clear new uploads
                 });
 
-                // Set existing gallery separately for preview
+                // Set existing gallery for preview
                 setInitialGallery(existingGallery);
             } catch (err) {
                 console.error('Failed to load project:', err);
@@ -75,25 +88,10 @@ export default function EditProject({ params }) {
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-
-        // Only auto-generate slug from title if ID/slug hasn't been set yet
-        if (name === 'title' && !formData.id) {
-            const slug = value
-                .toLowerCase()
-                .replace(/[^\w\s]/gi, '')
-                .replace(/\s+/g, '-');
-
-            setFormData({
-                ...formData,
-                title: value,
-                id: slug
-            });
-        } else {
-            setFormData({
-                ...formData,
-                [name]: value
-            });
-        }
+        setFormData({
+            ...formData,
+            [name]: value
+        });
     };
 
     const handleFileChange = (e) => {
@@ -104,6 +102,12 @@ export default function EditProject({ params }) {
         });
     };
 
+    const handleGalleryChange = (images) => {
+        setFormData({
+            ...formData,
+            gallery: images
+        });
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -111,6 +115,7 @@ export default function EditProject({ params }) {
         setError(null);
 
         try {
+            // Process tags into an array
             const tagsArray = formData.tags
                 ? formData.tags.split(',').map(tag => tag.trim())
                 : [];
@@ -141,9 +146,9 @@ export default function EditProject({ params }) {
             }
 
             // Handle gallery updates
-            if (formData.gallery.length > 0) {
-                const galleryUrls = [...initialGallery]; // Start with existing images
+            let galleryUrls = [...initialGallery]; // Start with existing images
 
+            if (formData.gallery.length > 0) {
                 for (let i = 0; i < formData.gallery.length; i++) {
                     const file = formData.gallery[i];
                     const { data: imageData, error: imageError } = await uploadImage(
@@ -158,9 +163,9 @@ export default function EditProject({ params }) {
                         galleryUrls.push(imageData.url);
                     }
                 }
-
-                projectData.gallery = galleryUrls;
             }
+
+            projectData.gallery = galleryUrls;
 
             // Update the project in the database
             const { error } = await updateProject(id, projectData);
@@ -178,6 +183,21 @@ export default function EditProject({ params }) {
             setIsSubmitting(false);
         }
     };
+
+    if (isLoading || !id) {
+        return <div className={styles.loading}>Loading project...</div>;
+    }
+
+    if (error) {
+        return (
+            <div className={styles.errorContainer}>
+                <p className={styles.errorMessage}>{error}</p>
+                <Link href="/admin/projects" className={styles.backButton}>
+                    Back to Projects
+                </Link>
+            </div>
+        );
+    }
 
     return (
         <div className={styles.newProject}>
@@ -337,7 +357,6 @@ export default function EditProject({ params }) {
 
                     <div className={styles.formGroup}>
                         <label htmlFor="cover_image" className={styles.label}>Cover Image</label>
-                        {/* Display current image if available */}
                         {formData.cover_image_url && (
                             <div className={styles.currentImageContainer}>
                                 <img
@@ -357,6 +376,14 @@ export default function EditProject({ params }) {
                             accept="image/*"
                         />
                         <p className={styles.helperText}>Recommended size: 1200x800 pixels</p>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                        <ImageGalleryUploader
+                            initialImages={initialGallery}
+                            onChange={handleGalleryChange}
+                            maxImages={10}
+                        />
                     </div>
 
                     <div className={styles.formActions}>

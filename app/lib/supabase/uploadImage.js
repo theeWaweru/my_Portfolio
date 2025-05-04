@@ -1,5 +1,5 @@
 // app/lib/supabase/uploadImage.js
-import supabase from './client';
+import supabase from "./client";
 
 /**
  * Upload an image to Supabase Storage
@@ -14,31 +14,54 @@ export async function uploadImage(file, folder, id) {
 
   try {
     // Create a unique file name to avoid conflicts
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split(".").pop();
     const fileName = `${id}-${Date.now()}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;
 
+    // Check if bucket exists before uploading
+    const { data: buckets, error: bucketError } =
+      await supabase.storage.listBuckets();
+
+    if (bucketError) {
+      console.error("Error checking buckets:", bucketError);
+      return {
+        data: null,
+        error: `Cannot check buckets: ${bucketError.message}`,
+      };
+    }
+
+    const portfolioBucket = buckets.find(
+      (bucket) => bucket.name === "portfolio-media"
+    );
+    if (!portfolioBucket) {
+      return {
+        data: null,
+        error:
+          "Bucket 'portfolio-media' not found. Please create it in your Supabase dashboard.",
+      };
+    }
+
     // Upload the file
     const { data, error } = await supabase.storage
-      .from('portfolio-media')
+      .from("portfolio-media")
       .upload(filePath, file, {
-        cacheControl: '3600',
-        upsert: false
+        cacheControl: "3600",
+        upsert: false,
       });
 
     if (error) throw error;
 
     // Get the public URL
-    const { data: { publicUrl } } = supabase.storage
-      .from('portfolio-media')
-      .getPublicUrl(filePath);
+    const {
+      data: { publicUrl },
+    } = supabase.storage.from("portfolio-media").getPublicUrl(filePath);
 
-    return { 
-      data: { 
+    return {
+      data: {
         path: filePath,
-        url: publicUrl 
-      }, 
-      error: null 
+        url: publicUrl,
+      },
+      error: null,
     };
   } catch (error) {
     console.error("Error uploading image:", error);
@@ -57,7 +80,7 @@ export async function deleteImage(path) {
 
   try {
     const { data, error } = await supabase.storage
-      .from('portfolio-media')
+      .from("portfolio-media")
       .remove([path]);
 
     if (error) throw error;

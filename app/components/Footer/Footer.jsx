@@ -16,6 +16,13 @@ const Footer = () => {
                         <p className={styles.footerAboutText}>
                             I'm a creative developer based in Nairobi, Kenya, specializing in UI/UX design and web development.
                         </p>
+                        <ul className={styles.footerNavList}>
+                            <li className={styles.footerNavItem}>
+                                <Link href="mailto:davidngari47@gmail.com" className={styles.footerNavLink}>
+                                    davidngari47@gmail.com
+                                </Link>
+                            </li>
+                        </ul>
                         <div className={styles.footerSocial}>
                             <a
                                 href="https://github.com/theeWaweru"
@@ -84,59 +91,39 @@ const Footer = () => {
                             </a>
                         </div>
                     </div>
-
-                    <div className={styles.footerNav}>
-                        <div>
-                            <h3 className={styles.footerNavTitle}>Navigation</h3>
-                            <ul className={styles.footerNavList}>
-                                <li className={styles.footerNavItem}>
-                                    <Link href="/" className={styles.footerNavLink}>
-                                        Home
-                                    </Link>
-                                </li>
-                                <li className={styles.footerNavItem}>
-                                    <Link href="/work" className={styles.footerNavLink}>
-                                        Work
-                                    </Link>
-                                </li>
-                                <li className={styles.footerNavItem}>
-                                    <Link href="/blog" className={styles.footerNavLink}>
-                                        Blog
-                                    </Link>
-                                </li>
-                                <li className={styles.footerNavItem}>
-                                    <Link href="/about" className={styles.footerNavLink}>
-                                        About
-                                    </Link>
-                                </li>
-                                <li className={styles.footerNavItem}>
-                                    <Link href="/contact" className={styles.footerNavLink}>
-                                        Contact
-                                    </Link>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <div>
-                            <h3 className={styles.footerNavTitle}>Contact</h3>
-                            <ul className={styles.footerNavList}>
-                                <li className={styles.footerNavItem}>
-                                    <Link href="mailto:hello@theewaweru.dev" className={styles.footerNavLink}>
-                                        hello@theewaweru.dev
-                                    </Link>
-                                </li>
-                                <li className={styles.footerNavItem}>
-                                    <p>Nairobi, Kenya</p>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
                 </div >
 
                 <div className={styles.footerBottom}>
-                    <p className={styles.footerCopyright}>
-                        &copy; {currentYear} David Waweru. All rights reserved.
-                    </p>
+                    <div className={styles.footerNav}>
+                        <h3 className={styles.footerNavTitle}>Navigation</h3>
+                        <ul className={styles.footerNavList}>
+                            <li className={styles.footerNavItem}>
+                                <Link href="/" className={styles.footerNavLink}>
+                                    Home
+                                </Link>
+                            </li>
+                            <li className={styles.footerNavItem}>
+                                <Link href="/work" className={styles.footerNavLink}>
+                                    Work
+                                </Link>
+                            </li>
+                            <li className={styles.footerNavItem}>
+                                <Link href="/blog" className={styles.footerNavLink}>
+                                    Blog
+                                </Link>
+                            </li>
+                            <li className={styles.footerNavItem}>
+                                <Link href="/about" className={styles.footerNavLink}>
+                                    About
+                                </Link>
+                            </li>
+                            <li className={styles.footerNavItem}>
+                                <Link href="/contact" className={styles.footerNavLink}>
+                                    Contact
+                                </Link>
+                            </li>
+                        </ul>
+                    </div>
                     <div>
                         <Link href="/privacy" className={styles.footerNavLink}>
                             Privacy Policy
@@ -146,6 +133,9 @@ const Footer = () => {
                             Terms of Service
                         </Link>
                     </div>
+                    <p className={styles.footerCopyright}>
+                        &copy; {currentYear} theeWaweru. All rights reserved.
+                    </p>
                 </div>
             </div >
         </footer >

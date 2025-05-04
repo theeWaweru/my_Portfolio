@@ -1,37 +1,35 @@
 // app/components/FeaturedWork/FeaturedWork.jsx
+"use client";
+import { useState, useEffect } from 'react';
 import Button from '../Button/Button';
 import ProjectCard from '../ProjectCard/ProjectCard';
 import styles from './FeaturedWork.module.css';
+import { getProjects } from '../../lib/supabase/projects';
 
 const FeaturedWork = () => {
-  // Mock project data
-  const projects = [
-    {
-      id: 'furaha-financial',
-      title: 'Furaha Financial',
-      description: 'Complete redesign of a digital banking platform focused on improving user experience and accessibility.',
-      category: 'UI/UX Design',
-      tags: ['Fintech', 'Web App', 'Mobile App'],
-      image: '/images/projects/placeholder-1.jpg',
-    },
-    {
-      id: 'chupachap',
-      title: 'Chupachap',
-      description: 'E-commerce platform designed and developed for a local marketplace with integrated payment processing.',
-      category: 'Web Development',
-      tags: ['E-commerce', 'Web App', 'Payments'],
-      image: '/images/projects/placeholder-2.jpg',
-    },
-    {
-      id: 'spatial-thinking',
-      title: 'Spatial Thinking',
-      description: 'Experimental visualization of geographical data for educational purposes.',
-      category: 'Product Strategy',
-      tags: ['Education', 'Data Viz'],
-      image: '/images/projects/placeholder-3.jpg',
-    },
-  ];
+  const [projects, setProjects] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    async function loadFeaturedProjects() {
+      setIsLoading(true);
+      try {
+        const { data, error } = await getProjects();
+        if (error) throw error;
+
+        // Get featured projects or first 3 if none marked as featured
+        const featuredProjects = data.filter(project => project.featured) || data.slice(0, 3);
+        setProjects(featuredProjects);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+
+    loadFeaturedProjects();
+  }, []);
   return (
     <section className={styles.section}>
       <div className={styles.container}>
@@ -42,11 +40,17 @@ const FeaturedWork = () => {
           </p>
         </div>
 
-        <div className={styles.grid}>
-          {projects.map((project) => (
-            <ProjectCard key={project.id} project={project} />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className={styles.loading}>Loading projects...</div>
+        ) : error ? (
+          <div className={styles.error}>{error}</div>
+        ) : (
+          <div className={styles.grid}>
+            {projects.map((project, index) => (
+              <ProjectCard key={project.id} project={project} />
+            ))}
+          </div>
+        )}
 
         <div className={styles.cta}>
           <Button href="/work" variant="primary">

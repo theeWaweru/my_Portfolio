@@ -91,6 +91,22 @@
     color: #666;
 }
 
+.loading,
+.error,
+.noProjects {
+    text-align: center;
+    padding: 3rem;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    margin: 2rem 0;
+}
+
+.error {
+    background-color: #fff5f5;
+    border: 1px solid #ffb8b8;
+    color: #e53e3e;
+}
+
 @media (min-width: 640px) {
     .projectGrid {
         grid-template-columns: repeat(2, 1fr);

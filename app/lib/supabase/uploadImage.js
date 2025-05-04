@@ -18,43 +18,27 @@ export async function uploadImage(file, folder, id) {
     const fileName = `${id}-${Date.now()}.${fileExt}`;
     const filePath = `${folder}/${fileName}`;
 
-    // Check if bucket exists before uploading
-    const { data: buckets, error: bucketError } =
-      await supabase.storage.listBuckets();
-
-    if (bucketError) {
-      console.error("Error checking buckets:", bucketError);
-      return {
-        data: null,
-        error: `Cannot check buckets: ${bucketError.message}`,
-      };
-    }
-
-    const portfolioBucket = buckets.find(
-      (bucket) => bucket.name === "portfolio-media"
-    );
-    if (!portfolioBucket) {
-      return {
-        data: null,
-        error:
-          "Bucket 'portfolio-media' not found. Please create it in your Supabase dashboard.",
-      };
-    }
+    console.log("Attempting to upload to:", filePath);
 
     // Upload the file
     const { data, error } = await supabase.storage
-      .from("portfolio-media")
+      .from("media")
       .upload(filePath, file, {
         cacheControl: "3600",
         upsert: false,
       });
 
-    if (error) throw error;
+    if (error) {
+      console.error("Upload error:", error);
+      return { data: null, error: error.message };
+    }
+
+    console.log("Upload successful:", data);
 
     // Get the public URL
     const {
       data: { publicUrl },
-    } = supabase.storage.from("portfolio-media").getPublicUrl(filePath);
+    } = supabase.storage.from("media").getPublicUrl(filePath);
 
     return {
       data: {
@@ -79,9 +63,7 @@ export async function deleteImage(path) {
   if (!path) return { error: "No file path provided" };
 
   try {
-    const { data, error } = await supabase.storage
-      .from("portfolio-media")
-      .remove([path]);
+    const { data, error } = await supabase.storage.from("media").remove([path]);
 
     if (error) throw error;
 

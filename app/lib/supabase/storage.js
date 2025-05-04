@@ -49,7 +49,7 @@ export const uploadProjectImage = async (file, projectId) => {
   const fileName = `${projectId}-${Date.now()}.${fileExt}`;
   const filePath = `project-images/${fileName}`;
 
-  return uploadFile(file, "portfolio-media", filePath);
+  return uploadFile(file, "media", filePath);
 };
 
 /**
@@ -65,7 +65,7 @@ export const uploadBlogImage = async (file, postId) => {
   const fileName = `${postId}-${Date.now()}.${fileExt}`;
   const filePath = `blog-images/${fileName}`;
 
-  return uploadFile(file, "portfolio-media", filePath);
+  return uploadFile(file, "media", filePath);
 };
 
 /**

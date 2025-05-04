@@ -1,0 +1,126 @@
+/* app/components/work/ProjectCard.module.css */
+.card {
+    transition: all 0.7s ease;
+    height: 100%;
+}
+
+.loaded {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.loading {
+    transform: translateY(3rem);
+    opacity: 0;
+}
+
+.link {
+    display: block;
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.imageContainer {
+    position: relative;
+    aspect-ratio: 6/9;
+    overflow: hidden;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+    background-color: #1f2937;
+}
+
+.image {
+    position: absolute;
+    inset: 0;
+}
+
+.imageImg {
+    object-fit: cover;
+}
+
+.overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom right, rgba(37, 99, 235, 0.2), rgba(167, 139, 250, 0.2));
+    transition: all 0.5s ease;
+    opacity: 0.5;
+    z-index: 10;
+}
+
+.link:hover .overlay {
+    opacity: 0.8;
+}
+
+.hoverOverlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: all 0.5s ease;
+    z-index: 20;
+}
+
+.link:hover .hoverOverlay {
+    opacity: 1;
+}
+
+.viewButton {
+    padding: 0.5rem 1.5rem;
+    background-color: white;
+    color: #1e3a8a;
+    border-radius: 9999px;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+}
+
+.info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1.5rem;
+    color: white;
+    z-index: 10;
+}
+
+.tags {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(37, 99, 235, 0.7);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+}
+
+.moreTagsBadge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    background-color: rgba(55, 65, 81, 0.7);
+    border-radius: 9999px;
+    font-size: 0.75rem;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.description {
+    color: #d1d5db;
+    font-size: 0.875rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}

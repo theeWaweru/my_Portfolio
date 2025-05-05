@@ -55,7 +55,6 @@
     transform: rotate(360deg);
   }
 }
-
 .loading p {
   color: #666;
   font-family: var(--font-tektur);

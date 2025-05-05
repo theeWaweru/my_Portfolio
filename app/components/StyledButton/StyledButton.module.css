@@ -1,0 +1,101 @@
+/* app/components/StyledButton/StyledButton.module.css */
+.button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #121642;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: var(--font-tektur);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    position: relative;
+    letter-spacing: 0.5px;
+
+    /* Shape to match reference */
+    clip-path: polygon(0 0,
+            calc(100% - 1rem) 0,
+            100% 1rem,
+            100% 100%,
+            1rem 100%,
+            0 calc(100% - 1rem),
+            0 0);
+}
+
+.button:hover {
+    background-color: #1a1f5e;
+    transform: translateY(-2px);
+}
+
+.button:active {
+    transform: translateY(0);
+}
+
+.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.disabled:hover {
+    transform: none;
+    background-color: #121642;
+}
+
+/* Size variations */
+
+/* Large size */
+.large {
+    /* Mobile */
+    font-size: 20px;
+    padding: 1em 2em;
+}
+
+/* Medium size */
+.medium {
+    /* Mobile */
+    font-size: 16px;
+    padding: 0.6em 1.2em;
+}
+
+/* Small size */
+.small {
+    /* Mobile */
+    font-size: 15px;
+    padding: 0.4em 0.86em;
+}
+
+/* Tablet breakpoint (768px to 1023px) */
+@media (min-width: 768px) {
+    .large {
+        font-size: 26px;
+        padding: 0.8em 1.6em;
+    }
+
+    .medium {
+        font-size: 21px;
+        padding: 0.6em 1.2em;
+    }
+
+    .small {
+        font-size: 18px;
+        padding: 0.4em 0.8em;
+    }
+}
+
+/* Desktop breakpoint (1024px and up) */
+@media (min-width: 1024px) {
+    .large {
+        font-size: 32px;
+    }
+
+    .medium {
+        font-size: 26px;
+    }
+
+    .small {
+        font-size: 21px;
+    }
+}

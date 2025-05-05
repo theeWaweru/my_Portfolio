@@ -10,17 +10,52 @@
 }
 
 .heroContainer {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 40px;
     position: relative;
     z-index: 1;
     width: 100%;
 }
 
 .heroContent {
-    max-width: 800px;
-    text-align: center;
+    margin: 0 auto;
+    padding-top: 120px;
+    display: flex;
+    flex-direction: row;
+    align-content: start;
+    justify-content: space-between;
+}
+
+.heroContent_image {
+    border: var(--grayed) solid .01em;
+    border-radius: 12px;
+    aspect-ratio: 87 / 100;
+    width: 100%;
+    object-fit: cover;
+}
+
+.heroContent_divs {
+    width: 33.33%;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.heroContent_divs_image {
+    display: none;
+}
+
+.heroContent_divs_end_div {
+    text-align: right !important;
+}
+
+.heroButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
     margin: 0 auto;
 }
 
@@ -29,7 +64,7 @@
     font-size: 0.9375rem;
     letter-spacing: 2px;
     text-transform: uppercase;
-    color: #0070f3;
+    color: var(--dark-blue);
     margin-bottom: 1rem;
     display: block;
 }
@@ -44,7 +79,7 @@
 }
 
 .titleHighlight {
-    color: #0070f3;
+    color: var(--marooned);
     position: relative;
     display: inline-block;
 }
@@ -56,7 +91,7 @@
     left: 0;
     width: 100%;
     height: 3px;
-    background-color: #0070f3;
+    background-color: var(--marooned);
     border-radius: 2px;
 }
 
@@ -72,20 +107,20 @@
 
 .skillsHighlight {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 2rem;
-    margin-bottom: 3rem;
+    flex-wrap: wrap;
 }
 
 .skill {
-    text-align: center;
+    width: 45%;
 }
 
 .skillValue {
     font-family: var(--font-tektur);
     font-size: 2rem;
     font-weight: 700;
-    color: #0070f3;
+    color: var(--marooned);
     display: block;
     margin-bottom: 0.5rem;
 }
@@ -95,15 +130,6 @@
     color: #666;
     text-transform: uppercase;
     letter-spacing: 1px;
-}
-
-.heroButtons {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    max-width: 600px;
-    margin: 0 auto;
 }
 
 .downloadButton {
@@ -117,8 +143,8 @@
     text-align: center;
     padding: 0.75rem 2rem;
     border-radius: 4px;
-    border: 2px solid #0070f3;
-    color: #0070f3;
+    border: 2px solid var(--marooned);
+    color: var(--marooned);
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
@@ -127,7 +153,7 @@
 }
 
 .downloadButton:hover {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 
@@ -182,7 +208,7 @@
 
 .scrollIcon {
     animation: bounce 2s infinite;
-    color: #0070f3;
+    color: var(--marooned);
 }
 
 @keyframes bounce {
@@ -204,7 +230,7 @@
     }
 }
 
-@media (min-width: 768px) {
+@media (max-width: 960px) {
     .heroButtons {
         flex-direction: row;
         gap: 1.5rem;
@@ -217,13 +243,9 @@
     .hero {
         padding: 8rem 0 6rem;
     }
-
-    .skillsHighlight {
-        gap: 4rem;
-    }
 }
 
-@media (min-width: 1024px) {
+@media (max-width: 524px) {
     .title {
         font-size: 5rem;
     }

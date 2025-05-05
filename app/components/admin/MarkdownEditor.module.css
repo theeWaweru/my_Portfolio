@@ -35,9 +35,9 @@
 }
 
 .toolbarButton.active {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
-    border-color: #0070f3;
+    border-color: var(--marooned);
 }
 
 .previewButton {
@@ -75,7 +75,7 @@
     min-height: 200px;
     background-color: #fff;
     overflow-y: auto;
-    color: #333;
+    color: var(--dark-blue);
 }
 
 .preview h1 {
@@ -117,7 +117,7 @@
 }
 
 .preview a {
-    color: #0070f3;
+    color: var(--marooned);
     text-decoration: none;
 }
 
@@ -140,7 +140,7 @@
 }
 
 .markdownHelp {
-    color: #0070f3;
+    color: var(--marooned);
     text-decoration: none;
 }
 

@@ -4,15 +4,18 @@ import Image from 'next/image';
 import styles from './ProjectCard.module.css';
 
 const ProjectCard = ({ project }) => {
-    const { id, title, description, category, tags, image } = project;
+    const { id, title, description, category, tags, coverImage } = project;
+
+    // Use coverImage directly, with a fallback to the old image field if needed
+    const imageUrl = coverImage || project.image;
 
     return (
         <article className={styles.card}>
             <Link href={`/work/${id}`}>
                 <div className={styles.imageContainer}>
-                    {image ? (
+                    {imageUrl ? (
                         <Image
-                            src={image}
+                            src={imageUrl}
                             alt={title}
                             fill
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"

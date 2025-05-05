@@ -1,6 +1,6 @@
 /* app/admin/blog/blog.module.css */
 .blogAdmin {
-    max-width: 1200px;
+    max-width: 1440px;
 }
 
 .header {
@@ -17,7 +17,7 @@
 }
 
 .addButton {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
     font-family: var(--font-tektur);
     padding: 0.75rem 1.5rem;
@@ -48,7 +48,7 @@
     text-align: left;
     font-family: var(--font-tektur);
     font-weight: 500;
-    color: #333;
+    color: var(--dark-blue);
 }
 
 .postRow {
@@ -61,7 +61,7 @@
 }
 
 .postTitle {
-    color: #0070f3;
+    color: var(--marooned);
     text-decoration: none;
     font-weight: 500;
 }
@@ -100,7 +100,7 @@
     text-decoration: none;
     cursor: pointer;
     background-color: #f5f5f5;
-    color: #333;
+    color: var(--dark-blue);
     border: none;
     transition: background-color 0.3s ease, color 0.3s ease;
 }

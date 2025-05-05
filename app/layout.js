@@ -4,6 +4,7 @@ import Footer from "./components/Footer/Footer";
 import GoogleAnalytics from "./components/analytics/GoogleAnalytics";
 import { Suspense } from "react";
 import "./globals.css";
+import clsx from "clsx";
 
 // Initialize the fonts
 const tektur = Tektur({

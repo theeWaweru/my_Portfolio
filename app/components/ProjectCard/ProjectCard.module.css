@@ -44,7 +44,7 @@
     font-family: var(--font-tektur);
     font-size: 0.75rem;
     text-transform: uppercase;
-    color: #0070f3;
+    color: var(--marooned);
     margin-bottom: 0.5rem;
 }
 
@@ -52,7 +52,7 @@
     font-family: var(--font-tektur);
     font-size: 1.25rem;
     margin-bottom: 0.75rem;
-    color: #333;
+    color: var(--dark-blue);
 }
 
 .description {
@@ -82,7 +82,7 @@
     align-items: center;
     font-family: var(--font-tektur);
     font-size: 0.875rem;
-    color: #0070f3;
+    color: var(--marooned);
     text-decoration: none;
     transition: color 0.3s ease;
 }

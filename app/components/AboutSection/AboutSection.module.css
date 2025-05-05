@@ -5,9 +5,9 @@
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 40px;
 }
 
 .sectionHeader {
@@ -31,7 +31,7 @@
     transform: translateX(-50%);
     width: 80px;
     height: 3px;
-    background-color: #0070f3;
+    background-color: var(--marooned);
 }
 
 .sectionSubtitle {
@@ -77,11 +77,11 @@
     padding: 0.5rem 1rem;
     font-family: var(--font-tektur);
     font-size: 0.875rem;
-    color: #333;
+    color: var(--dark-blue);
 }
 
 .skillItem.highlight {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 

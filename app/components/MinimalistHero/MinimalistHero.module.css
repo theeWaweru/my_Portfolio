@@ -1,0 +1,174 @@
+/* app/components/MinimalistHero/MinimalistHero.module.css */
+.hero {
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    background-color: #f0f0f0;
+    display: flex;
+    align-items: center;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+}
+
+.name {
+    font-family: var(--font-tektur);
+    font-size: 5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.copyright {
+    font-size: 1.5rem;
+    vertical-align: super;
+    margin-left: 0.1em;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    max-width: 600px;
+}
+
+.description p {
+    font-family: var(--font-bricolage);
+    font-size: 1.25rem;
+    line-height: 1.5;
+    color: #666;
+    margin: 0;
+}
+
+.bookButton {
+    display: inline-flex;
+    align-items: center;
+    font-family: var(--font-tektur);
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 1rem 2rem;
+    background-color: #1a1a1a;
+    color: white;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    width: fit-content;
+}
+
+.bookButton:hover {
+    background-color: var(--dark-blue);
+}
+
+.profileContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.imageWrapper {
+    width: 280px;
+    height: 400px;
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.profileImage {
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.profileImage:hover {
+    transform: scale(1.02);
+}
+
+.availability {
+    text-align: center;
+    font-family: var(--font-tektur);
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    color: #666;
+}
+
+.availability p {
+    margin: 0;
+}
+
+.date {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -0.05em;
+    margin-top: 0.5rem;
+}
+
+/* Tablet/Desktop Layout */
+@media (min-width: 968px) {
+    .hero {
+        padding: 2rem;
+    }
+
+    .content {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+
+    .name {
+        font-size: 7rem;
+    }
+
+    .description {
+        max-width: 450px;
+        flex-shrink: 0;
+    }
+
+    .profileContainer {
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 2rem;
+    }
+
+    .imageWrapper {
+        width: 350px;
+        height: 500px;
+    }
+
+    .availability {
+        text-align: left;
+    }
+
+    .date {
+        font-size: 4rem;
+    }
+}
+
+/* Large Desktop */
+@media (min-width: 1200px) {
+    .name {
+        font-size: 9rem;
+    }
+
+    .description {
+        max-width: 500px;
+    }
+
+    .imageWrapper {
+        width: 400px;
+        height: 550px;
+    }
+
+    .date {
+        font-size: 5rem;
+    }
+}

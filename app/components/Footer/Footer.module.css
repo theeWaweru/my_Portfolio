@@ -7,9 +7,9 @@
 }
 
 .footerContainer {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 40px;
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
@@ -29,7 +29,7 @@
 }
 
 .footerLogoHighlight {
-    color: #0070f3;
+    color: var(--marooned);
 }
 
 .footerAbout {
@@ -72,7 +72,7 @@
 }
 
 .footerNavLink:hover {
-    color: #0070f3;
+    color: var(--marooned);
 }
 
 .footerSocial {
@@ -89,12 +89,12 @@
     height: 40px;
     border-radius: 50%;
     background-color: #f8f8f8;
-    color: #333;
+    color: var(--dark-blue);
     transition: all 0.3s ease;
 }
 
 .footerSocialLink:hover {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 

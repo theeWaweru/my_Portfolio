@@ -1,4 +1,11 @@
 /* styles/globals.css */
+:root {
+  --marooned: #D6223B;
+  --dark-blue: #121642;
+  --grayed: #666;
+  --tidy-whitey: white;
+  --yello-mello: #EED00C;
+}
 
 /* Reset and base styles */
 *,
@@ -17,7 +24,7 @@ html {
 body {
   font-family: 'Bricolage Grotesque', sans-serif;
   line-height: 1.6;
-  color: #333333;
+  color: var(--dark-blue);
   background-color: #f9f9f9;
 }
 
@@ -50,7 +57,7 @@ h4 {
 }
 
 a {
-  color: #0070f3;
+  color: var(--marooned);
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -68,9 +75,9 @@ img {
 /* Container */
 .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 40px;
 }
 
 @media (min-width: 768px) {

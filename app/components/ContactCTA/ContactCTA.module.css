@@ -1,14 +1,14 @@
 /* app/components/ContactCTA/ContactCTA.module.css */
 .section {
     padding: 6rem 0;
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
-    padding: 0 1rem;
+    padding: 0 40px;
     text-align: center;
 }
 
@@ -26,7 +26,7 @@
 
 .ctaButton {
     background-color: white;
-    color: #0070f3;
+    color: var(--marooned);
     padding: 0.75rem 2rem;
     border-radius: 4px;
     font-family: var(--font-tektur);

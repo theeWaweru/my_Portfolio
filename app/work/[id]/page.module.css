@@ -1,7 +1,7 @@
 /* app/work/[id]/page.module.css */
 .page {
     padding: 6rem 1rem 4rem;
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
 }
 
@@ -24,7 +24,7 @@
 
 .backLink {
     margin-bottom: 2rem;
-    color: #0070f3;
+    color: var(--marooned);
     font-family: var(--font-tektur);
     text-decoration: none;
     display: inline-block;
@@ -61,7 +61,7 @@
     font-family: var(--font-tektur);
     font-size: 1rem;
     margin-bottom: 0.5rem;
-    color: #0070f3;
+    color: var(--marooned);
 }
 
 .coverImageContainer {
@@ -98,7 +98,7 @@
     left: 0;
     width: 60px;
     height: 3px;
-    background-color: #0070f3;
+    background-color: var(--marooned);
 }
 
 .sectionText {
@@ -150,7 +150,7 @@
 
 .resultText {
     font-size: 1.125rem;
-    color: #333;
+    color: var(--dark-blue);
     text-align: center;
 }
 
@@ -172,7 +172,7 @@
 .testimonialQuote::before {
     content: '"';
     font-size: 4rem;
-    color: #0070f3;
+    color: var(--marooned);
     opacity: 0.2;
     position: absolute;
     top: -2rem;
@@ -211,7 +211,7 @@
 .nextProjectLink {
     font-family: var(--font-tektur);
     font-size: 1.5rem;
-    color: #0070f3;
+    color: var(--marooned);
     text-decoration: none;
     transition: color 0.3s ease;
 }

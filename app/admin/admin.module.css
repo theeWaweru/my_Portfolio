@@ -52,7 +52,7 @@
 }
 
 .navLink.active {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 

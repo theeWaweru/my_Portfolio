@@ -16,7 +16,7 @@
 }
 
 .primary {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 
@@ -27,12 +27,12 @@
 
 .secondary {
     background-color: transparent;
-    border-color: #0070f3;
-    color: #0070f3;
+    border-color: var(--marooned);
+    color: var(--marooned);
 }
 
 .secondary:hover {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 

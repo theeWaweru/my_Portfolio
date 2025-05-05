@@ -1,6 +1,6 @@
 /* app/admin/messages/messages.module.css */
 .messagesAdmin {
-    max-width: 1200px;
+    max-width: 1440px;
 }
 
 .header {
@@ -42,7 +42,7 @@
 
 .messageItem.active {
     background-color: #f0f7ff;
-    border-left: 3px solid #0070f3;
+    border-left: 3px solid var(--marooned);
 }
 
 .messageItem.unread {
@@ -74,7 +74,7 @@
 .messageSubject {
     margin: 0 0 0.5rem;
     font-size: 0.9375rem;
-    color: #333;
+    color: var(--dark-blue);
 }
 
 .messagePreview {
@@ -139,7 +139,7 @@
 }
 
 .closeButton:hover {
-    color: #333;
+    color: var(--dark-blue);
 }
 
 .messageDetailInfo {
@@ -177,7 +177,7 @@
 }
 
 .replyButton {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
     font-family: var(--font-tektur);
     padding: 0.5rem 1rem;

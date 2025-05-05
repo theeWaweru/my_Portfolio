@@ -1,4 +1,4 @@
-// app/page.jsx
+// app/page.jsx - Updated to use MinimalistHero
 import { Suspense } from "react";
 import Hero from "./components/Hero/Hero";
 import AboutSection from "./components/AboutSection/AboutSection";

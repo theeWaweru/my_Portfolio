@@ -1,6 +1,6 @@
 /* app/admin/page.module.css */
 .dashboard {
-    max-width: 1200px;
+    max-width: 1440px;
 }
 
 .pageTitle {
@@ -32,7 +32,7 @@
 .statNumber {
     font-family: var(--font-tektur);
     font-size: 2rem;
-    color: #0070f3;
+    color: var(--marooned);
 }
 
 .recentSection {
@@ -70,14 +70,14 @@
 }
 
 .messageExcerpt {
-    color: #333;
+    color: var(--dark-blue);
     margin-bottom: 1.5rem;
 }
 
 .viewButton {
     background-color: transparent;
-    border: 1px solid #0070f3;
-    color: #0070f3;
+    border: 1px solid var(--marooned);
+    color: var(--marooned);
     border-radius: 4px;
     padding: 0.5rem 0.75rem;
     font-size: 0.875rem;
@@ -86,7 +86,7 @@
 }
 
 .viewButton:hover {
-    background-color: #0070f3;
+    background-color: var(--marooned);
     color: white;
 }
 

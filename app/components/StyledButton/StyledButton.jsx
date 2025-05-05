@@ -8,6 +8,7 @@ const StyledButton = ({
     onClick,
     type = 'button',
     size = 'large', // Default to large
+    variant = 'primary', // Default to primary
     disabled = false,
     className = '',
     ...rest
@@ -16,6 +17,7 @@ const StyledButton = ({
     const buttonClasses = [
         styles.button,
         styles[size], // Add size-specific class
+        styles[variant], // Add variant-specific class
         disabled && styles.disabled,
         className,
     ]

@@ -34,6 +34,8 @@ const Hero = () => {
                             I help growing brands and startups gain an unfair advantage through premium, results driven websites.
                             I'm a creative developer on a mission to build elegance, user-focused digital
                             experiences through thoughtful design and development.
+                            <br />
+                            Actively working on the website, but let guys have a sneak peek of what's to come!
                         </p>{/* Skills showcase */}
                         <div className={styles.skillsHighlight}>
                             <div className={styles.skill}>
@@ -59,9 +61,9 @@ const Hero = () => {
                     </div>
                     <div className={clsx(styles.heroContent_divs, styles.heroContent_divs_end_div)}>
                         <div className={styles.heroButtons}>
-                            <StyledButton href="/work" size="medium">View My Work</StyledButton>
-                            <StyledButton href="/dave_thee_ui_designer.pdf" target="_blank" size="medium">Download Portfolio</StyledButton>
-                            <StyledButton href="/contact" size="medium">Get In Touch</StyledButton>
+                            <StyledButton href="/work" variant="primary" size="medium">View My Work</StyledButton>
+                            <StyledButton href="/dave_thee_ui_designer.pdf" variant="accent" target="_blank" size="medium">Download Portfolio</StyledButton>
+                            <StyledButton href="/contact" variant="vibrant" size="medium">Get In Touch</StyledButton>
                         </div>
                     </div>
                 </div>

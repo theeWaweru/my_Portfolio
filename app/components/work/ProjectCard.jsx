@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import styles from './ProjectCard.module.css';
 
+// Placeholder image path
+const PLACEHOLDER_IMAGE = '/images/placeholder.jpg';
+
 const ProjectCard = ({
     project,
     index = 0,
@@ -15,8 +18,13 @@ const ProjectCard = ({
         description,
         category,
         tags,
-        cover_image_url
+        cover_image_url,
+        coverImage,
+        image
     } = project;
+
+    // Use the first available image or fall back to placeholder
+    const imageUrl = cover_image_url || coverImage || image || PLACEHOLDER_IMAGE;
 
     return (
         <div
@@ -25,18 +33,16 @@ const ProjectCard = ({
         >
             <Link href={`/work/${id}`} className={styles.link}>
                 <div className={styles.imageContainer}>
-                    {cover_image_url && (
-                        <div className={styles.image}>
-                            <Image
-                                src={cover_image_url}
-                                alt={title}
-                                fill
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                                className={styles.imageImg}
-                                priority={index < 2}
-                            />
-                        </div>
-                    )}
+                    <div className={styles.image}>
+                        <Image
+                            src={imageUrl}
+                            alt={title || 'Project image'}
+                            fill
+                            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                            className={styles.imageImg}
+                            priority={index < 2}
+                        />
+                    </div>
 
                     <div className={styles.overlay}></div>
 
@@ -62,8 +68,8 @@ const ProjectCard = ({
                                 </span>
                             )}
                         </div>
-                        <h3 className={styles.title}>{title}</h3>
-                        <p className={styles.description}>{description}</p>
+                        <h3 className={styles.title}>{title || 'Untitled Project'}</h3>
+                        <p className={styles.description}>{description || 'No description available.'}</p>
                     </div>
                 </div>
             </Link>

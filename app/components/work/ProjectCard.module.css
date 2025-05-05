@@ -2,6 +2,20 @@
 .card {
     transition: all 0.7s ease;
     height: 100%;
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    /* aspect-ratio: 6/9; */
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover .image {
+    transform: scale(1.05);
 }
 
 .loaded {
@@ -15,28 +29,22 @@
 }
 
 .link {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
     height: 100%;
     cursor: pointer;
     text-decoration: none;
 }
 
-.imageContainer {
-    position: relative;
-    aspect-ratio: 6/9;
-    overflow: hidden;
-    border-radius: 0.5rem;
-    margin-bottom: 1rem;
-    background-color: #1f2937;
-}
-
 .image {
-    position: absolute;
+    position: relative;
     inset: 0;
 }
 
 .imageImg {
     object-fit: cover;
+    position: relative !important;
 }
 
 .overlay {
@@ -69,21 +77,28 @@
 
 .viewButton {
     padding: 0.5rem 1.5rem;
-    background-color: white;
-    color: #1e3a8a;
     border-radius: 9999px;
+    background-color: var(--marooned);
+    color: var(--tidy-whitey);
     font-weight: 500;
     border: none;
     cursor: pointer;
+    font-family: 'Tektur';
+    transition: all 0.3s ease-out
+}
+
+.viewButton:hover {
+    background-color: var(--tidy-whitey);
+    color: var(--marooned);
 }
 
 .info {
-    position: absolute;
+    position: relative;
     bottom: 0;
     left: 0;
     right: 0;
     padding: 1.5rem;
-    color: white;
+    color: var(--dark-blue);
     z-index: 10;
 }
 
@@ -97,7 +112,8 @@
 .tag {
     display: inline-block;
     padding: 0.25rem 0.75rem;
-    background-color: rgba(37, 99, 235, 0.7);
+    background-color: var(--dark-blue);
+    color: var(--tidy-whitey);
     border-radius: 9999px;
     font-size: 0.75rem;
 }
@@ -117,7 +133,7 @@
 }
 
 .description {
-    color: #d1d5db;
+    color: var(--grayed);
     font-size: 0.875rem;
     display: -webkit-box;
     -webkit-line-clamp: 2;

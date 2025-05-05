@@ -3,9 +3,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    background-color: #121642;
-    color: white;
-    border: none;
+    border: 2px solid transparent;
     cursor: pointer;
     text-decoration: none;
     font-family: var(--font-tektur);
@@ -25,7 +23,6 @@
 }
 
 .button:hover {
-    background-color: #1a1f5e;
     transform: translateY(-2px);
 }
 
@@ -33,6 +30,45 @@
     transform: translateY(0);
 }
 
+/* Variant styles */
+
+/* Primary - Dark blue with white text, changes to white with red border */
+.primary {
+    background-color: var(--dark-blue);
+    color: var(--tidy-whitey);
+}
+
+.primary:hover {
+    background-color: var(--tidy-whitey);
+    color: var(--marooned);
+    border-color: var(--marooned);
+}
+
+/* Accent - Red with white text, changes to dark blue */
+.accent {
+    background-color: var(--marooned);
+    color: var(--tidy-whitey);
+}
+
+.accent:hover {
+    background-color: var(--dark-blue);
+    color: var(--tidy-whitey);
+    border-color: var(--dark-blue);
+}
+
+/* Vibrant - Yellow with dark blue text, changes to dark blue with yellow border */
+.vibrant {
+    background-color: var(--yello-mello);
+    color: var(--dark-blue);
+}
+
+.vibrant:hover {
+    background-color: var(--dark-blue);
+    color: var(--yello-mello);
+    border-color: var(--yello-mello);
+}
+
+/* Disabled state */
 .disabled {
     opacity: 0.6;
     cursor: not-allowed;
@@ -41,7 +77,6 @@
 
 .disabled:hover {
     transform: none;
-    background-color: #121642;
 }
 
 /* Size variations */
@@ -50,7 +85,7 @@
 .large {
     /* Mobile */
     font-size: 20px;
-    padding: 1em 2em;
+    padding: 0.8em 1.8em;
 }
 
 /* Medium size */
@@ -71,7 +106,7 @@
 @media (min-width: 768px) {
     .large {
         font-size: 26px;
-        padding: 0.8em 1.6em;
+        padding: 0.7em 1.5em;
     }
 
     .medium {

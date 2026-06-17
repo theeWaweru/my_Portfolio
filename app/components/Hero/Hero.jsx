@@ -62,7 +62,7 @@ const Hero = () => {
                     <div className={clsx(styles.heroContent_divs, styles.heroContent_divs_end_div)}>
                         <div className={styles.heroButtons}>
                             <StyledButton href="/work" variant="primary" size="medium">View My Work</StyledButton>
-                            <StyledButton href="/dave_thee_ui_designer.pdf" variant="accent" target="_blank" size="medium">Download Portfolio</StyledButton>
+                            <StyledButton href="/theeWaweru.pdf" variant="accent" target="_blank" size="medium">Download Portfolio</StyledButton>
                             <StyledButton href="/contact" variant="vibrant" size="medium">Get In Touch</StyledButton>
                         </div>
                     </div>

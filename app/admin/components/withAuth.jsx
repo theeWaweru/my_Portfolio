@@ -2,6 +2,7 @@
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import supabase from '../../lib/supabase/client';
 import LoadingScreen from './LoadingScreen';
 
 export default function withAuth(Component) {
@@ -11,22 +12,41 @@ export default function withAuth(Component) {
         const router = useRouter();
 
         useEffect(() => {
-            const checkAuth = () => {
-                // Check if user is authenticated
-                const auth = localStorage.getItem('isAuthenticated');
+            let subscription;
 
-                if (auth === 'true') {
+            const checkAuth = async () => {
+                if (!supabase) {
+                    setIsAuthenticated(false);
+                    setIsCheckingAuth(false);
+                    router.push('/admin/login');
+                    return;
+                }
+
+                // Check for a real Supabase session
+                const { data } = await supabase.auth.getSession();
+                if (data?.session) {
                     setIsAuthenticated(true);
                 } else {
                     setIsAuthenticated(false);
-                    // Redirect to login page
                     router.push('/admin/login');
                 }
-
                 setIsCheckingAuth(false);
+
+                // React to logout / token expiry in real time
+                const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+                    if (!session) {
+                        setIsAuthenticated(false);
+                        router.push('/admin/login');
+                    }
+                });
+                subscription = listener?.subscription;
             };
 
             checkAuth();
+
+            return () => {
+                if (subscription) subscription.unsubscribe();
+            };
         }, [router]);
 
         // Show loading screen while checking authentication

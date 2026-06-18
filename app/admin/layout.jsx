@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import supabase from '../lib/supabase/client';
 import styles from './admin.module.css';
 
 // Loading component
@@ -43,19 +44,37 @@ function AdminContent({ children }) {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        // Check authentication status
-        const checkAuth = () => {
-            const auth = localStorage.getItem('isAuthenticated');
-            setIsAuthenticated(auth === 'true');
+        // Check authentication status against Supabase
+        const checkAuth = async () => {
+            if (!supabase) {
+                setIsAuthenticated(false);
+                setIsLoading(false);
+                return;
+            }
+            const { data } = await supabase.auth.getSession();
+            setIsAuthenticated(Boolean(data?.session));
             setIsLoading(false);
         };
 
         checkAuth();
+
+        // Keep layout in sync with login/logout
+        const { data: listener } = supabase
+            ? supabase.auth.onAuthStateChange((_event, session) => {
+                  setIsAuthenticated(Boolean(session));
+              })
+            : { data: null };
+
+        return () => {
+            listener?.subscription?.unsubscribe();
+        };
     }, []);
 
     // Handle logout
-    const handleLogout = () => {
-        localStorage.removeItem('isAuthenticated');
+    const handleLogout = async () => {
+        if (supabase) {
+            await supabase.auth.signOut();
+        }
         window.location.href = '/admin/login';
     };
 

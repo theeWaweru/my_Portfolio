@@ -2,6 +2,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import supabase from '../../lib/supabase/client';
 import styles from './login.module.css';
 
 export default function AdminLogin() {
@@ -13,11 +14,12 @@ export default function AdminLogin() {
     const [isLoading, setIsLoading] = useState(false);
     const router = useRouter();
 
-    // Check if already logged in
+    // If a valid session already exists, skip the login screen
     useEffect(() => {
-        const checkAuth = () => {
-            const auth = localStorage.getItem('isAuthenticated');
-            if (auth === 'true') {
+        const checkAuth = async () => {
+            if (!supabase) return;
+            const { data } = await supabase.auth.getSession();
+            if (data?.session) {
                 router.push('/admin');
             }
         };
@@ -39,29 +41,25 @@ export default function AdminLogin() {
         setIsLoading(true);
 
         try {
-            // This is just a simple mock authentication
-            // In a real application, you would connect to your backend
-
-            // Basic form validation
             if (!formData.email || !formData.password) {
                 throw new Error('Email and password are required');
             }
 
-            // Simulate API delay
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            if (!supabase) {
+                throw new Error('Authentication is not configured.');
+            }
 
-            // Mock credentials check - hardcoded for testing
-            // In production, this would be an API call
-            if (formData.email === 'admin@theewaweru.dev' && formData.password === 'admin123') {
-                // Success, store auth state in localStorage
-                localStorage.setItem('isAuthenticated', 'true');
+            // Real authentication against Supabase Auth
+            const { error: signInError } = await supabase.auth.signInWithPassword({
+                email: formData.email,
+                password: formData.password,
+            });
 
-                // Redirect to admin dashboard
-                console.log('Login successful, redirecting...');
-                router.push('/admin');
-            } else {
+            if (signInError) {
                 throw new Error('Invalid email or password');
             }
+
+            router.push('/admin');
         } catch (error) {
             console.error('Login error:', error);
             setError(error.message || 'An error occurred. Please try again.');

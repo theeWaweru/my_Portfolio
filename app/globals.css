@@ -63,7 +63,7 @@ a {
 }
 
 a:hover {
-  color: #0050d3;
+  color: inherit;
 }
 
 img {

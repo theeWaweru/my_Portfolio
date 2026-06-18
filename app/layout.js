@@ -4,9 +4,8 @@ import Footer from "./components/Footer/Footer";
 import GoogleAnalytics from "./components/analytics/GoogleAnalytics";
 import { Suspense } from "react";
 import "./globals.css";
-import clsx from "clsx";
+import "./styles/redesign.css";
 
-// Initialize the fonts
 const tektur = Tektur({
   subsets: ["latin"],
   variable: "--font-tektur",
@@ -37,7 +36,6 @@ export default function RootLayout({ children }) {
         <Header />
         <main>{children}</main>
         <Footer />
-        {/* Google Analytics - wrapped in Suspense */}
         <Suspense fallback={null}>
           <GoogleAnalytics
             measurementId={

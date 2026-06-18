@@ -1,38 +1,29 @@
-// app/page.jsx - Updated to use MinimalistHero
-import { Suspense } from "react";
-import Hero from "./components/Hero/Hero";
-import AboutSection from "./components/AboutSection/AboutSection";
-import FeaturedWork from "./components/FeaturedWork/FeaturedWork";
-import ContactCTA from "./components/ContactCTA/ContactCTA";
-import styles from "./page.module.css";
+// app/page.js : theeWaweru homepage (redesign)
+import "./components/home/home.css";
+import StatementHero from "./components/home/StatementHero";
+import Hero from "./components/home/Hero";
+import SkillsMarquee from "./components/home/SkillsMarquee";
+import FeaturedWork from "./components/home/FeaturedWork";
+import Services from "./components/home/Services";
+import Boast from "./components/home/Boast";
+import Process from "./components/home/Process";
+import About from "./components/home/About";
+import ContactCTA from "./components/home/ContactCTA";
+import ScrollReveal from "./components/home/ScrollReveal";
 
-// Loading component
-function Loading() {
-  return (
-    <div className={styles.loading}>
-      <div className={styles.loadingSpinner}></div>
-      <p>Loading...</p>
-    </div>
-  );
-}
-
-// Main content component
-function HomeContent() {
-  return (
-    <div className={styles.container}>
-      <Hero />
-      <AboutSection />
-      <FeaturedWork />
-      <ContactCTA />
-    </div>
-  );
-}
-
-// Exported page component with Suspense
 export default function Home() {
   return (
-    <Suspense fallback={<Loading />}>
-      <HomeContent />
-    </Suspense>
+    <>
+      <StatementHero />
+      <Hero />
+      <SkillsMarquee />
+      <FeaturedWork />
+      <Services />
+      <Boast />
+      <Process />
+      <About />
+      <ContactCTA />
+      <ScrollReveal />
+    </>
   );
 }

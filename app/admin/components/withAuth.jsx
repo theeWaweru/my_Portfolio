@@ -1,4 +1,3 @@
-// app/admin/components/withAuth.jsx
 "use client";
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -22,7 +21,6 @@ export default function withAuth(Component) {
                     return;
                 }
 
-                // Check for a real Supabase session
                 const { data } = await supabase.auth.getSession();
                 if (data?.session) {
                     setIsAuthenticated(true);
@@ -32,7 +30,6 @@ export default function withAuth(Component) {
                 }
                 setIsCheckingAuth(false);
 
-                // React to logout / token expiry in real time
                 const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
                     if (!session) {
                         setIsAuthenticated(false);
@@ -49,17 +46,14 @@ export default function withAuth(Component) {
             };
         }, [router]);
 
-        // Show loading screen while checking authentication
         if (isCheckingAuth) {
             return <LoadingScreen />;
         }
 
-        // Don't render the component if not authenticated
         if (isAuthenticated === false) {
             return null;
         }
 
-        // Render the component if authenticated
         return <Component {...props} />;
     };
 }

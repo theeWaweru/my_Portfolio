@@ -1,15 +1,11 @@
-import WaweruWordmark from "../WaweruWordmark";
-
-// Full-viewport navy hero: giant WAWERU wordmark up top, bold statement and a
-// mono intro pinned to the bottom. The data-statement-hero attribute lets the
-// Header measure this section to toggle its over-dark state.
+// Statement hero. The giant wordmark is now provided by the morphing header
+// brand (see Header), which scales up to fill the top of this section and
+// shrinks into the menu on scroll. This section holds only the statement copy,
+// pinned to the bottom. The data-statement-hero attr drives the header state.
 export default function StatementHero() {
   return (
     <section className="statement" data-statement-hero>
       <div className="wrap">
-        <div className="statement-mark">
-          <WaweruWordmark />
-        </div>
         <div className="statement-foot">
           <h1>
             Design that performs before it explains itself

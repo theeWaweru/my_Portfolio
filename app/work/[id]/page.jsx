@@ -1,20 +1,17 @@
-// app/work/[id]/page.jsx : project case study
+// app/work/[id]/page.jsx : project case study (dark, themed per project)
+// Normal-flow page so the global header + footer wrap it. Rebuilt with the
+// 5-field info block and a redesigned Overview, ahead of the action buttons.
 import Link from "next/link";
 import { getProjectById } from "../../lib/supabase/projects";
-import "../../components/home/home.css";
+import "../work.css";
 
 const PLACEHOLDER = "/images/placeholder.jpg";
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
   const { data: project } = await getProjectById(id);
-  if (!project) {
-    return { title: "Project Not Found | David Waweru" };
-  }
-  return {
-    title: `${project.title} | Case Study`,
-    description: project.description,
-  };
+  if (!project) return { title: "Project Not Found | David Waweru" };
+  return { title: `${project.title} | Case Study`, description: project.description };
 }
 
 export default async function ProjectPage({ params }) {
@@ -23,25 +20,34 @@ export default async function ProjectPage({ params }) {
 
   if (!project || error) {
     return (
-      <section className="sec proj">
-        <div className="wrap">
-          <Link href="/work" className="proj-back">← Back to Work</Link>
-          <h1>Project Not Found</h1>
-          <p className="proj-lead">This project does not exist or has been moved.</p>
-        </div>
-      </section>
+      <div className="tw-work proj">
+        <article className="proj-page">
+          <header className="proj-band">
+            <div className="proj-crumbs">
+              <Link href="/work">&larr; Back to Work</Link>
+            </div>
+            <div className="proj-head">
+              <div className="proj-head-main">
+                <h1 className="proj-title">Project Not Found</h1>
+                <p className="proj-excerpt">This project does not exist or has been moved.</p>
+              </div>
+            </div>
+          </header>
+        </article>
+      </div>
     );
   }
 
-  const cover = project.cover_image_url || PLACEHOLDER;
-  const gallery = Array.isArray(project.gallery) && project.gallery.length
-    ? project.gallery
-    : [PLACEHOLDER, PLACEHOLDER];
-  const body = (project.full_description || project.description || "")
-    .split(/\n{2,}/)
-    .filter(Boolean);
+  const letter = (project.title || "?").trim().charAt(0).toUpperCase();
+  const c1 = project.color1 || "#0d0f1d";
+  const c2 = project.color2 || "#f2f2ef";
+  const cover = project.cover_image_url;
   const tags = Array.isArray(project.tags) ? project.tags : [];
+  const body = (project.full_description || project.description || "").split(/\n{2,}/).filter(Boolean);
   const hasLink = Boolean(project.live_url);
+
+  const gallery = Array.isArray(project.gallery) ? project.gallery.filter(Boolean) : [];
+  const shots = gallery.length ? gallery : [PLACEHOLDER, PLACEHOLDER];
 
   const facts = [
     ["Client", project.client],
@@ -49,50 +55,69 @@ export default async function ProjectPage({ params }) {
     ["Site Type", project.site_type],
     ["Work", project.work],
     ["Timeline", project.timeline],
-  ].filter(([, v]) => v);
+  ].filter(function (f) { return f[1]; });
+
+  const heroStyle = cover
+    ? { backgroundImage: `url(${cover})` }
+    : { backgroundColor: c1, color: c2 };
 
   return (
-    <section className="sec proj">
-      <div className="wrap">
-        <Link href="/work" className="proj-back">← Back to Work</Link>
-
-        <div className="proj-head">
-          <div>
-            <p className="eyebrow proj-eyebrow">{project.category || "Project"}</p>
-            <h1>{project.title}</h1>
-            <p className="proj-lead">{project.description}</p>
+    <div className="tw-work proj">
+      <article className="proj-page">
+        <header className="proj-band">
+          <div className="proj-crumbs">
+            <Link href="/work">&larr; Back to Work</Link>
+            <Link href="/contact">[ Contact ]</Link>
           </div>
-          <div className="proj-facts">
-            {facts.map(([k, v]) => (
-              <div className="proj-fact" key={k}>
-                <span className="k">{k}</span>
-                <span className="v">{v}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="proj-cover" style={{ backgroundImage: `url(${cover})` }} />
-
-        <div className="proj-body">
-          <h2>Overview</h2>
-          {body.map((para, i) => (
-            <p key={i}>{para}</p>
-          ))}
-          {tags.length ? (
-            <div className="tags" style={{ marginTop: "8px" }}>
-              {tags.map((t) => (
-                <span className="tag" key={t}>{t}</span>
-              ))}
+          <div className="proj-head">
+            <div className="proj-head-main">
+              <h1 className="proj-title" style={{ color: c2 }}>{project.title}</h1>
+              <p className="proj-excerpt">{project.description}</p>
             </div>
-          ) : null}
-        </div>
+            {tags.length ? (
+              <ul className="proj-tags">
+                {tags.map((t) => (<li key={t}><span>{t}</span></li>))}
+              </ul>
+            ) : null}
+          </div>
+        </header>
 
-        <div className="proj-gallery">
-          {gallery.map((src, i) => (
-            <div className="shot" key={i} style={{ backgroundImage: `url(${src})` }} />
+        <figure className="proj-hero">
+          <div className="proj-hero-img" style={heroStyle}>
+            {cover ? null : <span className="ph-letter">{letter}</span>}
+          </div>
+        </figure>
+
+        <section className="proj-overview">
+          <div className="proj-overview-main">
+            <h2 className="proj-h2">Overview</h2>
+            {body.length
+              ? body.map((para, i) => (<p key={i}>{para}</p>))
+              : <p>{project.description}</p>}
+            {tags.length ? (
+              <ul className="proj-chips">
+                {tags.map((t) => (<li key={t}>{t}</li>))}
+              </ul>
+            ) : null}
+          </div>
+
+          {facts.length ? (
+            <aside className="proj-facts">
+              {facts.map((f) => (
+                <div className="fact" key={f[0]}>
+                  <span className="fact-k">{f[0]}</span>
+                  <span className="fact-v">{f[1]}</span>
+                </div>
+              ))}
+            </aside>
+          ) : null}
+        </section>
+
+        <section className="proj-gallery">
+          {shots.map((src, i) => (
+            <div className="proj-shot" key={i} style={{ backgroundImage: `url(${src})` }} />
           ))}
-        </div>
+        </section>
 
         {!hasLink ? (
           <p className="proj-note">
@@ -104,17 +129,13 @@ export default async function ProjectPage({ params }) {
 
         <div className="proj-foot">
           {hasLink ? (
-            <a href={project.live_url} target="_blank" rel="noreferrer" className="btn btn-accent">
-              View Site ↗
-            </a>
+            <a href={project.live_url} target="_blank" rel="noreferrer" className="btn btn-accent">View Site &#8599;</a>
           ) : (
-            <Link href="/contact" className="btn btn-accent">
-              Ask Me About This Project
-            </Link>
+            <Link href="/contact" className="btn btn-accent">Ask Me About This Project</Link>
           )}
           <Link href="/contact" className="btn btn-ghost">Start a Project</Link>
         </div>
-      </div>
-    </section>
+      </article>
+    </div>
   );
 }

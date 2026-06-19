@@ -27,6 +27,9 @@ export default function NewProject() {
         site_type: '',
         work: '',
         live_url: '',
+        logo_url: '',
+        color1: '',
+        color2: '',
         tags: '',
         cover_image: null,
         gallery: [],
@@ -181,6 +184,21 @@ export default function NewProject() {
                         <div className={styles.formGroup}>
                             <label htmlFor="live_url" className={styles.label}>Live URL</label>
                             <input type="text" id="live_url" name="live_url" value={formData.live_url || ''} onChange={handleChange} className={styles.input} placeholder="https://example.com (blank if no public link)" />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="logo_url" className={styles.label}>Logo URL</label>
+                            <input type="text" id="logo_url" name="logo_url" value={formData.logo_url || ''} onChange={handleChange} className={styles.input} placeholder="/images/logos/your-logo.png (shown on the work-page card)" />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="color1" className={styles.label}>Brand Colour 1 (card background)</label>
+                            <input type="text" id="color1" name="color1" value={formData.color1 || ''} onChange={handleChange} className={styles.input} placeholder="#151515" />
+                        </div>
+
+                        <div className={styles.formGroup}>
+                            <label htmlFor="color2" className={styles.label}>Brand Colour 2 (inner-page accent)</label>
+                            <input type="text" id="color2" name="color2" value={formData.color2 || ''} onChange={handleChange} className={styles.input} placeholder="#F5D300" />
                         </div>
 
                         <div className={styles.formGroup}>

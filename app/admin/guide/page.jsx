@@ -53,6 +53,9 @@ export default function AdminGuide() {
         <Field name="Status">Draft hides it from the site. Published shows it on the work page.</Field>
         <Field name="Featured">On = it appears on the homepage Featured Work slider. Aim for about five.</Field>
         <Field name="Live URL">The public link to the project. Leave it blank if there is no public link. Projects with a link show a "View Site" button; projects without one show an "Ask Me About This Project" button that points visitors to the contact page (many client builds are private, behind a login, or since rebuilt).</Field>
+        <Field name="Logo URL">Path to the project's logo, shown on the work-page card over its brand colour. Leave blank to use the badge placeholder. Upload via the image fields or drop a file in /public/images/logos/.</Field>
+        <Field name="Brand Colour 1">Hex for the card background behind the logo on the work page, e.g. #151515.</Field>
+        <Field name="Brand Colour 2">Hex used as the accent / title colour on this project's inner page, so each case study reads in its own brand, e.g. #F5D300.</Field>
       </div>
 
       <div style={card}>

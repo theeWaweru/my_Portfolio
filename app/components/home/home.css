@@ -12,15 +12,15 @@
 /* ===================== STATEMENT HERO ===================== */
 .statement {
   background: var(--tw-navy); color: #fff;
-  min-height: calc(100vh - 76px); min-height: calc(100svh - 76px);
+  min-height: calc(100vh - 76px); min-height: calc(100dvh - 76px);
   display: flex; flex-direction: column;
   padding-top: clamp(40px, 6vh, 88px);
-  padding-bottom: clamp(40px, 4.5vh, 76px);
+  padding-bottom: clamp(64px, 9vh, 120px);
   position: relative; overflow: hidden;
   /* recolor WAWERU wordmark: navy strokes -> off-white, red stays red */
   --dark-blue: #f2f2ef; --marooned: var(--tw-red);
 }
-.statement .wrap { width: 100%; display: flex; flex-direction: column; flex: 1; }
+.statement .wrap { width: 100%; max-width: none; display: flex; flex-direction: column; flex: 1; }
 .statement-mark { margin-top: clamp(6px, 2vh, 20px); }
 .statement-mark svg { width: 100%; height: auto; display: block; }
 .statement-foot {

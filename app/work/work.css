@@ -591,9 +591,18 @@
   margin-top: -76px;
 }
 .proj-page {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 0 clamp(20px, 4vw, 72px) clamp(40px, 6vw, 90px);
+  width: 100%;
+  margin: 0;
+  padding: 0 0 clamp(40px, 6vw, 90px);
+}
+/* full-bleed: the cover hero runs edge to edge; text blocks keep a gutter */
+.proj-band,
+.proj-overview,
+.proj-gallery,
+.proj-note,
+.proj-foot {
+  padding-left: clamp(20px, 4vw, 72px);
+  padding-right: clamp(20px, 4vw, 72px);
 }
 
 .proj-band { padding: calc(76px + clamp(24px, 5vw, 60px)) 0 clamp(28px, 4vw, 48px); }
@@ -731,4 +740,45 @@
   .proj-tags { justify-content: flex-start; }
   .proj-overview { grid-template-columns: 1fr; gap: 34px; }
   .proj-gallery { grid-template-columns: 1fr; }
+}
+
+
+/* ===== in-page inner overlay: FLIP cover grow + retract, URL synced to /work/[id] ===== */
+.tw-work .tw-inner {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: var(--ink, #07080f);
+  color: var(--wtext);
+}
+.tw-work .tw-inner[hidden] { display: none; }
+.tw-work .tw-inner .proj-hero-img { transform-origin: top left; will-change: transform; }
+.tw-work .tw-inner .inner-back {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  color: var(--muted);
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+}
+.tw-work .tw-inner .inner-back:hover { color: var(--marooned, #D6223B); }
+
+/* the details slide in once the cover has grown into the hero */
+.tw-work .tw-inner .proj-chrome {
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.tw-work .tw-inner.revealed .proj-chrome { opacity: 1; transform: none; }
+.tw-work .tw-inner.revealed .proj-band { transition-delay: 0.04s; }
+.tw-work .tw-inner.revealed .proj-overview { transition-delay: 0.10s; }
+.tw-work .tw-inner.revealed .proj-gallery { transition-delay: 0.16s; }
+.tw-work .tw-inner.revealed .proj-foot { transition-delay: 0.20s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-work .tw-inner .proj-chrome { opacity: 1; transform: none; transition: none; }
 }

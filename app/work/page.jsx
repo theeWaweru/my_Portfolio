@@ -1,17 +1,21 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
 import { getProjects } from "../lib/supabase/projects";
 import "./work.css";
 
 // Immersive Work picker: vertical stack (default) + horizontal filmstrip, one
 // component, infinite loop, snap stepper, typewriter. Clicking the active card
-// grows a colour/cover veil out of it and routes to /work/[id] so the URL
-// changes (analytics) while the motion stays continuous into the project page.
+// opens an IN-PAGE inner overlay: the cover grows (FLIP) from the card into a
+// full-width hero, the details slide in, and "Back to Work" retracts the cover
+// back into the slider. The URL is synced to /work/[id] via the History API
+// (so analytics fire and the address reflects the project) while the slider
+// stays mounted underneath; the real /work/[id] route still serves direct
+// links, refresh and SEO.
+
+const PLACEHOLDER = "/images/placeholder.jpg";
 
 export default function WorkPage() {
   const rootRef = useRef(null);
-  const router = useRouter();
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -42,7 +46,6 @@ export default function WorkPage() {
     let active = 0;
     let mode = "vertical";
     let cards = [];
-    let navigating = false;
 
     let baseW = 600, baseH = 338, STEP = 200;
     let GUTTER = 72, GAP = 40, rightCount = 4;
@@ -239,7 +242,7 @@ export default function WorkPage() {
     let cool = false;
     function onWheel(e) {
       e.preventDefault();
-      if (cool) return;
+      if (cool || isOpen) return;
       const d = mode === "horizontal"
         ? (Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY)
         : e.deltaY;
@@ -258,7 +261,7 @@ export default function WorkPage() {
     function onTouchStart(e) { touchX = e.touches[0].clientX; touchY = e.touches[0].clientY; }
     function onTouchMove(e) { e.preventDefault(); }
     function onTouchEnd(e) {
-      if (touchX === null) return;
+      if (touchX === null || isOpen) { touchX = touchY = null; return; }
       const t = e.changedTouches[0];
       const d = mode === "horizontal" ? (touchX - t.clientX) : (touchY - t.clientY);
       const span = mode === "horizontal" ? (ACTIVE_W * 0.4) : (STEP * 0.5);
@@ -271,7 +274,7 @@ export default function WorkPage() {
     stage.addEventListener("touchend", onTouchEnd);
 
     let dragX = null;
-    function onPointerDown(e) { if (e.pointerType === "touch") return; dragX = e.clientX; }
+    function onPointerDown(e) { if (e.pointerType === "touch" || isOpen) return; dragX = e.clientX; }
     function onPointerUp(e) {
       if (dragX === null) return;
       const d = (mode === "horizontal") ? (dragX - e.clientX) : 0;
@@ -285,41 +288,173 @@ export default function WorkPage() {
     window.addEventListener("pointerup", onPointerUp);
 
     function onKey(e) {
+      if (isOpen) {
+        if (e.key === "Escape") { e.preventDefault(); history.back(); }
+        return;
+      }
       if (e.key === "ArrowDown" || e.key === "PageDown" || (mode === "horizontal" && e.key === "ArrowRight")) { e.preventDefault(); setActive(active + 1); }
       if (e.key === "ArrowUp" || e.key === "PageUp" || (mode === "horizontal" && e.key === "ArrowLeft")) { e.preventDefault(); setActive(active - 1); }
       if (e.key === "Enter") { openProject(active); }
     }
     window.addEventListener("keydown", onKey);
 
-    // Grow a colour/cover veil out of the active card, then route to the project.
-    function openProject(i) {
-      if (navigating) return;
-      navigating = true;
-      const p = PROJECTS[i];
-      const cover = cards[i].querySelector(".card-cover");
-      const rect = cover.getBoundingClientRect();
+    // ---------- inner overlay (FLIP grow + retract, URL synced) ----------
+    const inner = document.createElement("div");
+    inner.className = "tw-inner";
+    inner.hidden = true;
+    root.appendChild(inner);
+    let isOpen = false;
+    let savedRect = null;
+
+    const esc = (s) => String(s == null ? "" : s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+    function buildInner(p) {
+      const letter = letterOf(p);
       const c1 = p.color1 || "#0d0f1d";
+      const c2 = p.color2 || "#f2f2ef";
+      const cover = p.cover_image_url;
+      const tags = Array.isArray(p.tags) ? p.tags.filter(Boolean) : [];
+      const body = (p.full_description || p.description || "").split(/\n{2,}/).filter(Boolean);
+      const hasLink = Boolean(p.live_url);
+      const gallery = Array.isArray(p.gallery) ? p.gallery.filter(Boolean) : [];
+      const shots = gallery.length ? gallery : [PLACEHOLDER, PLACEHOLDER];
+      const facts = [
+        ["Client", p.client], ["Build", p.build], ["Site Type", p.site_type],
+        ["Work", p.work], ["Timeline", p.timeline],
+      ].filter(function (f) { return f[1]; });
 
-      const veil = document.createElement("div");
-      veil.className = "tw-veil";
-      veil.style.backgroundColor = c1;
-      if (p.cover_image_url) veil.style.backgroundImage = "url(" + p.cover_image_url + ")";
-      root.appendChild(veil);
+      const heroStyle = cover
+        ? "background-image:url(" + cover + ");"
+        : "background-color:" + c1 + ";color:" + c2 + ";";
+      const heroInner = cover ? "" : '<span class="ph-letter">' + esc(letter) + "</span>";
 
-      if (reduce) { router.push("/work/" + p.id); return; }
+      const tagsHead = tags.length
+        ? '<ul class="proj-tags">' + tags.map(function (t) { return "<li><span>" + esc(t) + "</span></li>"; }).join("") + "</ul>"
+        : "";
+      const bodyHtml = body.length
+        ? body.map(function (para) { return "<p>" + esc(para) + "</p>"; }).join("")
+        : "<p>" + esc(p.description) + "</p>";
+      const chips = tags.length
+        ? '<ul class="proj-chips">' + tags.map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("") + "</ul>"
+        : "";
+      const factsHtml = facts.length
+        ? '<aside class="proj-facts">' + facts.map(function (f) {
+            return '<div class="fact"><span class="fact-k">' + esc(f[0]) + '</span><span class="fact-v">' + esc(f[1]) + "</span></div>";
+          }).join("") + "</aside>"
+        : "";
+      const galleryHtml = shots.map(function (src) {
+        return '<div class="proj-shot" style="background-image:url(' + src + ')"></div>';
+      }).join("");
+      const note = !hasLink
+        ? '<p class="proj-note proj-chrome">A live link isn&apos;t available for this one. Many client builds are private, behind a login, or have since been rebranded or taken down. If you&apos;d like a closer look, reach out and I&apos;ll gladly walk you through the work.</p>'
+        : "";
+      const footPrimary = hasLink
+        ? '<a href="' + esc(p.live_url) + '" target="_blank" rel="noreferrer" class="btn btn-accent">View Site &#8599;</a>'
+        : '<a href="/contact" class="btn btn-accent">Ask Me About This Project</a>';
 
-      const W = window.innerWidth, H = window.innerHeight;
-      const sx = rect.width / W, sy = rect.height / H;
-      veil.style.transformOrigin = "top left";
-      veil.style.transform = "translate(" + rect.left + "px," + rect.top + "px) scale(" + sx + "," + sy + ")";
+      return '' +
+        '<article class="proj-page">' +
+          '<header class="proj-band proj-chrome">' +
+            '<div class="proj-crumbs">' +
+              '<button type="button" class="inner-back">&larr; Back to Work</button>' +
+              '<a href="/contact">[ Contact ]</a>' +
+            "</div>" +
+            '<div class="proj-head">' +
+              '<div class="proj-head-main">' +
+                '<h1 class="proj-title" style="color:' + c2 + '">' + esc(p.title) + "</h1>" +
+                '<p class="proj-excerpt">' + esc(p.description) + "</p>" +
+              "</div>" +
+              tagsHead +
+            "</div>" +
+          "</header>" +
+          '<figure class="proj-hero">' +
+            '<div class="proj-hero-img" style="' + heroStyle + '">' + heroInner + "</div>" +
+          "</figure>" +
+          '<section class="proj-overview proj-chrome">' +
+            '<div class="proj-overview-main">' +
+              '<h2 class="proj-h2">Overview</h2>' + bodyHtml + chips +
+            "</div>" +
+            factsHtml +
+          "</section>" +
+          '<section class="proj-gallery proj-chrome">' + galleryHtml + "</section>" +
+          note +
+          '<div class="proj-foot proj-chrome">' + footPrimary +
+            '<a href="/contact" class="btn btn-ghost">Start a Project</a>' +
+          "</div>" +
+        "</article>";
+    }
+
+    function openProject(i) {
+      if (isOpen) return;
+      const p = PROJECTS[i];
+      const coverEl = cards[i].querySelector(".card-cover");
+      const first = coverEl.getBoundingClientRect();
+      savedRect = first;
+
+      inner.innerHTML = buildInner(p);
+      inner.hidden = false;
+      inner.scrollTop = 0;
+      inner.classList.remove("revealed");
+      stage.classList.add("dimmed");
+      isOpen = true;
+
+      // sync the URL + analytics without unmounting the slider
+      history.pushState({ twInner: p.id }, "", "/work/" + p.id);
+
+      const heroImg = inner.querySelector(".proj-hero-img");
+      if (reduce || !heroImg) { inner.classList.add("revealed"); return; }
+
+      const last = heroImg.getBoundingClientRect();
+      const dx = first.left - last.left, dy = first.top - last.top;
+      const sx = first.width / last.width, sy = first.height / last.height;
+      heroImg.style.transition = "none";
+      heroImg.style.transform = "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy + ")";
       requestAnimationFrame(function () {
         requestAnimationFrame(function () {
-          veil.classList.add("grow");
-          veil.style.transform = "none";
+          heroImg.style.transition = "transform 0.72s cubic-bezier(0.22,1,0.36,1)";
+          heroImg.style.transform = "none";
         });
       });
-      setTimeout(function () { router.push("/work/" + p.id); }, 380);
+      const done = function () { inner.classList.add("revealed"); heroImg.removeEventListener("transitionend", done); };
+      heroImg.addEventListener("transitionend", done);
+      setTimeout(done, 820);
     }
+
+    function closeProject() {
+      if (!isOpen) return;
+      inner.classList.remove("revealed");
+      const heroImg = inner.querySelector(".proj-hero-img");
+      const coverEl = cards[active] ? cards[active].querySelector(".card-cover") : null;
+      const f = coverEl ? coverEl.getBoundingClientRect() : savedRect;
+
+      const finishHide = function () {
+        inner.hidden = true;
+        inner.innerHTML = "";
+        stage.classList.remove("dimmed");
+        isOpen = false;
+        savedRect = null;
+      };
+
+      if (reduce || !f || !heroImg) { finishHide(); return; }
+      const last = heroImg.getBoundingClientRect();
+      const dx = f.left - last.left, dy = f.top - last.top;
+      const sx = f.width / last.width, sy = f.height / last.height;
+      heroImg.style.transition = "transform 0.5s cubic-bezier(0.4,0,0.2,1)";
+      heroImg.style.transform = "translate(" + dx + "px," + dy + "px) scale(" + sx + "," + sy + ")";
+      setTimeout(finishHide, 520);
+    }
+
+    // "Back to Work" goes through history so the URL returns to /work and the
+    // retract plays via the popstate handler (single path for button + browser back).
+    function onInnerClick(e) {
+      const back = e.target.closest ? e.target.closest(".inner-back") : null;
+      if (back) { e.preventDefault(); history.back(); }
+    }
+    inner.addEventListener("click", onInnerClick);
+
+    function onPopState() { if (isOpen) closeProject(); }
+    window.addEventListener("popstate", onPopState);
 
     // init
     layout();
@@ -336,6 +471,7 @@ export default function WorkPage() {
       window.removeEventListener("resize", layout);
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("keydown", onKey);
+      window.removeEventListener("popstate", onPopState);
       stage.removeEventListener("wheel", onWheel);
       stage.removeEventListener("touchstart", onTouchStart);
       stage.removeEventListener("touchmove", onTouchMove);
@@ -343,6 +479,8 @@ export default function WorkPage() {
       stage.removeEventListener("pointerdown", onPointerDown);
       modeV.removeEventListener("click", onModeV);
       modeH.removeEventListener("click", onModeH);
+      inner.removeEventListener("click", onInnerClick);
+      if (inner.parentNode) inner.parentNode.removeChild(inner);
       document.body.style.overflow = prevOverflow;
       wheel.innerHTML = "";
     };

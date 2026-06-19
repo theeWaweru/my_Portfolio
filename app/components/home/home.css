@@ -39,7 +39,7 @@
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: clamp(0.86rem, 1.05vw, 1.02rem); line-height: 1.7;
   color: rgba(255,255,255,0.62); letter-spacing: 0.01em;
-  max-width: 42ch; text-transform: uppercase;
+  max-width: 42ch; text-transform: uppercase; margin-left: auto;
 }
 @media (max-width: 760px) {
   .statement-foot { grid-template-columns: 1fr; gap: 26px; }

@@ -482,18 +482,18 @@
 
 /* Header brand is now the WAWERU wordmark (small). It colours via --dark-blue /
    --marooned, so flip --dark-blue to white on the dark header variants. */
-.brand-mark { height: 20px; width: auto; display: block; }
+.brand-mark { height: auto; width: 100%; display: block; }
 .site-header.over-dark .brand, .site-header.work-dark .brand { --dark-blue: #fff; }
 
 /* Homepage wordmark morph: the brand scales up to full hero width at the top
    and shrinks into the menu on scroll (transform set by Header on scroll). */
 .brand-mark-wrap { display: block; transform-origin: left top; pointer-events: none; will-change: transform; }
 .site-header.home-morph { overflow: visible; }
-                                                                                        
+
 /* ===================== MENU BUTTON + MORPH (overrides) ===================== */
 /* The wordmark morph now animates WIDTH (crisp vector), not a scaled-up bitmap. */
-.brand-mark-wrap { display: block; transform-origin: left center; pointer-events: none; will-change: auto; }
-.brand-mark { height: 20px; width: auto; display: block; }
+.brand-mark-wrap { display: block; width: 178px; transform-origin: left center; pointer-events: none; will-change: auto; }
+.brand-mark { height: auto; width: 100%; display: block; }
 
 /* On the homepage the brand is pulled out of the bar flow so it can grow to the
    full hero width without changing the bar height; the Menu button stays right. */
@@ -563,7 +563,7 @@
   justify-content: space-between;
 }
 .menu-brand { display: flex; align-items: center; text-decoration: none; }
-.menu-brand .brand-mark { height: 22px; }
+.menu-brand .brand-mark { height: 22px; width: auto; }
 .menu-close { color: #fff; }
 
 .menu-body {

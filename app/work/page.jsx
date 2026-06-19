@@ -245,8 +245,10 @@ export default function WorkPage() {
         : e.deltaY;
       if (!d) return;
       const dir = d > 0 ? 1 : -1;
-      const steps = Math.abs(d) > 140 ? 2 : 1;
-      setActive(active + dir * steps);
+      // Always advance one project per wheel tick. A single mouse-wheel notch
+      // often reports deltaY > 140, which used to double-step (the "skip").
+      // The 360ms cooldown below already prevents runaway fast scrolling.
+      setActive(active + dir);
       cool = true;
       setTimeout(function () { cool = false; }, 360);
     }

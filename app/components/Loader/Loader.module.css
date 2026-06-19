@@ -1,71 +1,105 @@
+/* Loader: a paper sheet that turns like a page. Warm off-white so it no longer
+   clashes with the navy hero. The fold is a 3D rotateX around the TOP edge.
+   Enter and leave both rotate the SAME direction (negative), so the entrance
+   never reveals a sliver of the destination, and the exit lifts the page away
+   from the bottom up. */
 .loader {
   position: fixed;
-  width: 175vmax; height: 175vmax;
-  left: 50%; top: 50%;
-  margin-left: -87.5vmax; margin-top: -87.5vmax;
-  background: var(--dark-blue, #121642);
-  display: flex; align-items: center; justify-content: center;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: #efeae0;
+  color: #121642;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 9999;
-  transform: rotate(0deg);
-  transform-origin: center center;
-  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: top center;
+  transform: perspective(2000px) rotateX(0deg);
+  transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  backface-visibility: hidden;
   will-change: transform;
 }
-/* tilt coming in: starts at +10deg, settles to flat */
-.enter { transform: rotate(10deg); transition: none; }
-/* leaving: flat up and out, tilted -10deg */
-.leaving { transform: translateY(-120%) rotate(-10deg); transition: transform 0.8s cubic-bezier(0.76, 0, 0.24, 1); }
+/* a soft seam at the top edge + a lift shadow at the bottom, for paper depth */
+.loader::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0) 12%),
+    linear-gradient(to top, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0) 22%);
+}
+
+/* covering, just landed: slight fold, settles flat (never reveals the page) */
+.enter { transform: perspective(2000px) rotateX(-8deg); transition: none; }
+/* leaving: the page lifts up and away around its top edge */
+.leaving {
+  transform: perspective(2000px) rotateX(-96deg) translateY(-4%);
+  transition: transform 0.8s cubic-bezier(0.74, 0, 0.26, 1);
+}
 
 .band {
-  position: relative; width: 100vw;
+  position: relative;
+  width: 100vw;
   padding: 0 clamp(28px, 6vw, 88px);
-  display: flex; align-items: center; justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .wordmark {
   font-family: var(--font-tektur), "Tektur", system-ui, sans-serif;
   font-weight: 700;
   font-size: clamp(1.1rem, 2.1vw, 1.7rem);
-  color: #f2f2ef;
+  color: #121642;
   white-space: nowrap;
 }
-.accent { color: var(--marooned, #D6223B); }
+.accent { color: var(--marooned, #d6223b); }
 
 .label {
   font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
   font-size: clamp(0.68rem, 1.1vw, 0.84rem);
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: rgba(255, 255, 255, 0.58);
+  color: rgba(18, 22, 66, 0.55);
   white-space: nowrap;
 }
 
+/* badge sits on a navy disc so its white marks read on the light sheet */
 .badge {
   position: absolute;
   left: 50%; top: 50%;
   transform: translate(-50%, -50%);
-  width: clamp(72px, 8vw, 104px);
+  width: clamp(96px, 11vw, 136px);
 }
-.badge img { width: 100%; height: auto; display: block; }
+.badge img { width: 60%; height: auto; display: block; margin: 0 auto; }
 
 .pulse {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: #121642;
+  box-shadow: 0 14px 40px rgba(18, 22, 66, 0.18);
   transform-origin: center center;
   animation: heartbeat 1.4s ease-in-out infinite, heartglow 1.4s ease-in-out infinite;
 }
 
 @keyframes heartbeat {
   0% { transform: scale(1); }
-  14% { transform: scale(1.09); }
+  14% { transform: scale(1.07); }
   28% { transform: scale(1); }
-  42% { transform: scale(1.13); }
+  42% { transform: scale(1.11); }
   56% { transform: scale(1); }
   100% { transform: scale(1); }
 }
 @keyframes heartglow {
-  0%, 56%, 100% { filter: drop-shadow(0 0 0 rgba(214, 34, 59, 0)); }
-  14% { filter: drop-shadow(0 0 14px rgba(214, 34, 59, 0.35)); }
-  42% { filter: drop-shadow(0 0 22px rgba(214, 34, 59, 0.55)); }
+  0%, 56%, 100% { box-shadow: 0 14px 40px rgba(18, 22, 66, 0.18); }
+  14% { box-shadow: 0 14px 40px rgba(18, 22, 66, 0.22), 0 0 14px rgba(214, 34, 59, 0.25); }
+  42% { box-shadow: 0 14px 44px rgba(18, 22, 66, 0.26), 0 0 24px rgba(214, 34, 59, 0.4); }
 }
 
 @media (max-width: 600px) {
@@ -76,6 +110,6 @@
 @media (prefers-reduced-motion: reduce) {
   .loader { transition: none; }
   .enter { transform: none; }
-  .leaving { transform: translateY(-120%); transition: none; }
+  .leaving { transform: translateY(-101%); transition: none; }
   .pulse { animation: none; }
 }

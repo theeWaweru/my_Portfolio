@@ -65,10 +65,7 @@ export default async function ProjectPage({ params }) {
     <div className="tw-work proj">
       <article className="proj-page">
         <header className="proj-band">
-          <div className="proj-crumbs">
-            <Link href="/work">&larr; Back to Work</Link>
-            <Link href="/contact">[ Contact ]</Link>
-          </div>
+
           <div className="proj-head">
             <div className="proj-head-main">
               <h1 className="proj-title" style={{ color: c2 }}>{project.title}</h1>
@@ -79,6 +76,9 @@ export default async function ProjectPage({ params }) {
                 {tags.map((t) => (<li key={t}><span>{t}</span></li>))}
               </ul>
             ) : null}
+          </div> 
+          <div className="proj-crumbs">
+            <Link href="/work" className="btn btn-primary">Back to Work</Link>
           </div>
         </header>
 
@@ -115,7 +115,7 @@ export default async function ProjectPage({ params }) {
 
         <section className="proj-gallery">
           {shots.map((src, i) => (
-            <div className="proj-shot" key={i} style={{ backgroundImage: `url(${src})` }} />
+            <div className="proj-shot menu-portrait" key={i} style={{ backgroundImage: `url(${src})` }} />
           ))}
         </section>
 

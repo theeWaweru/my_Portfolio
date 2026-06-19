@@ -8,7 +8,7 @@
   --faint: rgba(255, 255, 255, 0.30);
   --wtext: #f2f2ef;
   --wease: cubic-bezier(0.22, 1, 0.36, 1);
-  --wmono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --wmono: var(--font-bricolage);
 }
 
 .tw-work .stage {
@@ -593,19 +593,11 @@
 .proj-page {
   width: 100%;
   margin: 0;
-  padding: 0 0 clamp(40px, 6vw, 90px);
-}
-/* full-bleed: the cover hero runs edge to edge; text blocks keep a gutter */
-.proj-band,
-.proj-overview,
-.proj-gallery,
-.proj-note,
-.proj-foot {
-  padding-left: clamp(20px, 4vw, 72px);
-  padding-right: clamp(20px, 4vw, 72px);
+  /* same horizontal gutter as the homepage hero */
+  padding: 0 var(--gutter) clamp(40px, 6vw, 90px);
 }
 
-.proj-band { padding: calc(76px + clamp(24px, 5vw, 60px)) 0 clamp(28px, 4vw, 48px); }
+.proj-band { padding: calc(76px + clamp(120px, 16vw, 200px)) 0 clamp(28px, 4vw, 48px); }
 .proj-crumbs {
   display: flex;
   gap: 26px;
@@ -613,7 +605,7 @@
   font-size: 0.72rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  margin-bottom: clamp(40px, 7vw, 90px);
+  margin-top: clamp(24px, 3vw, 48px);
 }
 .proj-crumbs a { color: var(--muted); text-decoration: none; }
 .proj-crumbs a:hover { color: var(--marooned, #D6223B); }
@@ -621,7 +613,7 @@
 .proj-head { display: grid; grid-template-columns: 1.5fr 1fr; gap: 40px; align-items: end; }
 .proj-title {
   font-family: var(--font-tektur), "Tektur", sans-serif;
-  font-weight: 500;
+  font-weight: 700;
   font-size: clamp(2.4rem, 6vw, 4.6rem);
   line-height: 1.0;
   margin: 0;
@@ -637,7 +629,7 @@
 .proj-tags { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 10px; list-style: none; margin: 0; padding: 0; }
 .proj-tags span {
   display: inline-block;
-  font-family: var(--wmono);
+  font-family: var(--font-bricolage);
   font-size: 0.68rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -646,7 +638,7 @@
   padding: 9px 14px;
 }
 
-.proj-hero { width: 100%; aspect-ratio: 16 / 9; overflow: hidden; background: var(--ink-2, #0d0f1d); }
+.proj-hero { width: auto; margin-left: calc(var(--gutter) * -1); margin-right: calc(var(--gutter) * -1); aspect-ratio: 16 / 9; overflow: hidden; background: var(--ink-2, #0d0f1d); }
 .proj-hero-img { width: 100%; height: 100%; background-size: cover; background-position: center; display: grid; place-items: center; }
 .proj-hero-img .ph-letter {
   font-family: var(--font-tektur), "Tektur", sans-serif;
@@ -782,3 +774,8 @@
 @media (prefers-reduced-motion: reduce) {
   .tw-work .tw-inner .proj-chrome { opacity: 1; transform: none; transition: none; }
 }
+
+
+/* footer on the inner work page blends into the body instead of a navy block */
+.tw-work .tw-inner .site-footer { background: var(--ink, #07080f); }
+body:has(.tw-work.proj) .site-footer { background: var(--ink, #07080f); }

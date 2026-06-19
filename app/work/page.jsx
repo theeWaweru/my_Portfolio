@@ -340,8 +340,8 @@ export default function WorkPage() {
         : "";
       const factsHtml = facts.length
         ? '<aside class="proj-facts">' + facts.map(function (f) {
-            return '<div class="fact"><span class="fact-k">' + esc(f[0]) + '</span><span class="fact-v">' + esc(f[1]) + "</span></div>";
-          }).join("") + "</aside>"
+          return '<div class="fact"><span class="fact-k">' + esc(f[0]) + '</span><span class="fact-v">' + esc(f[1]) + "</span></div>";
+        }).join("") + "</aside>"
         : "";
       const galleryHtml = shots.map(function (src) {
         return '<div class="proj-shot" style="background-image:url(' + src + ')"></div>';
@@ -355,33 +355,33 @@ export default function WorkPage() {
 
       return '' +
         '<article class="proj-page">' +
-          '<header class="proj-band proj-chrome">' +
-            '<div class="proj-crumbs">' +
-              '<button type="button" class="inner-back">&larr; Back to Work</button>' +
-              '<a href="/contact">[ Contact ]</a>' +
-            "</div>" +
-            '<div class="proj-head">' +
-              '<div class="proj-head-main">' +
-                '<h1 class="proj-title" style="color:' + c2 + '">' + esc(p.title) + "</h1>" +
-                '<p class="proj-excerpt">' + esc(p.description) + "</p>" +
-              "</div>" +
-              tagsHead +
-            "</div>" +
-          "</header>" +
-          '<figure class="proj-hero">' +
-            '<div class="proj-hero-img" style="' + heroStyle + '">' + heroInner + "</div>" +
-          "</figure>" +
-          '<section class="proj-overview proj-chrome">' +
-            '<div class="proj-overview-main">' +
-              '<h2 class="proj-h2">Overview</h2>' + bodyHtml + chips +
-            "</div>" +
-            factsHtml +
-          "</section>" +
-          '<section class="proj-gallery proj-chrome">' + galleryHtml + "</section>" +
-          note +
-          '<div class="proj-foot proj-chrome">' + footPrimary +
-            '<a href="/contact" class="btn btn-ghost">Start a Project</a>' +
-          "</div>" +
+        '<header class="proj-band proj-chrome">' +
+
+        '<div class="proj-head">' +
+        '<div class="proj-head-main">' +
+        '<h1 class="proj-title" style="color:' + c2 + '">' + esc(p.title) + "</h1>" +
+        '<p class="proj-excerpt">' + esc(p.description) + "</p>" +
+        "</div>" +
+        tagsHead +
+        "</div>" +
+        "</header>" +
+        '<div class="proj-crumbs">' +
+        '<button type="button" class="btn btn-primary inner-back">Back to Work</button>' +
+        "</div>" +
+        '<figure class="proj-hero">' +
+        '<div class="proj-hero-img" style="' + heroStyle + '">' + heroInner + "</div>" +
+        "</figure>" +
+        '<section class="proj-overview proj-chrome">' +
+        '<div class="proj-overview-main">' +
+        '<h2 class="proj-h2">Overview</h2>' + bodyHtml + chips +
+        "</div>" +
+        factsHtml +
+        "</section>" +
+        '<section class="proj-gallery proj-chrome">' + galleryHtml + "</section>" +
+        note +
+        '<div class="proj-foot proj-chrome">' + footPrimary +
+        '<a href="/contact" class="btn btn-ghost">Start a Project</a>' +
+        "</div>" +
         "</article>";
     }
 
@@ -393,6 +393,14 @@ export default function WorkPage() {
       savedRect = first;
 
       inner.innerHTML = buildInner(p);
+      // the fixed overlay covers the global footer, so clone it in (its
+      // background is matched to the inner-page body in work.css).
+      const siteFooter = document.querySelector("footer.site-footer");
+      if (siteFooter) {
+        const footerClone = siteFooter.cloneNode(true);
+        footerClone.classList.add("proj-chrome");
+        inner.appendChild(footerClone);
+      }
       inner.hidden = false;
       inner.scrollTop = 0;
       inner.classList.remove("revealed");

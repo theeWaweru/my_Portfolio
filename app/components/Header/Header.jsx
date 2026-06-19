@@ -113,14 +113,12 @@ export default function Header() {
           </Link>
           <button
             type="button"
-            className="menu-toggle"
+            className="btn btn-accent menu-toggle"
             ref={btnRef}
             onClick={() => setMenuOpen(true)}
             aria-label="Open menu"
           >
-            <span className="mt-bracket">[</span>
-            <span className="mt-label">Menu</span>
-            <span className="mt-bracket">]</span>
+            Menu
           </button>
         </div>
       </header>
@@ -135,10 +133,8 @@ export default function Header() {
           <Link className="menu-brand" href="/" onClick={() => setMenuOpen(false)} aria-label="theeWaweru home">
             <WaweruWordmark className="brand-mark" />
           </Link>
-          <button type="button" className="menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">
-            <span className="mt-bracket">[</span>
-            <span className="mt-label">Close</span>
-            <span className="mt-bracket">]</span>
+          <button type="button" className="btn btn-accent menu-close" onClick={() => setMenuOpen(false)} aria-label="Close menu">
+            Close
           </button>
         </div>
 

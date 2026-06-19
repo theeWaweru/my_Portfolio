@@ -508,26 +508,10 @@
 .site-header.home-morph .brand-mark-wrap { transform-origin: left top; }
 
 /* Menu toggle (replaces the old nav + Wanna Chat, on every page) */
-.menu-toggle, .menu-close {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: none;
-  border: 0;
-  cursor: pointer;
-  padding: 6px 2px;
-  font-family: var(--font-display);
-  font-weight: var(--fw-medium);
-  font-size: 0.92rem;
-  letter-spacing: 0.04em;
-  color: var(--tw-navy);
-  z-index: 2;
-  transition: color .25s ease, opacity .35s ease;
-}
-.menu-toggle .mt-bracket, .menu-close .mt-bracket { color: var(--tw-red); }
-.menu-toggle .mt-label, .menu-close .mt-label { transition: letter-spacing .25s ease; }
-.menu-toggle:hover .mt-label, .menu-close:hover .mt-label { letter-spacing: 0.12em; }
-.site-header.over-dark .menu-toggle, .site-header.work-dark .menu-toggle { color: #fff; }
+/* Menu + Close now use the standard accent button (.btn.btn-accent). Keep only
+   the layout/morph hooks; appearance comes from the button styles. Slightly more
+   compact padding so the solid button sits comfortably in the 76px bar. */
+.menu-toggle, .menu-close { z-index: 2; padding: 12px 24px; }
 
 /* ===================== MENU OVERLAY ===================== */
 .menu-overlay {

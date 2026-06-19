@@ -779,3 +779,11 @@
 /* footer on the inner work page blends into the body instead of a navy block */
 .tw-work .tw-inner .site-footer { background: var(--ink, #07080f); }
 body:has(.tw-work.proj) .site-footer { background: var(--ink, #07080f); }
+
+
+/* inner-page images carry the brand corner cut (top-right + bottom-left),
+   the same angled style used on the menu image and the buttons (28px). */
+.proj-hero,
+.proj-shot {
+  clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
+}

@@ -19,7 +19,7 @@ export default function Services() {
         </div>
         <div className="svc-list">
           {SERVICES.map((s, i) => (
-            <a className="svc-row" href="/contact" key={s.name}>
+            <a className="svc-row" key={s.name}>
               <span className="svc-name">{s.name}</span>
               <span className="svc-idx">{String(i + 1).padStart(2, "0")}</span>
               <div className="svc-prev">

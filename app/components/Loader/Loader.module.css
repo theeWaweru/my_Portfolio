@@ -73,7 +73,7 @@
   transform: translate(-50%, -50%);
   width: clamp(96px, 11vw, 136px);
 }
-.badge img { width: 60%; height: auto; display: block; margin: 0 auto; }
+.badge img { width: 98%; height: auto; display: block; margin: 0 auto; }
 
 .pulse {
   display: flex;

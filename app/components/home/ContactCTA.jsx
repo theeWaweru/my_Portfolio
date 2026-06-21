@@ -11,7 +11,7 @@ export default function ContactCTA() {
           Have a project in mind? I'd love to hear about it. Let's turn your idea
           into something that earns attention.
         </p>
-        <a href="mailto:davidngari47@gmail.com" className="btn btn-light reveal">
+        <a href="/contact" className="btn btn-light reveal">
           Get In Touch
         </a>
         <a href="mailto:davidngari47@gmail.com" className="email reveal">

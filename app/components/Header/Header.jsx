@@ -27,6 +27,7 @@ export default function Header() {
 
   const markRef = useRef(null);
   const btnRef = useRef(null);
+  const brandRef = useRef(null);
 
   // Homepage wordmark morph: render the mark at full hero width (crisp vector)
   // and shrink its WIDTH into the menu size on scroll. Animating width keeps the
@@ -44,6 +45,15 @@ export default function Header() {
         const w = bigW + (SMALL_W - bigW) * p;
         mark.style.width = w + "px";
       }
+      const brand = brandRef.current;
+      if (brand) {
+        // Hero: the wordmark begins low (13vh). As it shrinks on scroll it rises
+        // and settles into its normal bar position (centered in the 76px bar).
+        const startTop = window.innerHeight * 0.13;
+        const markH = mark ? mark.offsetHeight : 20;
+        const restTop = Math.max(0, (76 - markH) / 2);
+        brand.style.top = (startTop + (restTop - startTop) * p) + "px";
+      }
       const btn = btnRef.current;
       if (btn) {
         const o = Math.min(1, Math.max(0, (p - BTN_START) / (1 - BTN_START)));
@@ -54,6 +64,7 @@ export default function Header() {
 
     const resetMorph = () => {
       if (markRef.current) markRef.current.style.width = "";
+      if (brandRef.current) brandRef.current.style.top = "";
       if (btnRef.current) { btnRef.current.style.opacity = ""; btnRef.current.style.pointerEvents = ""; }
     };
 
@@ -106,7 +117,7 @@ export default function Header() {
     <>
       <header className={cls}>
         <div className="header-inner">
-          <Link className="brand" href="/" aria-label="theeWaweru home">
+          <Link className="brand" href="/" aria-label="theeWaweru home" ref={brandRef}>
             <span className="brand-mark-wrap" ref={markRef}>
               <WaweruWordmark className="brand-mark" />
             </span>
@@ -139,19 +150,36 @@ export default function Header() {
         </div>
 
         <div className="menu-body">
-          <nav className="menu-links">
-            {MENU.map((m, i) => (
-              <Link
-                key={m.label}
-                href={m.href}
-                onClick={() => setMenuOpen(false)}
-                style={{ transitionDelay: (0.06 * i + 0.05) + "s" }}
-              >
-                <span className="ml-index">0{i + 1}</span>
-                <span className="ml-text">{m.label}</span>
-              </Link>
-            ))}
-          </nav>
+          <div className="menu-left">
+            <nav className="menu-links">
+              {MENU.map((m, i) => (
+                <Link
+                  key={m.label}
+                  href={m.href}
+                  onClick={() => setMenuOpen(false)}
+                  style={{ transitionDelay: (0.06 * i + 0.05) + "s" }}
+                >
+                  <span className="ml-index">0{i + 1}</span>
+                  <span className="ml-text">{m.label}</span>
+                </Link>
+              ))}
+            </nav>
+
+            <div className="sq-row menu-sq-row">
+              <a className="sq" href="https://x.com/theeWaweru" target="_blank" rel="noreferrer" aria-label="X">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24h-6.66l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
+              </a>
+              <a className="sq" href="https://www.linkedin.com/in/waweru-ngari/" target="_blank" rel="noreferrer" aria-label="LinkedIn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" /><rect x="2" y="9" width="4" height="12" /><circle cx="4" cy="4" r="2" /></svg>
+              </a>
+              <a className="sq" href="https://www.instagram.com/theewaweru" target="_blank" rel="noreferrer" aria-label="Instagram">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" /><circle cx="12" cy="12" r="4" /><circle cx="17.5" cy="6.5" r="1.1" fill="currentColor" stroke="none" /></svg>
+              </a>
+              <a className="sq" href="https://github.com/theeWaweru" target="_blank" rel="noreferrer" aria-label="GitHub">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22" /></svg>
+              </a>
+            </div>
+          </div>
 
           <aside className="menu-feature">
             <div className="menu-portrait">
@@ -165,11 +193,6 @@ export default function Header() {
         </div>
 
         <div className="menu-foot">
-          <div className="menu-socials">
-            <a href="https://x.com/theeWaweru" target="_blank" rel="noreferrer">X</a>
-            <a href="https://www.linkedin.com/in/waweru-ngari/" target="_blank" rel="noreferrer">LinkedIn</a>
-            <a href="https://www.instagram.com/theewaweru" target="_blank" rel="noreferrer">Instagram</a>
-          </div>
           <div className="menu-legal">
             <Link href="/privacy" onClick={() => setMenuOpen(false)}>Privacy Policy</Link>
             <span>&copy; 2026 David Waweru Ngari.</span>

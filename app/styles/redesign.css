@@ -36,7 +36,8 @@
   --gutter: clamp(24px, 5vw, 80px);
   --ease: cubic-bezier(0.4, 0, 0.2, 1);
   --dur: 0.3s;
-  --ink: #07080f; --ink-2: #0d0f1d;
+  --ink: #07080f;
+  --ink-2: #0d0f1d;
 }
 
 ::selection {
@@ -142,7 +143,7 @@
   --btn-fill: var(--tw-navy);
   --btn-text: #fff;
   transform: translateY(-2px);
-  color: var(--tw-white) ;
+  color: var(--tw-white);
 }
 
 .btn-light {
@@ -398,23 +399,43 @@
 }
 
 .sq {
+  position: relative;
+  isolation: isolate;
   width: 50px;
   height: 50px;
-  border-radius: 5px;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.12);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  transition: background .3s ease, color .3s ease, transform .3s ease, border-color .3s ease;
+  /* chamfered corners like the brand buttons (top-right + bottom-left) */
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  transition: background .3s ease, color .3s ease, transform .3s ease;
+}
+
+/* angled border frame, so the outline stays clean on the diagonal cuts too */
+.sq::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgba(255, 255, 255, 0.16);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px),
+      0 0,
+      2px 2px, 2px calc(100% - 14px), 14px calc(100% - 2px),
+      calc(100% - 2px) calc(100% - 2px), calc(100% - 2px) 14px, calc(100% - 14px) 2px, 2px 2px);
+  transition: background .3s ease;
+  pointer-events: none;
 }
 
 .sq:hover {
-  background: var(--tw-red);
-  border-color: var(--tw-red);
-  color: #fff;
+  background: var(--tw-gold);
+  color: var(--tw-navy);
   transform: translateY(-3px);
+}
+
+.sq:hover::before {
+  background: var(--tw-gold);
 }
 
 .sq svg {
@@ -471,47 +492,110 @@
     grid-column: 1 / -1;
   }
 }
+
 /* Header on the immersive work pages: transparent over the dark ground, white text */
-.site-header.work-dark { background: transparent; backdrop-filter: none; box-shadow: none; }
-.site-header.work-dark .brand { color: #fff; }
-.site-header.work-dark .brand img { filter: brightness(0) invert(1); }
-.site-header.work-dark .nav a { color: rgba(255,255,255,0.82); }
-.site-header.work-dark .nav a:hover { color: #fff; }
-.site-header.work-dark .btn-primary { --btn-fill: #fff; --btn-border: #fff; --btn-text: var(--tw-navy); }
-.site-header.work-dark .btn-primary:hover { --btn-fill: transparent; --btn-text: #fff; }
+.site-header.work-dark {
+  background: transparent;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.site-header.work-dark .brand {
+  color: #fff;
+}
+
+.site-header.work-dark .brand img {
+  filter: brightness(0) invert(1);
+}
+
+.site-header.work-dark .nav a {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.site-header.work-dark .nav a:hover {
+  color: #fff;
+}
+
+.site-header.work-dark .btn-primary {
+  --btn-fill: #fff;
+  --btn-border: #fff;
+  --btn-text: var(--tw-navy);
+}
+
+.site-header.work-dark .btn-primary:hover {
+  --btn-fill: transparent;
+  --btn-text: #fff;
+}
 
 /* Header brand is now the WAWERU wordmark (small). It colours via --dark-blue /
    --marooned, so flip --dark-blue to white on the dark header variants. */
-.brand-mark { height: auto; width: 100%; display: block; }
-.site-header.over-dark .brand, .site-header.work-dark .brand { --dark-blue: #fff; }
+.brand-mark {
+  height: auto;
+  width: 100%;
+  display: block;
+}
+
+.site-header.over-dark .brand,
+.site-header.work-dark .brand {
+  --dark-blue: #fff;
+}
 
 /* Homepage wordmark morph: the brand scales up to full hero width at the top
    and shrinks into the menu on scroll (transform set by Header on scroll). */
-.brand-mark-wrap { display: block; transform-origin: left top; pointer-events: none; will-change: transform; }
-.site-header.home-morph { overflow: visible; }
+.brand-mark-wrap {
+  display: block;
+  transform-origin: left top;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.site-header.home-morph {
+  overflow: visible;
+}
 
 /* ===================== MENU BUTTON + MORPH (overrides) ===================== */
 /* The wordmark morph now animates WIDTH (crisp vector), not a scaled-up bitmap. */
-.brand-mark-wrap { display: block; width: 178px; transform-origin: left center; pointer-events: none; will-change: auto; }
-.brand-mark { height: auto; width: 100%; display: block; }
+.brand-mark-wrap {
+  display: block;
+  width: 178px;
+  transform-origin: left center;
+  pointer-events: none;
+  will-change: auto;
+}
+
+.brand-mark {
+  height: auto;
+  width: 100%;
+  display: block;
+}
 
 /* On the homepage the brand is pulled out of the bar flow so it can grow to the
    full hero width without changing the bar height; the Menu button stays right. */
-.site-header.home-morph .header-inner { justify-content: flex-end; }
+.site-header.home-morph .header-inner {
+  justify-content: flex-end;
+}
+
 .site-header.home-morph .brand {
   position: absolute;
   left: var(--gutter);
-  top: 16px;
+  top: 13vh;
   align-items: flex-start;
   z-index: 1;
 }
-.site-header.home-morph .brand-mark-wrap { transform-origin: left top; }
+
+.site-header.home-morph .brand-mark-wrap {
+  transform-origin: left top;
+}
 
 /* Menu toggle (replaces the old nav + Wanna Chat, on every page) */
 /* Menu + Close now use the standard accent button (.btn.btn-accent). Keep only
    the layout/morph hooks; appearance comes from the button styles. Slightly more
    compact padding so the solid button sits comfortably in the 76px bar. */
-.menu-toggle, .menu-close { z-index: 2; padding: 12px 24px; }
+.menu-toggle,
+.menu-close {
+  z-index: 2;
+  padding: 12px 24px;
+}
 
 /* ===================== MENU OVERLAY ===================== */
 .menu-overlay {
@@ -531,6 +615,7 @@
   transform: translateY(-1.5%);
   transition: opacity .45s var(--ease), transform .55s var(--ease), visibility 0s linear .5s;
 }
+
 .menu-overlay.open {
   opacity: 1;
   visibility: visible;
@@ -546,9 +631,21 @@
   align-items: center;
   justify-content: space-between;
 }
-.menu-brand { display: flex; align-items: center; text-decoration: none; }
-.menu-brand .brand-mark { height: 22px; width: auto; }
-.menu-close { color: #fff; }
+
+.menu-brand {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.menu-brand .brand-mark {
+  height: 22px;
+  width: auto;
+}
+
+.menu-close {
+  color: #fff;
+}
 
 .menu-body {
   flex: 1 1 auto;
@@ -559,7 +656,12 @@
   min-height: 0;
 }
 
-.menu-links { display: flex; flex-direction: column; gap: clamp(8px, 1.4vw, 20px); }
+.menu-links {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(8px, 1.4vw, 20px);
+}
+
 .menu-links a {
   display: flex;
   align-items: baseline;
@@ -575,14 +677,47 @@
   transform: translateY(20px);
   transition: opacity .5s var(--ease), transform .5s var(--ease), color .25s ease;
 }
-.menu-overlay.open .menu-links a { opacity: 1; transform: none; }
-.menu-links a:hover { color: var(--tw-red); }
+
+.menu-overlay.open .menu-links a {
+  opacity: 1;
+  transform: none;
+}
+
+.menu-links a:hover {
+  color: var(--tw-red);
+}
+
 .menu-links .ml-index {
   font-family: var(--wmono, ui-monospace, Menlo, monospace);
   font-size: 0.85rem;
   letter-spacing: 0.1em;
   color: var(--tw-red);
   opacity: 0.85;
+}
+
+/* left column holds the nav links + the social bubbles (stays on mobile) */
+.menu-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: clamp(24px, 5vh, 56px);
+  min-height: 0;
+}
+
+.menu-sq-row {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .5s var(--ease) .3s, transform .5s var(--ease) .3s;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap:24px;
+}
+
+.menu-overlay.open .menu-sq-row {
+  opacity: 1;
+  transform: none;
 }
 
 /* Desktop feature panel: portrait + tagline, with the angled button-corner clip */
@@ -592,7 +727,12 @@
   transform: translateY(20px);
   transition: opacity .6s var(--ease) .15s, transform .6s var(--ease) .15s;
 }
-.menu-overlay.open .menu-feature { opacity: 1; transform: none; }
+
+.menu-overlay.open .menu-feature {
+  opacity: 1;
+  transform: none;
+}
+
 .menu-portrait {
   width: 100%;
   aspect-ratio: 4 / 5;
@@ -600,7 +740,14 @@
   background: #11142e;
   clip-path: polygon(0 0, calc(100% - 28px) 0, 100% 28px, 100% 100%, 28px 100%, 0 calc(100% - 28px));
 }
-.menu-portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.menu-portrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 .menu-feature-text h3 {
   font-family: var(--font-display);
   font-weight: var(--fw-semibold);
@@ -608,6 +755,7 @@
   margin: 22px 0 8px;
   letter-spacing: 0.01em;
 }
+
 .menu-feature-text p {
   font-family: var(--font-body);
   color: rgba(255, 255, 255, 0.62);
@@ -626,8 +774,9 @@
   padding: 22px 0 30px;
   border-top: 1px solid rgba(255, 255, 255, 0.12);
 }
-.menu-socials { display: flex; gap: 26px; }
-.menu-socials a, .menu-legal a, .menu-legal span {
+
+.menu-legal a,
+.menu-legal span {
   font-family: var(--font-display);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -636,13 +785,30 @@
   text-decoration: none;
   transition: color .25s ease;
 }
-.menu-socials a:hover, .menu-legal a:hover { color: #fff; }
-.menu-legal { display: flex; align-items: center; gap: 26px; }
+
+.menu-legal a:hover {
+  color: #fff;
+}
+
+.menu-legal {
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
 
 @media (max-width: 820px) {
-  .menu-body { grid-template-columns: 1fr; align-items: center; }
-  .menu-feature { display: none; }
-  .menu-foot { justify-content: flex-start; }
+  .menu-body {
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  .menu-feature {
+    display: none;
+  }
+
+  .menu-foot {
+    justify-content: flex-start;
+  }
 }
 
 
@@ -659,18 +825,21 @@
   pointer-events: none;
   transition: opacity .3s ease, visibility 0s linear .3s;
 }
+
 .lb.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
   transition: opacity .3s ease;
 }
+
 .lb-backdrop {
   position: absolute;
   inset: 0;
   background: rgba(5, 6, 12, .92);
   backdrop-filter: blur(4px);
 }
+
 .lb-stage {
   position: relative;
   margin: 0;
@@ -681,6 +850,7 @@
   justify-content: center;
   z-index: 1;
 }
+
 .lb-img {
   max-width: 90vw;
   max-height: 86vh;
@@ -691,6 +861,7 @@
   transition: opacity .25s ease;
   box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
 }
+
 .lb-close,
 .lb-nav {
   position: absolute;
@@ -704,13 +875,43 @@
   justify-content: center;
   transition: background .2s ease, border-color .2s ease, transform .2s ease;
 }
-.lb-close { top: 22px; right: 22px; width: 46px; height: 46px; font-size: 1.6rem; line-height: 1; }
-.lb-nav { top: 50%; transform: translateY(-50%); width: 54px; height: 54px; font-size: 2rem; line-height: 1; }
-.lb-prev { left: 22px; }
-.lb-next { right: 22px; }
+
+.lb-close {
+  top: 22px;
+  right: 22px;
+  width: 46px;
+  height: 46px;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+
+.lb-nav {
+  top: 50%;
+  transform: translateY(-50%);
+  width: 54px;
+  height: 54px;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.lb-prev {
+  left: 22px;
+}
+
+.lb-next {
+  right: 22px;
+}
+
 .lb-close:hover,
-.lb-nav:hover { background: var(--tw-red, #D6223B); border-color: var(--tw-red, #D6223B); }
-.lb-nav:hover { transform: translateY(-50%) scale(1.04); }
+.lb-nav:hover {
+  background: var(--tw-red, #D6223B);
+  border-color: var(--tw-red, #D6223B);
+}
+
+.lb-nav:hover {
+  transform: translateY(-50%) scale(1.04);
+}
+
 .lb-counter {
   position: absolute;
   bottom: 24px;
@@ -723,12 +924,32 @@
   text-transform: uppercase;
   color: rgba(255, 255, 255, .8);
 }
+
 @media (max-width: 600px) {
-  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; }
-  .lb-prev { left: 10px; }
-  .lb-next { right: 10px; }
-  .lb-close { top: 14px; right: 14px; }
+  .lb-nav {
+    width: 44px;
+    height: 44px;
+    font-size: 1.5rem;
+  }
+
+  .lb-prev {
+    left: 10px;
+  }
+
+  .lb-next {
+    right: 10px;
+  }
+
+  .lb-close {
+    top: 14px;
+    right: 14px;
+  }
 }
+
 @media (prefers-reduced-motion: reduce) {
-  .lb, .lb-img { transition: none; }
+
+  .lb,
+  .lb-img {
+    transition: none;
+  }
 }

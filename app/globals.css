@@ -102,3 +102,11 @@ img {
   white-space: nowrap;
   border: 0;
 }
+
+.swiper.fw-swiper {
+  padding-bottom: 24px;
+}
+
+.swiper.fw-swiper .swiper-scrollbar.swiper-scrollbar-horizontal {
+  bottom: var(--swiper-scrollbar-bottom, -2px) !important;
+}

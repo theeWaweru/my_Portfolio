@@ -263,8 +263,6 @@
 .logo-marquee {
   background: color-mix(in srgb, var(--tw-navy) 82%, #000);
   padding-bottom: clamp(40px,5vw,72px); overflow: hidden;
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
-          mask-image: linear-gradient(90deg, transparent, #000 6%, #000 94%, transparent);
 }
 .logo-track { display: flex; gap: 22px; width: max-content; animation: tw-logo-scroll 38s linear infinite; }
 .logo-marquee:hover .logo-track { animation-play-state: paused; }

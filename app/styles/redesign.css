@@ -644,3 +644,91 @@
   .menu-feature { display: none; }
   .menu-foot { justify-content: flex-start; }
 }
+
+
+/* ===================== GALLERY LIGHTBOX ===================== */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .3s ease, visibility 0s linear .3s;
+}
+.lb.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .3s ease;
+}
+.lb-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(5, 6, 12, .92);
+  backdrop-filter: blur(4px);
+}
+.lb-stage {
+  position: relative;
+  margin: 0;
+  max-width: 90vw;
+  max-height: 86vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+.lb-img {
+  max-width: 90vw;
+  max-height: 86vh;
+  width: auto;
+  height: auto;
+  display: block;
+  will-change: transform;
+  transition: opacity .25s ease;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, .5);
+}
+.lb-close,
+.lb-nav {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  background: rgba(255, 255, 255, .08);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, .18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .2s ease, border-color .2s ease, transform .2s ease;
+}
+.lb-close { top: 22px; right: 22px; width: 46px; height: 46px; font-size: 1.6rem; line-height: 1; }
+.lb-nav { top: 50%; transform: translateY(-50%); width: 54px; height: 54px; font-size: 2rem; line-height: 1; }
+.lb-prev { left: 22px; }
+.lb-next { right: 22px; }
+.lb-close:hover,
+.lb-nav:hover { background: var(--tw-red, #D6223B); border-color: var(--tw-red, #D6223B); }
+.lb-nav:hover { transform: translateY(-50%) scale(1.04); }
+.lb-counter {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  font-family: var(--font-display);
+  font-size: .8rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, .8);
+}
+@media (max-width: 600px) {
+  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; }
+  .lb-prev { left: 10px; }
+  .lb-next { right: 10px; }
+  .lb-close { top: 14px; right: 14px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lb, .lb-img { transition: none; }
+}

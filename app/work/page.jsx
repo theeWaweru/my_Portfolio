@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
 import { getProjects } from "../lib/supabase/projects";
+import { openLightbox } from "../components/Lightbox/lightbox";
 import "./work.css";
 
 // Immersive Work picker: vertical stack (default) + horizontal filmstrip, one
@@ -14,7 +15,7 @@ import "./work.css";
 
 const PLACEHOLDER = "/images/placeholder.jpg";
 
-export default function WorkPage() {
+export default function WorkPage({ initialId = null } = {}) {
   const rootRef = useRef(null);
   const [projects, setProjects] = useState([]);
 
@@ -289,7 +290,7 @@ export default function WorkPage() {
 
     function onKey(e) {
       if (isOpen) {
-        if (e.key === "Escape") { e.preventDefault(); history.back(); }
+        if (e.key === "Escape") { e.preventDefault(); goBackToWork(); }
         return;
       }
       if (e.key === "ArrowDown" || e.key === "PageDown" || (mode === "horizontal" && e.key === "ArrowRight")) { e.preventDefault(); setActive(active + 1); }
@@ -305,6 +306,7 @@ export default function WorkPage() {
     root.appendChild(inner);
     let isOpen = false;
     let savedRect = null;
+    let openedViaPush = false;
 
     const esc = (s) => String(s == null ? "" : s)
       .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -344,7 +346,7 @@ export default function WorkPage() {
         }).join("") + "</aside>"
         : "";
       const galleryHtml = shots.map(function (src) {
-        return '<div class="proj-shot" style="background-image:url(' + src + ')"></div>';
+        return '<div class="proj-shot menu-portrait" data-src="' + src + '" style="background-image:url(' + src + ')"></div>';
       }).join("");
       const note = !hasLink
         ? '<p class="proj-note proj-chrome">A live link isn&apos;t available for this one. Many client builds are private, behind a login, or have since been rebranded or taken down. If you&apos;d like a closer look, reach out and I&apos;ll gladly walk you through the work.</p>'
@@ -385,7 +387,8 @@ export default function WorkPage() {
         "</article>";
     }
 
-    function openProject(i) {
+    function openProject(i, opts) {
+      opts = opts || {};
       if (isOpen) return;
       const p = PROJECTS[i];
       const coverEl = cards[i].querySelector(".card-cover");
@@ -407,8 +410,19 @@ export default function WorkPage() {
       stage.classList.add("dimmed");
       isOpen = true;
 
-      // sync the URL + analytics without unmounting the slider
+      // Direct/shared load (/work/[id]): the URL is already correct, so do not
+      // push history; reveal instantly (no source card to grow from on first
+      // paint). Back to Work still retracts into the now-active card.
+      if (opts.fromInitial) {
+        openedViaPush = false;
+        inner.classList.add("revealed");
+        return;
+      }
+
+      // In-app open from the slider: sync the URL (+ analytics) without
+      // unmounting the slider, then FLIP-grow the cover from the clicked card.
       history.pushState({ twInner: p.id }, "", "/work/" + p.id);
+      openedViaPush = true;
 
       const heroImg = inner.querySelector(".proj-hero-img");
       if (reduce || !heroImg) { inner.classList.add("revealed"); return; }
@@ -453,11 +467,29 @@ export default function WorkPage() {
       setTimeout(finishHide, 520);
     }
 
-    // "Back to Work" goes through history so the URL returns to /work and the
-    // retract plays via the popstate handler (single path for button + browser back).
+    // Return to the slider. If we pushed a history entry (in-app open), go back
+    // so the URL returns to /work and popstate triggers the retract. On a direct
+    // /work/[id] load there is no entry to pop, so retract here and rewrite the
+    // URL to /work without a full navigation (keeps the slider mounted).
+    function goBackToWork() {
+      if (!isOpen) return;
+      if (openedViaPush) {
+        history.back();
+      } else {
+        history.replaceState(null, "", "/work");
+        closeProject();
+      }
+    }
+
     function onInnerClick(e) {
       const back = e.target.closest ? e.target.closest(".inner-back") : null;
-      if (back) { e.preventDefault(); history.back(); }
+      if (back) { e.preventDefault(); goBackToWork(); return; }
+      const shot = e.target.closest ? e.target.closest(".proj-shot") : null;
+      if (shot) {
+        const shotEls = Array.prototype.slice.call(inner.querySelectorAll(".proj-shot"));
+        const urls = shotEls.map(function (s) { return s.getAttribute("data-src"); });
+        openLightbox(urls, shotEls.indexOf(shot), shot);
+      }
     }
     inner.addEventListener("click", onInnerClick);
 
@@ -469,6 +501,18 @@ export default function WorkPage() {
     updateMeta(false);
     requestAnimationFrame(function () { cards.forEach(function (c) { c.classList.add("animate"); }); });
     if (!reduce) setTimeout(function () { typeTitle(titleEl, PROJECTS[active].title); }, 250);
+
+    // Direct/shared visit to /work/[id]: preselect that project and open its
+    // overlay so "Back to Work" retracts into the slider with it active.
+    if (initialId) {
+      const initIdx = PROJECTS.findIndex(function (pp) { return pp.id === initialId; });
+      if (initIdx >= 0) {
+        active = initIdx;
+        render();
+        updateMeta(false);
+        openProject(initIdx, { fromInitial: true });
+      }
+    }
 
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -492,7 +536,7 @@ export default function WorkPage() {
       document.body.style.overflow = prevOverflow;
       wheel.innerHTML = "";
     };
-  }, [projects]);
+  }, [projects, initialId]);
 
   return (
     <div className="tw-work mode-vertical" ref={rootRef}>

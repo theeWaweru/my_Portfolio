@@ -496,6 +496,27 @@ export default function WorkPage({ initialId = null } = {}) {
     function onPopState() { if (isOpen) closeProject(); }
     window.addEventListener("popstate", onPopState);
 
+    // While the overlay is open, a link to /work (e.g. the menu's "From the Lab")
+    // would be a no-op: the slider's real Next route is still /work, so Next
+    // treats it as the same page and nothing closes. Intercept on the capture
+    // phase (before Next's Link handler) and retract the overlay instead.
+    // preventDefault tells Next to skip the navigation; the menu still closes via
+    // its own onClick. Links to any other route are left to navigate normally.
+    function onDocClick(e) {
+      if (!isOpen) return;
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      const a = e.target.closest ? e.target.closest("a[href]") : null;
+      if (!a || a.target === "_blank" || a.hasAttribute("download")) return;
+      let url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+      if (url.origin !== location.origin) return;
+      if (url.pathname === "/work") {
+        e.preventDefault();
+        goBackToWork();
+      }
+    }
+    document.addEventListener("click", onDocClick, true);
+
     // init
     layout();
     updateMeta(false);
@@ -524,6 +545,7 @@ export default function WorkPage({ initialId = null } = {}) {
       window.removeEventListener("pointerup", onPointerUp);
       window.removeEventListener("keydown", onKey);
       window.removeEventListener("popstate", onPopState);
+      document.removeEventListener("click", onDocClick, true);
       stage.removeEventListener("wheel", onWheel);
       stage.removeEventListener("touchstart", onTouchStart);
       stage.removeEventListener("touchmove", onTouchMove);

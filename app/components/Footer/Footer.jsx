@@ -68,7 +68,7 @@ export default function Footer() {
         <div className="foot-legal">
           <div className="foot-legal-links">
             <Link href="/privacy">Privacy Policy</Link>
-            <Link href="/contact">Support</Link>
+            <Link href="/contact">Contact Me</Link>
           </div>
           <span>&copy; 2026 David Waweru Ngari. All Rights Reserved.</span>
         </div>

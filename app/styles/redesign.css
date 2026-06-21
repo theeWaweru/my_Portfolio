@@ -52,6 +52,9 @@
   padding-right: var(--gutter);
 }
 
+/* footer runs full width (content keeps the gutter for readability) */
+.site-footer .wrap { max-width: none; }
+
 .eyebrow {
   font-family: var(--font-display);
   text-transform: uppercase;
@@ -911,7 +914,6 @@
 .lb-nav:hover {
   transform: translateY(-50%) scale(1.04);
 }
-
 .lb-counter {
   position: absolute;
   bottom: 24px;
@@ -919,37 +921,17 @@
   transform: translateX(-50%);
   z-index: 2;
   font-family: var(--font-display);
-  font-size: .8rem;
-  letter-spacing: .18em;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, .8);
+  color: rgba(255, 255, 255, 0.8);
 }
-
 @media (max-width: 600px) {
-  .lb-nav {
-    width: 44px;
-    height: 44px;
-    font-size: 1.5rem;
-  }
-
-  .lb-prev {
-    left: 10px;
-  }
-
-  .lb-next {
-    right: 10px;
-  }
-
-  .lb-close {
-    top: 14px;
-    right: 14px;
-  }
+  .lb-nav { width: 44px; height: 44px; font-size: 1.5rem; }
+  .lb-prev { left: 10px; }
+  .lb-next { right: 10px; }
+  .lb-close { top: 14px; right: 14px; }
 }
-
 @media (prefers-reduced-motion: reduce) {
-
-  .lb,
-  .lb-img {
-    transition: none;
-  }
+  .lb, .lb-img { transition: none; }
 }
